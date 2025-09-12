@@ -32,36 +32,27 @@ Buffer<Target>::~Buffer()
 }
 
 template <GLenum Target>
-void Buffer<Target>::write(const void* data, size_t offset, size_t size)
-{
-    assert(offset == 0 || offset + size <= this->size);
-
-    glBindBuffer(Target, this->handler);
-    {
-        if (size > this->size)
-        {
-            // Resize (offset should be 0)
-            this->size = size;
-            glBufferData(Target, this->size, data, this->usage);
-        }
-        else
-        {
-            // Partial write
-            glBufferSubData(Target, offset, size, data);
-        }
-    }
-    glBindBuffer(Target, 0);
-
-}
-
-template <GLenum Target>
 void Buffer<Target>::write(const void* data, size_t size)
 {
-    return this->write(data, 0, size);
+    this->size = size;
+
+    glBindBuffer(Target, this->handler);
+    glBufferData(Target, this->size, data, this->usage);
+    glBindBuffer(Target, 0);
 }
 
 template <GLenum Target>
-void Buffer<Target>::read(size_t offset, size_t size, void* data) const
+void Buffer<Target>::update(const void* data, size_t offset, size_t size)
+{
+    assert(offset + size <= this->size);
+
+    glBindBuffer(Target, this->handler);
+    glBufferSubData(Target, offset, size, data);
+    glBindBuffer(Target, 0);
+}
+
+template <GLenum Target>
+void Buffer<Target>::read(void* data, size_t offset, size_t size) const
 {
     assert(offset + size <= this->size);
 
@@ -73,9 +64,9 @@ void Buffer<Target>::read(size_t offset, size_t size, void* data) const
 }
 
 template <GLenum Target>
-void Buffer<Target>::read(size_t size, void* data) const
+void Buffer<Target>::read(void* data, size_t size) const
 {
-    return this->read(0, size, data);
+    return this->read(data, 0, size);
 }
 
 template <GLenum Target>
