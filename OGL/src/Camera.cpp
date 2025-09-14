@@ -4,19 +4,21 @@
 
 using namespace OGL;
 
-Camera::Camera(GLFWwindow* window)
+template <class T>
+Camera<T>::Camera(GLFWwindow* window)
     : window(window)
 {
     this->update();
 }
 
-void Camera::controlFree()
+template <class T>
+void Camera<T>::controlFree()
 {
     this->update();
 
     // Keyboard
-    const float elapsedMove = this->movementSpeed * this->elapsedTime;
-    const glm::vec3 right = glm::normalize(glm::cross(this->forward, this->up));
+    const T elapsedMove = this->movementSpeed * this->elapsedTime;
+    const glm::vec<3, T> right = glm::normalize(glm::cross(this->forward, this->up));
     if (glfwGetKey(this->window, GLFW_KEY_W) == GLFW_PRESS)
     {
         this->pos += this->forward * elapsedMove;
@@ -60,30 +62,32 @@ void Camera::controlFree()
     // Mouse
     if (this->mouseDelta != glm::vec2(0))
     {
-        this->forward = glm::rotate(this->forward, -this->mouseDelta.y, right);
-        this->up = glm::rotate(this->up, -this->mouseDelta.y, right);
-        this->forward = glm::rotate(this->forward, -this->mouseDelta.x, this->up);
+        this->forward = glm::rotate(this->forward, -(T)this->mouseDelta.y, right);
+        this->up = glm::rotate(this->up, -(T)this->mouseDelta.y, right);
+        this->forward = glm::rotate(this->forward, -(T)this->mouseDelta.x, this->up);
     }
 }
 
-void Camera::controlOrbit(glm::vec3 orbitOrigin, float orbitRadius)
+template <class T>
+void Camera<T>::controlOrbit(glm::vec<3, T> orbitOrigin, T orbitRadius)
 {
     this->update();
 
     // Mouse
-    const glm::vec3 right = glm::normalize(glm::cross(this->forward, this->up));
+    const glm::vec<3, T> right = glm::normalize(glm::cross(this->forward, this->up));
     if (glfwGetMouseButton(this->window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
-        this->forward = glm::rotate(this->forward, -this->mouseDelta.y, right);
-        this->forward = glm::rotate(this->forward, -this->mouseDelta.x, this->up);
+        this->forward = glm::rotate(this->forward, -(T)this->mouseDelta.y, right);
+        this->forward = glm::rotate(this->forward, -(T)this->mouseDelta.x, this->up);
 
         this->pos = orbitOrigin - this->forward * orbitRadius;
-        const glm::vec3 newRight = glm::normalize(glm::cross(this->forward, glm::vec3(0, 1, 0)));
+        const glm::vec<3, T> newRight = glm::normalize(glm::cross(this->forward, glm::vec<3, T>(0, 1, 0)));
         this->up = glm::normalize(glm::cross(newRight, this->forward));
     }
 }
 
-void Camera::update()
+template <class T>
+void Camera<T>::update()
 {
     // Update time
     static double time = 0;
@@ -96,16 +100,18 @@ void Camera::update()
     glfwGetWindowSize(this->window, &width, &height);
     double newPosX, newPosY;
     glfwGetCursorPos(this->window, &newPosX, &newPosY);
-    this->mouseDelta = glm::vec2(newPosX - width / 2, newPosY - height / 2) * this->rotationSpeed / 200.f;
+    this->mouseDelta = glm::vec<2, T>(newPosX - width / 2, newPosY - height / 2) * this->rotationSpeed / (T)200;
     glfwSetCursorPos(this->window, width / 2, height / 2);
 }
 
-glm::mat4 Camera::createProjection(glm::vec2 size, glm::vec2 zClip) const
+template <class T>
+glm::mat<4, 4, T> Camera<T>::createProjection(glm::vec2 size, glm::vec2 zClip) const
 {
-    return glm::perspectiveFov(this->fov, size.x, size.y, zClip.x, zClip.y);
+    return glm::perspectiveFov(this->fov, (T)size.x, (T)size.y, (T)zClip.x, (T)zClip.y);
 }
 
-glm::mat4 Camera::createView() const
+template <class T>
+glm::mat<4, 4, T> Camera<T>::createView() const
 {
     return glm::lookAt(this->pos, this->pos + this->forward, this->up);
 }

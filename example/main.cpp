@@ -94,7 +94,7 @@ int main()
 
     OGL::FrameBuffer frameBuffer(glm::ivec2(5, 5), OGL::Texture(OGL::Filter::NEAREST), OGL::Texture(OGL::Filter::NEAREST));
 
-    OGL::Camera camera(window);
+    OGL::Camera<float> camera(window);
 
     while (!glfwWindowShouldClose(window))
     {
