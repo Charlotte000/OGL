@@ -2,8 +2,8 @@
 
 using namespace OGL;
 
-ArrayBuffer::ArrayBuffer(size_t stride, const std::vector<std::tuple<GLenum, size_t, size_t>>& attributes, GLenum usage)
-    : Buffer(usage), stride(stride), attributes(attributes)
+ArrayBuffer::ArrayBuffer(size_t stride, const std::vector<std::tuple<GLenum, size_t, size_t>>& attributes)
+    : Buffer(), stride(stride), attributes(attributes)
 {
 }
 

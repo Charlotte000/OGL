@@ -2,6 +2,8 @@
 
 #include <GL/glew.h>
 
+#include "OGL/Enums.h"
+
 namespace OGL
 {
 
@@ -9,16 +11,13 @@ template <GLenum Target>
 class Buffer
 {
 public:
-    /**
-     * @param usage { GL_STREAM_DRAW, GL_STREAM_READ, GL_STREAM_COPY, GL_STATIC_DRAW, GL_STATIC_READ, GL_STATIC_COPY, GL_DYNAMIC_DRAW, GL_DYNAMIC_READ, GL_DYNAMIC_COPY }
-     */
-    Buffer(GLenum usage = GL_STATIC_COPY);
+    Buffer();
 
     Buffer(Buffer<Target>&& buff);
 
     ~Buffer();
 
-    void write(const void* data, size_t size);
+    void write(const void* data, size_t size, DataUsage usage = DataUsage::STATIC_COPY);
 
     void update(const void* data, size_t offset, size_t size);
 
@@ -32,11 +31,13 @@ public:
 
     GLuint getHandler() const;
 
+    size_t getSize() const;
+
+    DataUsage getUsage() const;
+
     static void stopUse();
 protected:
-    GLenum usage;
     GLuint handler = -1;
-    size_t size = 0;
 };
 
 template class Buffer<GL_ARRAY_BUFFER>;

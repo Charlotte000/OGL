@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 
+#include "OGL/Enums.h"
 #include "OGL/Texture.h"
 
 namespace OGL
@@ -23,7 +24,7 @@ public:
 
     void use();
 
-    void clear(glm::vec4 color = glm::vec4(0, 0, 0, 1), GLbitfield mask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    void clear(glm::vec4 color = glm::vec4(0, 0, 0, 1), ClearMode mask = (ClearMode)(ClearMode::COLOR | ClearMode::DEPTH));
 
     GLuint getHandler() const;
 

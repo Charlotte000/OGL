@@ -4,8 +4,8 @@
 
 using namespace OGL;
 
-ElementArrayBuffer::ElementArrayBuffer(size_t stride, GLenum type, GLenum usage)
-    : Buffer(usage), stride(stride), type(type)
+ElementArrayBuffer::ElementArrayBuffer(size_t stride, GLenum type)
+    : Buffer(), stride(stride), type(type)
 {
 }
 

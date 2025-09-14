@@ -32,28 +32,28 @@ VertexArray::~VertexArray()
     }
 }
 
-void VertexArray::drawArrays(GLenum mode, glm::uvec2 pos, glm::uvec2 size)
+void VertexArray::drawArrays(PrimitiveType mode, glm::uvec2 pos, glm::uvec2 size)
 {
     glBindVertexArray(this->handler);
     glViewport(pos.x, pos.y, size.x, size.y);
-    glDrawArrays(mode, 0, this->vbo.size / this->vbo.stride);
+    glDrawArrays((GLenum)mode, 0, this->vbo.getSize() / this->vbo.stride);
     glBindVertexArray(0);
 }
 
-void VertexArray::drawArrays(GLenum mode, glm::uvec2 size)
+void VertexArray::drawArrays(PrimitiveType mode, glm::uvec2 size)
 {
     this->drawArrays(mode, glm::uvec2(0, 0), size);
 }
 
-void VertexArray::drawElements(GLenum mode, glm::uvec2 pos, glm::uvec2 size)
+void VertexArray::drawElements(PrimitiveType mode, glm::uvec2 pos, glm::uvec2 size)
 {
     glBindVertexArray(this->handler);
     glViewport(pos.x, pos.y, size.x, size.y);
-    glDrawElements(mode, this->ebo.size / this->ebo.stride, this->ebo.type, nullptr);
+    glDrawElements((GLenum)mode, this->ebo.getSize() / this->ebo.stride, this->ebo.type, nullptr);
     glBindVertexArray(0);
 }
 
-void VertexArray::drawElements(GLenum mode, glm::uvec2 size)
+void VertexArray::drawElements(PrimitiveType mode, glm::uvec2 size)
 {
     this->drawElements(mode, glm::uvec2(0, 0), size);
 }

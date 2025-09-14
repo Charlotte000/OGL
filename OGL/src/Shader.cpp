@@ -31,9 +31,18 @@ Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::p
     glDeleteShader(fragmentHandler);
 }
 
+Shader::Shader(Shader&& shader)
+    : handler(shader.handler)
+{
+    shader.handler = -1;
+}
+
 Shader::~Shader()
 {
-    glDeleteProgram(this->handler);
+    if (this->handler != -1)
+    {
+        glDeleteProgram(this->handler);
+    }
 }
 
 void Shader::use()

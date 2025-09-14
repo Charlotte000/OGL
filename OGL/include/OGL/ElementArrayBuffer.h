@@ -13,7 +13,7 @@ public:
     /**
      * @param type { GL_UNSIGNED_BYTE, GL_UNSIGNED_SHORT, GL_UNSIGNED_INT }
      */
-    ElementArrayBuffer(size_t stride = sizeof(unsigned int), GLenum type = GL_UNSIGNED_INT, GLenum usage = GL_STATIC_COPY);
+    ElementArrayBuffer(size_t stride = sizeof(unsigned int), GLenum type = GL_UNSIGNED_INT);
 
     ElementArrayBuffer(ElementArrayBuffer&& buff);
 private:

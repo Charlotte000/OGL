@@ -18,6 +18,8 @@ public:
 
     Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath);
 
+    Shader(Shader&& shader);
+
     ~Shader();
 
     void use();
@@ -38,7 +40,7 @@ public:
 
     static void stopUse();
 private:
-    GLuint handler;
+    GLuint handler = -1;
 
     static const std::string load(const std::filesystem::path& path);
     static GLuint initShader(const std::filesystem::path& path, GLenum shaderType);

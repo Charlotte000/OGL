@@ -10,7 +10,6 @@
 #include <OGL/FrameBuffer.h>
 #include <OGL/UniformBuffer.h>
 
-#include <unordered_map>
 void initGLFW()
 {
     if (glfwInit() == GL_FALSE)
@@ -93,7 +92,7 @@ int main()
     OGL::Shader viewShader("../../example/shaders/view/vertex.glsl", "../../example/shaders/view/fragment.glsl");
     OGL::Shader rayTracerShader("../../example/shaders/rayTracer/vertex.glsl", "../../example/shaders/rayTracer/fragment.glsl");
 
-    OGL::FrameBuffer frameBuffer(glm::ivec2(5, 5), OGL::Texture(GL_RGBA32F, GL_NEAREST), OGL::Texture(GL_DEPTH_COMPONENT, GL_NEAREST));
+    OGL::FrameBuffer frameBuffer(glm::ivec2(5, 5), OGL::Texture(OGL::Filter::NEAREST), OGL::Texture(OGL::Filter::NEAREST));
 
     OGL::Camera camera(window);
 
@@ -103,7 +102,7 @@ int main()
 
         frameBuffer.use(); uvShader.use();
         {
-            quad.drawArrays(GL_TRIANGLES, frameBuffer.getSize());
+            quad.drawArrays(OGL::PrimitiveType::TRIANGLES, frameBuffer.getSize());
         }
         OGL::Shader::stopUse(); OGL::FrameBuffer::stopUse();
 
@@ -117,14 +116,14 @@ int main()
             rayTracerShader.updateUniform("cameraUp", camera.up);
             rayTracerShader.updateUniform("cameraFOV", camera.fov);
             rayTracerShader.updateUniform("aspectRatio", 1.f);
-            quad.drawArrays(GL_TRIANGLES, glm::uvec2(600, 600));
+            quad.drawArrays(OGL::PrimitiveType::TRIANGLES, glm::uvec2(600, 600));
         }
         OGL::Shader::stopUse();
 
         viewShader.use();
         {
             frameBuffer.colorTexture.bindSampler(0);
-            quad.drawElements(GL_TRIANGLES, glm::uvec2(400, 400), glm::uvec2(200, 200));
+            quad.drawElements(OGL::PrimitiveType::TRIANGLES, glm::uvec2(400, 400), glm::uvec2(200, 200));
         }
         OGL::Shader::stopUse();
 
