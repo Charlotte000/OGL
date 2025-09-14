@@ -39,30 +39,30 @@ void Texture::bindImage(unsigned int binding, Access access, GLenum format)
     glBindImageTexture(binding, this->handler, 0, GL_FALSE, 0, (GLenum)access, format);
 }
 
-void Texture::write(const void* pixels, glm::uvec2 size, GLenum format, GLenum type, GLint internalFormat)
+void Texture::write(const void* pixels, glm::uvec2 size, GLenum format, Type type, GLint internalFormat)
 {
     glBindTexture(GL_TEXTURE_2D, this->handler);
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, size.x, size.y, 0, format, type, pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, size.x, size.y, 0, format, (GLenum)type, pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Texture::write(const Image& image, GLint internalFormat)
 {
-    this->write(image.pixels.data(), image.size, GL_RGBA, GL_FLOAT, internalFormat);
+    this->write(image.pixels.data(), image.size, GL_RGBA, Type::FLOAT, internalFormat);
 }
 
-void Texture::update(const void* pixels, glm::uvec2 offset, glm::uvec2 size, GLenum format, GLenum type)
+void Texture::update(const void* pixels, glm::uvec2 offset, glm::uvec2 size, GLenum format, Type type)
 {
     assert(glm::all(glm::lessThanEqual(offset + size, this->getSize())));
 
     glBindTexture(GL_TEXTURE_2D, this->handler);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, offset.x, offset.y, size.x, size.y, format, type, pixels);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, offset.x, offset.y, size.x, size.y, format, (GLenum)type, pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Texture::update(const Image& image, glm::uvec2 offset)
 {
-    this->update(image.pixels.data(), offset, image.size, GL_RGBA, GL_FLOAT);
+    return this->update(image.pixels.data(), offset, image.size, GL_RGBA, Type::FLOAT);
 }
 
 Image Texture::read(glm::uvec2 offset, glm::uvec2 size) const
@@ -94,7 +94,7 @@ Image Texture::read() const
 void Texture::clear()
 {
     glBindTexture(GL_TEXTURE_2D, this->handler);
-    glClearTexImage(this->handler, 0, GL_RGBA, GL_FLOAT, 0);
+    glClearTexImage(this->handler, 0, GL_RGBA, GL_FLOAT, nullptr);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 

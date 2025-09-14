@@ -14,6 +14,7 @@ add_library(
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ArrayBuffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/FrameBuffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/VertexArray.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/TextureArray.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/StorageBuffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UniformBuffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ElementArrayBuffer.cpp

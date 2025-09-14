@@ -63,4 +63,60 @@ enum ClearMode : GLbitfield
     STENCIL = GL_STENCIL_BUFFER_BIT,
 };
 
+enum class TypeU : GLenum
+{
+    UNSIGNED_BYTE = GL_UNSIGNED_BYTE,
+    UNSIGNED_SHORT = GL_UNSIGNED_SHORT,
+    UNSIGNED_INT = GL_UNSIGNED_INT,
+};
+
+enum class Type : GLenum
+{
+    UNSIGNED_BYTE = GL_UNSIGNED_BYTE,
+    BYTE = GL_BYTE,
+    UNSIGNED_SHORT = GL_UNSIGNED_SHORT,
+    SHORT = GL_SHORT,
+    UNSIGNED_INT = GL_UNSIGNED_INT,
+    INT = GL_INT,
+    FLOAT = GL_FLOAT,
+};
+
+static size_t getTypeSize(TypeU type)
+{
+    switch (type)
+    {
+        case TypeU::UNSIGNED_BYTE:
+            return sizeof(GLubyte);
+        case TypeU::UNSIGNED_SHORT:
+            return sizeof(GLushort);
+        case TypeU::UNSIGNED_INT:
+            return sizeof(GLuint);
+    }
+
+    return 0;
+}
+
+static size_t getTypeSize(Type type)
+{
+    switch (type)
+    {
+        case Type::UNSIGNED_BYTE:
+            return sizeof(GLubyte);
+        case Type::BYTE:
+            return sizeof(GLbyte);
+        case Type::UNSIGNED_SHORT:
+            return sizeof(GLushort);
+        case Type::SHORT:
+            return sizeof(GLshort);
+        case Type::UNSIGNED_INT:
+            return sizeof(GLuint);
+        case Type::INT:
+            return sizeof(GLint);
+        case Type::FLOAT:
+            return sizeof(GLfloat);
+    }
+
+    return 0;
+}
+
 };

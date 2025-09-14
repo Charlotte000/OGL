@@ -49,11 +49,11 @@ void VertexArray::drawArrays(PrimitiveType mode, glm::uvec2 size)
 
 void VertexArray::drawElements(PrimitiveType mode, glm::uvec2 pos, glm::uvec2 size)
 {
-    const size_t count = this->ebo.getSize() / this->ebo.stride;
+    const size_t count = this->ebo.getSize() / getTypeSize(this->ebo.type);
 
     glBindVertexArray(this->handler);
     glViewport(pos.x, pos.y, size.x, size.y);
-    glDrawElements((GLenum)mode, count, this->ebo.type, nullptr);
+    glDrawElements((GLenum)mode, count, (GLenum)this->ebo.type, nullptr);
     glBindVertexArray(0);
 }
 

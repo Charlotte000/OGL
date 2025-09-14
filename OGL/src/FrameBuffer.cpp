@@ -7,8 +7,8 @@ using namespace OGL;
 FrameBuffer::FrameBuffer(glm::uvec2 size, Texture&& colorTexture, Texture&& depthTexture)
     : colorTexture(std::move(colorTexture)), depthTexture(std::move(depthTexture))
 {
-    this->colorTexture.write(nullptr, size, GL_RGB, GL_FLOAT, GL_RGBA32F);
-    this->depthTexture.write(nullptr, size, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, GL_DEPTH_COMPONENT);
+    this->colorTexture.write(nullptr, size, GL_RGB, Type::FLOAT, GL_RGBA32F);
+    this->depthTexture.write(nullptr, size, GL_DEPTH_COMPONENT, Type::UNSIGNED_BYTE, GL_DEPTH_COMPONENT);
 
     // Create framebuffer
     glGenFramebuffers(1, &this->handler);

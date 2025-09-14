@@ -65,7 +65,7 @@ int main()
     initGLEW();
 
     OGL::VertexArray quad(
-        OGL::ArrayBuffer(sizeof(float) * 4, { { GL_FLOAT, 2, 0 }, { GL_FLOAT, 2,  8 } }),
+        OGL::ArrayBuffer({ { OGL::Type::FLOAT, 2 }, { OGL::Type::FLOAT, 2 } }),
         OGL::ElementArrayBuffer()
     );
 
