@@ -14,7 +14,7 @@ public:
     Texture colorTexture;
     Texture depthTexture;
 
-    FrameBuffer(glm::uvec2 size, Texture&& colorTexture, Texture&& depthTexture);
+    FrameBuffer(Texture&& colorTexture, Texture&& depthTexture);
 
     FrameBuffer(glm::uvec2 size);
 
@@ -24,7 +24,13 @@ public:
 
     void use();
 
-    void clear(glm::vec4 color = glm::vec4(0, 0, 0, 1), ClearMode mask = (ClearMode)(ClearMode::COLOR | ClearMode::DEPTH));
+    void clearColor(glm::vec4 color = glm::vec4(0, 0, 0, 1));
+
+    void clearDepth(float depth = 1);
+
+    void clearStencil(int stencil = 0);
+
+    void clear(glm::vec4 color = glm::vec4(0, 0, 0, 1), float depth = 1, int stencil = 0);
 
     GLuint getHandler() const;
 

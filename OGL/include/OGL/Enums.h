@@ -56,13 +56,6 @@ enum class PrimitiveType : GLenum
     PATCHES = GL_PATCHES,
 };
 
-enum ClearMode : GLbitfield
-{
-    COLOR = GL_COLOR_BUFFER_BIT,
-    DEPTH = GL_DEPTH_BUFFER_BIT,
-    STENCIL = GL_STENCIL_BUFFER_BIT,
-};
-
 enum class TypeU : GLenum
 {
     UNSIGNED_BYTE = GL_UNSIGNED_BYTE,
@@ -79,6 +72,54 @@ enum class Type : GLenum
     UNSIGNED_INT = GL_UNSIGNED_INT,
     INT = GL_INT,
     FLOAT = GL_FLOAT,
+};
+
+// https://registry.khronos.org/OpenGL-Refpages/gl4/html/glTexStorage2D.xhtml
+enum class InternalFormat : GLenum
+{
+    R16F = GL_R16F,
+    RG16F = GL_RG16F,
+    RGB16F = GL_RGB16F,
+    RGBA16F = GL_RGBA16F,
+
+    R32F = GL_R32F,
+    RG32F = GL_RG32F,
+    RGB32F = GL_RGB32F,
+    RGBA32F = GL_RGBA32F,
+
+    DEPTH16 = GL_DEPTH_COMPONENT16,
+    DEPTH24 = GL_DEPTH_COMPONENT24,
+    DEPTH32 = GL_DEPTH_COMPONENT32,
+    DEPTH32F = GL_DEPTH_COMPONENT32F,
+
+    DEPTH24_STENCIL8 = GL_DEPTH24_STENCIL8,
+    DEPTH32F_STENCIL8 = GL_DEPTH32F_STENCIL8,
+
+    STENCIL8 = GL_STENCIL_INDEX8,
+};
+
+// https://registry.khronos.org/OpenGL-Refpages/gl4/html/glBindImageTexture.xhtml
+enum class ImageUnitFormat : GLenum
+{
+    R16F = GL_R16F,
+    RG16F = GL_RG16F,
+    RGB16F = GL_RGB16F,
+    RGBA16F = GL_RGBA16F,
+
+    R32F = GL_R32F,
+    RG32F = GL_RG32F,
+    RGB32F = GL_RGB32F,
+    RGBA32F = GL_RGBA32F,
+};
+
+enum class PixelFormat : GLenum
+{
+    RED = GL_RED,
+    RG = GL_RG,
+    RGB = GL_RGB,
+    RGBA = GL_RGBA,
+    DEPTH = GL_DEPTH_COMPONENT,
+    STENCIL = GL_STENCIL_INDEX,
 };
 
 static size_t getTypeSize(TypeU type)

@@ -4,15 +4,14 @@
 
 using namespace OGL;
 
-Texture::Texture(Filter filter, Wrap wrap)
+Texture::Texture(glm::uvec2 size, InternalFormat internalFormat, Filter filter, Wrap wrap)
 {
-    glGenTextures(1, &this->handler);
-    glBindTexture(GL_TEXTURE_2D, this->handler);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLint)filter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLint)filter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)wrap);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLint)wrap);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    glCreateTextures(GL_TEXTURE_2D, 1, &this->handler);
+    glTextureParameteri(this->handler, GL_TEXTURE_MAG_FILTER, (GLint)filter);
+    glTextureParameteri(this->handler, GL_TEXTURE_MIN_FILTER, (GLint)filter);
+    glTextureParameteri(this->handler, GL_TEXTURE_WRAP_S, (GLint)wrap);
+    glTextureParameteri(this->handler, GL_TEXTURE_WRAP_T, (GLint)wrap);
+    glTextureStorage2D(this->handler, 1, (GLenum)internalFormat, size.x, size.y);
 }
 
 Texture::Texture(Texture&& tex)
@@ -34,35 +33,20 @@ void Texture::bindSampler(unsigned int binding)
     glBindTextureUnit(binding, this->handler);
 }
 
-void Texture::bindImage(unsigned int binding, Access access, GLenum format)
+void Texture::bindImage(unsigned int binding, Access access, ImageUnitFormat format)
 {
-    glBindImageTexture(binding, this->handler, 0, GL_FALSE, 0, (GLenum)access, format);
+    glBindImageTexture(binding, this->handler, 0, GL_FALSE, 0, (GLenum)access, (GLenum)format);
 }
 
-void Texture::write(const void* pixels, glm::uvec2 size, GLenum format, Type type, GLint internalFormat)
-{
-    glBindTexture(GL_TEXTURE_2D, this->handler);
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, size.x, size.y, 0, format, (GLenum)type, pixels);
-    glBindTexture(GL_TEXTURE_2D, 0);
-}
-
-void Texture::write(const Image& image, GLint internalFormat)
-{
-    this->write(image.pixels.data(), image.size, GL_RGBA, Type::FLOAT, internalFormat);
-}
-
-void Texture::update(const void* pixels, glm::uvec2 offset, glm::uvec2 size, GLenum format, Type type)
+void Texture::update(const void* pixels, glm::uvec2 offset, glm::uvec2 size, PixelFormat format, Type type)
 {
     assert(glm::all(glm::lessThanEqual(offset + size, this->getSize())));
-
-    glBindTexture(GL_TEXTURE_2D, this->handler);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, offset.x, offset.y, size.x, size.y, format, (GLenum)type, pixels);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    glTextureSubImage2D(this->handler, 0, offset.x, offset.y, size.x, size.y, (GLenum)format, (GLenum)type, pixels);
 }
 
 void Texture::update(const Image& image, glm::uvec2 offset)
 {
-    return this->update(image.pixels.data(), offset, image.size, GL_RGBA, Type::FLOAT);
+    return this->update(image.pixels.data(), offset, image.size, PixelFormat::RGBA, Type::FLOAT);
 }
 
 Image Texture::read(glm::uvec2 offset, glm::uvec2 size) const
@@ -93,9 +77,7 @@ Image Texture::read() const
 
 void Texture::clear()
 {
-    glBindTexture(GL_TEXTURE_2D, this->handler);
     glClearTexImage(this->handler, 0, GL_RGBA, GL_FLOAT, nullptr);
-    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 GLuint Texture::getHandler() const
@@ -106,20 +88,14 @@ GLuint Texture::getHandler() const
 glm::uvec2 Texture::getSize() const
 {
     GLint width, height;
- 
-    glBindTexture(GL_TEXTURE_2D, this->handler);
-    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
-    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_WIDTH, &width);
+    glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_HEIGHT, &height);
     return glm::uvec2(width, height);
 }
 
-GLint Texture::getInternalFormat() const
+InternalFormat Texture::getInternalFormat() const
 {
     GLint internalFormat;
- 
-    glBindTexture(GL_TEXTURE_2D, this->handler);
-    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_INTERNAL_FORMAT, &internalFormat);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return internalFormat;
+    glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_INTERNAL_FORMAT, &internalFormat);
+    return (InternalFormat)internalFormat;
 }

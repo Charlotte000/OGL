@@ -18,7 +18,7 @@ public:
     ArrayBuffer vbo;
     ElementArrayBuffer ebo;
 
-    VertexArray(ArrayBuffer&& vbo, ElementArrayBuffer&& ebo);
+    VertexArray(size_t vertexStride, const std::vector<std::tuple<Type, size_t, size_t>>& vertexAttributes, TypeU indexType = TypeU::UNSIGNED_INT);
 
     VertexArray(VertexArray&& vao);
 
@@ -35,6 +35,8 @@ public:
     GLuint getHandler() const;
 private:
     GLuint handler = -1;
+    size_t vertexStride;
+    TypeU indexType;
 };
 
 }

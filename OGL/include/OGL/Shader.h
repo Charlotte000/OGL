@@ -9,6 +9,7 @@
 namespace OGL
 {
 
+// TODO program pipeline
 class Shader
 {
 public:

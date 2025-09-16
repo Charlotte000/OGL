@@ -7,6 +7,7 @@
 namespace OGL
 {
 
+// Mutable
 template <GLenum Target>
 class Buffer
 {

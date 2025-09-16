@@ -65,8 +65,8 @@ int main()
     initGLEW();
 
     OGL::VertexArray quad(
-        OGL::ArrayBuffer({ { OGL::Type::FLOAT, 2 }, { OGL::Type::FLOAT, 2 } }),
-        OGL::ElementArrayBuffer()
+        sizeof(float) * 4,
+        { { OGL::Type::FLOAT, 2, 0 }, { OGL::Type::FLOAT, 2, 8 } }
     );
 
     {
@@ -92,7 +92,10 @@ int main()
     OGL::Shader viewShader("../../example/shaders/view/vertex.glsl", "../../example/shaders/view/fragment.glsl");
     OGL::Shader rayTracerShader("../../example/shaders/rayTracer/vertex.glsl", "../../example/shaders/rayTracer/fragment.glsl");
 
-    OGL::FrameBuffer frameBuffer(glm::ivec2(5, 5), OGL::Texture(OGL::Filter::NEAREST), OGL::Texture(OGL::Filter::NEAREST));
+    OGL::FrameBuffer frameBuffer(
+        OGL::Texture(glm::uvec2(5, 5), OGL::InternalFormat::RGBA32F, OGL::Filter::NEAREST),
+        OGL::Texture(glm::uvec2(5, 5), OGL::InternalFormat::DEPTH32, OGL::Filter::NEAREST)
+    );
 
     OGL::Camera<float> camera(window);
 
