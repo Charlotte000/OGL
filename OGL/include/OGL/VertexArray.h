@@ -20,6 +20,8 @@ public:
 
     VertexArray(size_t vertexStride, const std::vector<std::tuple<Type, size_t, size_t>>& vertexAttributes, TypeU indexType = TypeU::UNSIGNED_INT);
 
+    VertexArray(const std::vector<std::tuple<Type, size_t>>& vertexAttributes, TypeU indexType = TypeU::UNSIGNED_INT);
+
     VertexArray(VertexArray&& vao);
 
     ~VertexArray();

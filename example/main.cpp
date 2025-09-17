@@ -65,8 +65,7 @@ int main()
     initGLEW();
 
     OGL::VertexArray quad(
-        sizeof(float) * 4,
-        { { OGL::Type::FLOAT, 2, 0 }, { OGL::Type::FLOAT, 2, 8 } }
+        { { OGL::Type::FLOAT, 2 }, { OGL::Type::FLOAT, 2 } }
     );
 
     {
