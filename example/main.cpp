@@ -1,7 +1,11 @@
 #include <iostream>
 #include <stdexcept>
+
 #include <GL/glew.h>
+
 #include <glm/glm.hpp>
+#include <glm/gtx/rotate_vector.hpp>
+
 #include <GLFW/glfw3.h>
 
 #include <OGL/Camera.h>
@@ -96,20 +100,57 @@ int main()
         OGL::Texture(glm::uvec2(5, 5), OGL::InternalFormat::DEPTH32, OGL::Filter::NEAREST)
     );
 
-    OGL::Camera<float> camera(window);
+    OGL::Camera<float> camera;
 
+    double time = glfwGetTime(), elapsedTime = 0;
+    glm::vec2 mouseDelta;
+    glfwSetCursorPos(window, 300, 300);
     while (!glfwWindowShouldClose(window))
     {
+        // Update time
+        {
+            double newTime = glfwGetTime();
+            elapsedTime = newTime - time;
+            time = newTime;
+        }
+
+        // Update mouse
+        {
+            double mouseX, mouseY;
+            glfwGetCursorPos(window, &mouseX, &mouseY);
+            mouseDelta = glm::vec2(mouseX - 300, mouseY - 300);
+            glfwSetCursorPos(window, 300, 300);
+        }
+
         glfwPollEvents();
 
+        // Control camera
+        const float elapsedMove = 5 * elapsedTime;
+        const float elapsedRotation = 1 * elapsedTime;
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)               camera.pos += camera.forward * elapsedMove;
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)               camera.pos += -camera.forward * elapsedMove;
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)               camera.pos += -camera.right() * elapsedMove;
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)               camera.pos += camera.right() * elapsedMove;
+        if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)      camera.pos += camera.up * elapsedMove;
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)    camera.pos += -camera.up * elapsedMove;
+        if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)               camera.up = glm::rotate(camera.up, -elapsedRotation, camera.forward);
+        if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)               camera.up = glm::rotate(camera.up, elapsedRotation, camera.forward);
+        if (mouseDelta != glm::vec2(0))
+        {
+            const glm::vec3 right = camera.right();
+            camera.forward = glm::rotate(camera.forward, -mouseDelta.y / 200, right);
+            camera.up = glm::rotate(camera.up, -mouseDelta.y / 200, right);
+            camera.forward = glm::rotate(camera.forward, -mouseDelta.x / 200, camera.up);
+        }
+
+        // Render framebuffer
         frameBuffer.use(); uvShader.use();
         {
             quad.drawArrays(OGL::PrimitiveType::TRIANGLES, frameBuffer.getSize());
         }
         OGL::Shader::stopUse(); OGL::FrameBuffer::stopUse();
 
-        camera.controlFree();
-
+        // Render ray tracer
         rayTracerShader.use();
         {
             frameBuffer.colorTexture.bindSampler(0);
@@ -122,6 +163,7 @@ int main()
         }
         OGL::Shader::stopUse();
 
+        // Render framebuffer
         viewShader.use();
         {
             frameBuffer.colorTexture.bindSampler(0);

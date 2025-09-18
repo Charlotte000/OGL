@@ -45,17 +45,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${glew_SOURCE_DIR}/include)
 target_sources(${PROJECT_NAME} PUBLIC ${glew_SOURCE_DIR}/src/glew.c)
 target_compile_definitions(${PROJECT_NAME} PUBLIC GLEW_STATIC)
 
-# GLFW 3.4
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "Build the GLFW documentation")
-FetchContent_Declare(
-    glfw
-    GIT_REPOSITORY https://github.com/glfw/glfw.git
-    GIT_TAG        3.4
-)
-FetchContent_MakeAvailable(glfw)
-target_include_directories(${PROJECT_NAME} PUBLIC ${glfw_SOURCE_DIR})
-target_link_libraries(${PROJECT_NAME} PUBLIC glfw)
-
 # STB
 FetchContent_Declare(
     stb
