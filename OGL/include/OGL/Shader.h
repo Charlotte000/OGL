@@ -8,17 +8,19 @@
 
 #include <glm/glm.hpp>
 
+#include "OGL/Enums.h"
+
 namespace OGL
 {
 
 class Shader
 {
 public:
-    Shader(const std::string& src, GLenum shaderType);
+    Shader(const std::string& src, ShaderType type);
 
-    Shader(const std::filesystem::path& path, GLenum shaderType);
+    Shader(const std::filesystem::path& path, ShaderType type);
 
-    Shader(const unsigned char src[], size_t srcSize, GLenum shaderType);
+    Shader(const unsigned char src[], size_t srcSize, ShaderType type);
 
     Shader(Shader&& shader);
 

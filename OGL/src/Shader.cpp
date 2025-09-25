@@ -6,10 +6,10 @@
 
 using namespace OGL;
 
-Shader::Shader(const std::string& src, GLenum shaderType)
+Shader::Shader(const std::string& src, ShaderType type)
 {
     // Create shader
-    this->handler = glCreateShader(shaderType);
+    this->handler = glCreateShader((GLenum)type);
 
     // Attach code
     const GLchar* code = (const GLchar*)src.c_str();
@@ -20,10 +20,10 @@ Shader::Shader(const std::string& src, GLenum shaderType)
     this->checkStatus();
 }
 
-Shader::Shader(const std::filesystem::path& path, GLenum shaderType)
+Shader::Shader(const std::filesystem::path& path, ShaderType type)
 {
     // Create shader
-    this->handler = glCreateShader(shaderType);
+    this->handler = glCreateShader((GLenum)type);
 
     // Attach code
     std::ifstream file(path);
@@ -42,10 +42,10 @@ Shader::Shader(const std::filesystem::path& path, GLenum shaderType)
     this->checkStatus();
 }
 
-Shader::Shader(const unsigned char src[], size_t srcSize, GLenum shaderType)
+Shader::Shader(const unsigned char src[], size_t srcSize, ShaderType type)
 {
     // Create shader
-    this->handler = glCreateShader(shaderType);
+    this->handler = glCreateShader((GLenum)type);
 
     // Attach code
     glShaderBinary(1, &this->handler, GL_SHADER_BINARY_FORMAT_SPIR_V, src, srcSize);

@@ -94,18 +94,18 @@ int main()
     std::filesystem::path shaderPath("../../example/shaders/");
     OGL::Program uvShader(
     {
-        OGL::Shader(shaderPath / "uv"/ "vertex.glsl", GL_VERTEX_SHADER),
-        OGL::Shader(shaderPath / "uv" / "fragment.glsl", GL_FRAGMENT_SHADER),
+        OGL::Shader(shaderPath / "uv"/ "vertex.glsl", OGL::ShaderType::VERTEX),
+        OGL::Shader(shaderPath / "uv" / "fragment.glsl", OGL::ShaderType::FRAGMENT),
     });
     OGL::Program viewShader(
     {
-        OGL::Shader(shaderPath / "view" / "vertex.glsl", GL_VERTEX_SHADER),
-        OGL::Shader(shaderPath / "view" / "fragment.glsl", GL_FRAGMENT_SHADER),
+        OGL::Shader(shaderPath / "view" / "vertex.glsl", OGL::ShaderType::VERTEX),
+        OGL::Shader(shaderPath / "view" / "fragment.glsl", OGL::ShaderType::FRAGMENT),
     });
     OGL::Program rayTracerShader(
     {
-        OGL::Shader(shaderPath / "rayTracer" / "vertex.glsl", GL_VERTEX_SHADER),
-        OGL::Shader(shaderPath / "rayTracer" / "fragment.glsl", GL_FRAGMENT_SHADER),
+        OGL::Shader(shaderPath / "rayTracer" / "vertex.glsl", OGL::ShaderType::VERTEX),
+        OGL::Shader(shaderPath / "rayTracer" / "fragment.glsl", OGL::ShaderType::FRAGMENT),
     });
 
     OGL::FrameBuffer frameBuffer(

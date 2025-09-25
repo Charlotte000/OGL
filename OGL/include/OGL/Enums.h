@@ -122,6 +122,16 @@ enum class PixelFormat : GLenum
     STENCIL = GL_STENCIL_INDEX,
 };
 
+enum class ShaderType : GLenum
+{
+    VERTEX = GL_VERTEX_SHADER,
+    FRAGMENT = GL_FRAGMENT_SHADER,
+    COMPUTE = GL_COMPUTE_SHADER,
+    TESS_CONTROL = GL_TESS_CONTROL_SHADER,
+    TESS_EVALUATION = GL_TESS_EVALUATION_SHADER,
+    GEOMETRY = GL_GEOMETRY_SHADER,
+};
+
 static size_t getTypeSize(TypeU type)
 {
     switch (type)
