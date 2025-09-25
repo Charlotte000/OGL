@@ -2,7 +2,7 @@
 
 using namespace OGL;
 
-size_t getVertexStride(const std::vector<std::tuple<Type, size_t>>& attributes)
+static size_t getVertexStride(const std::vector<std::tuple<Type, size_t>>& attributes)
 {
     size_t size = 0;
     for (const auto& [type, count] : attributes)
@@ -13,7 +13,7 @@ size_t getVertexStride(const std::vector<std::tuple<Type, size_t>>& attributes)
     return size;
 }
 
-std::vector<std::tuple<Type, size_t, size_t>> getFullAttributes(const std::vector<std::tuple<Type, size_t>>& attributes)
+static std::vector<std::tuple<Type, size_t, size_t>> getFullAttributes(const std::vector<std::tuple<Type, size_t>>& attributes)
 {
     std::vector<std::tuple<Type, size_t, size_t>> full(attributes.size());
 
@@ -78,11 +78,6 @@ void VertexArray::drawArrays(PrimitiveType mode, glm::uvec2 pos, glm::uvec2 size
     glBindVertexArray(0);
 }
 
-void VertexArray::drawArrays(PrimitiveType mode, glm::uvec2 size)
-{
-    this->drawArrays(mode, glm::uvec2(0, 0), size);
-}
-
 void VertexArray::drawElements(PrimitiveType mode, glm::uvec2 pos, glm::uvec2 size)
 {
     const size_t count = this->ebo.getSize() / getTypeSize(this->indexType);
@@ -93,9 +88,24 @@ void VertexArray::drawElements(PrimitiveType mode, glm::uvec2 pos, glm::uvec2 si
     glBindVertexArray(0);
 }
 
-void VertexArray::drawElements(PrimitiveType mode, glm::uvec2 size)
+void VertexArray::drawArraysInstanced(PrimitiveType mode, size_t instanceCount, glm::uvec2 pos, glm::uvec2 size)
 {
-    this->drawElements(mode, glm::uvec2(0, 0), size);
+    const size_t count = this->vbo.getSize() / vertexStride;
+
+    glBindVertexArray(this->handler);
+    glViewport(pos.x, pos.y, size.x, size.y);
+    glDrawArraysInstanced((GLenum)mode, 0, count, instanceCount);
+    glBindVertexArray(0);
+}
+
+void VertexArray::drawElementsInstanced(PrimitiveType mode, size_t instanceCount, glm::uvec2 pos, glm::uvec2 size)
+{
+    const size_t count = this->ebo.getSize() / getTypeSize(this->indexType);
+
+    glBindVertexArray(this->handler);
+    glViewport(pos.x, pos.y, size.x, size.y);
+    glDrawElementsInstanced((GLenum)mode, count, (GLenum)this->indexType, nullptr, instanceCount);
+    glBindVertexArray(0);
 }
 
 GLuint VertexArray::getHandler() const

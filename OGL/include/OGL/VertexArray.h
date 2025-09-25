@@ -30,11 +30,11 @@ public:
 
     void drawArrays(PrimitiveType mode, glm::uvec2 pos, glm::uvec2 size);
 
-    void drawArrays(PrimitiveType mode, glm::uvec2 size);
-
     void drawElements(PrimitiveType mode, glm::uvec2 pos, glm::uvec2 size);
 
-    void drawElements(PrimitiveType mode, glm::uvec2 size);
+    void drawArraysInstanced(PrimitiveType mode, size_t instanceCount, glm::uvec2 pos, glm::uvec2 size);
+
+    void drawElementsInstanced(PrimitiveType mode, size_t instanceCount, glm::uvec2 pos, glm::uvec2 size);
 
     GLuint getHandler() const;
 private:

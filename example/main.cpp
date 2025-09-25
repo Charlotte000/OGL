@@ -159,7 +159,7 @@ int main()
         // Render framebuffer
         frameBuffer.use(); uvShader.use();
         {
-            quad.drawArrays(OGL::PrimitiveType::TRIANGLES, frameBuffer.getSize());
+            quad.drawArrays(OGL::PrimitiveType::TRIANGLES, glm::vec2(0, 0), frameBuffer.getSize());
         }
         OGL::Program::stopUse(); OGL::FrameBuffer::stopUse();
 
@@ -172,7 +172,7 @@ int main()
             rayTracerShader.updateUniform("cameraUp", camera.up);
             rayTracerShader.updateUniform("cameraFOV", camera.fov);
             rayTracerShader.updateUniform("aspectRatio", 1.f);
-            quad.drawArrays(OGL::PrimitiveType::TRIANGLES, glm::uvec2(600, 600));
+            quad.drawArrays(OGL::PrimitiveType::TRIANGLES, glm::vec2(0, 0), glm::uvec2(600, 600));
         }
         OGL::Program::stopUse();
 
