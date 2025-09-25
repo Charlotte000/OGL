@@ -9,7 +9,7 @@
 #include <GLFW/glfw3.h>
 
 #include <OGL/Camera.h>
-#include <OGL/Shader.h>
+#include <OGL/Program.h>
 #include <OGL/VertexArray.h>
 #include <OGL/FrameBuffer.h>
 #include <OGL/UniformBuffer.h>
@@ -91,9 +91,22 @@ int main()
         quad.ebo.write(indices, sizeof(indices));
     }
 
-    OGL::Shader uvShader("../../example/shaders/uv/vertex.glsl", "../../example/shaders/uv/fragment.glsl");
-    OGL::Shader viewShader("../../example/shaders/view/vertex.glsl", "../../example/shaders/view/fragment.glsl");
-    OGL::Shader rayTracerShader("../../example/shaders/rayTracer/vertex.glsl", "../../example/shaders/rayTracer/fragment.glsl");
+    std::filesystem::path shaderPath("../../example/shaders/");
+    OGL::Program uvShader(
+    {
+        OGL::Shader(shaderPath / "uv"/ "vertex.glsl", GL_VERTEX_SHADER),
+        OGL::Shader(shaderPath / "uv" / "fragment.glsl", GL_FRAGMENT_SHADER),
+    });
+    OGL::Program viewShader(
+    {
+        OGL::Shader(shaderPath / "view" / "vertex.glsl", GL_VERTEX_SHADER),
+        OGL::Shader(shaderPath / "view" / "fragment.glsl", GL_FRAGMENT_SHADER),
+    });
+    OGL::Program rayTracerShader(
+    {
+        OGL::Shader(shaderPath / "rayTracer" / "vertex.glsl", GL_VERTEX_SHADER),
+        OGL::Shader(shaderPath / "rayTracer" / "fragment.glsl", GL_FRAGMENT_SHADER),
+    });
 
     OGL::FrameBuffer frameBuffer(
         OGL::Texture(glm::uvec2(5, 5), OGL::InternalFormat::RGBA32F, OGL::Filter::NEAREST),
@@ -148,7 +161,7 @@ int main()
         {
             quad.drawArrays(OGL::PrimitiveType::TRIANGLES, frameBuffer.getSize());
         }
-        OGL::Shader::stopUse(); OGL::FrameBuffer::stopUse();
+        OGL::Program::stopUse(); OGL::FrameBuffer::stopUse();
 
         // Render ray tracer
         rayTracerShader.use();
@@ -161,7 +174,7 @@ int main()
             rayTracerShader.updateUniform("aspectRatio", 1.f);
             quad.drawArrays(OGL::PrimitiveType::TRIANGLES, glm::uvec2(600, 600));
         }
-        OGL::Shader::stopUse();
+        OGL::Program::stopUse();
 
         // Render framebuffer
         viewShader.use();
@@ -169,7 +182,7 @@ int main()
             frameBuffer.colorTexture.bindSampler(0);
             quad.drawElements(OGL::PrimitiveType::TRIANGLES, glm::uvec2(400, 400), glm::uvec2(200, 200));
         }
-        OGL::Shader::stopUse();
+        OGL::Program::stopUse();
 
         glfwSwapBuffers(window);
     }

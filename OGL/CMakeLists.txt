@@ -10,6 +10,7 @@ add_library(
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Camera.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Buffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Shader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Program.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Texture.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/FrameBuffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/VertexArray.cpp
