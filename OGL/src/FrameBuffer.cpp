@@ -27,7 +27,7 @@ FrameBuffer::FrameBuffer(Texture&& colorTexture, Texture&& depthTexture)
 }
 
 FrameBuffer::FrameBuffer(glm::uvec2 size)
-    : FrameBuffer(Texture(size, InternalFormat::RGBA32F), Texture(size, InternalFormat::DEPTH32))
+    : FrameBuffer(Texture(size, ImageFormat::RGBA32F), Texture(size, ImageFormat::DEPTH32))
 {
 }
 

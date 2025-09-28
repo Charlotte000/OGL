@@ -4,7 +4,7 @@
 
 using namespace OGL;
 
-Texture::Texture(glm::uvec2 size, InternalFormat internalFormat, Filter filter, Wrap wrap)
+Texture::Texture(glm::uvec2 size, ImageFormat internalFormat, Filter filter, Wrap wrap)
 {
     glCreateTextures(GL_TEXTURE_2D, 1, &this->handler);
     glTextureParameteri(this->handler, GL_TEXTURE_MAG_FILTER, (GLint)filter);
@@ -93,9 +93,9 @@ glm::uvec2 Texture::getSize() const
     return glm::uvec2(width, height);
 }
 
-InternalFormat Texture::getInternalFormat() const
+ImageFormat Texture::getInternalFormat() const
 {
     GLint internalFormat;
     glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_INTERNAL_FORMAT, &internalFormat);
-    return (InternalFormat)internalFormat;
+    return (ImageFormat)internalFormat;
 }

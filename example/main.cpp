@@ -109,8 +109,8 @@ int main()
     });
 
     OGL::FrameBuffer frameBuffer(
-        OGL::Texture(glm::uvec2(5, 5), OGL::InternalFormat::RGBA32F, OGL::Filter::NEAREST),
-        OGL::Texture(glm::uvec2(5, 5), OGL::InternalFormat::DEPTH32, OGL::Filter::NEAREST)
+        OGL::Texture(glm::uvec2(5, 5), OGL::ImageFormat::RGBA32F, OGL::Filter::NEAREST),
+        OGL::Texture(glm::uvec2(5, 5), OGL::ImageFormat::DEPTH32, OGL::Filter::NEAREST)
     );
 
     OGL::Camera<float> camera;
@@ -159,7 +159,7 @@ int main()
         // Render framebuffer
         frameBuffer.use(); uvShader.use();
         {
-            quad.drawArrays(OGL::PrimitiveType::TRIANGLES, glm::vec2(0, 0), frameBuffer.getSize());
+            quad.drawArrays(OGL::PrimitiveType::TRIANGLES, glm::uvec2(0, 0), frameBuffer.getSize());
         }
         OGL::Program::stopUse(); OGL::FrameBuffer::stopUse();
 
@@ -172,7 +172,7 @@ int main()
             rayTracerShader.updateUniform("cameraUp", camera.up);
             rayTracerShader.updateUniform("cameraFOV", camera.fov);
             rayTracerShader.updateUniform("aspectRatio", 1.f);
-            quad.drawArrays(OGL::PrimitiveType::TRIANGLES, glm::vec2(0, 0), glm::uvec2(600, 600));
+            quad.drawArrays(OGL::PrimitiveType::TRIANGLES, glm::uvec2(0, 0), glm::uvec2(600, 600));
         }
         OGL::Program::stopUse();
 

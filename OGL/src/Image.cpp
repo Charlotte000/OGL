@@ -32,7 +32,7 @@ Image::Image(const std::filesystem::path& path)
     stbi_image_free(data);
 }
 
-Image::Image(glm::uvec2 size, const std::vector<float>& pixels)
+Image::Image(glm::uvec2 size, const std::initializer_list<float>& pixels)
     : size(size), pixels(size.x * size.y * 4 == pixels.size() ? pixels : std::vector<float>(size.x * size.y * 4, 0))
 {
 }
