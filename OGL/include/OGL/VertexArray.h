@@ -6,11 +6,8 @@
 #include <tuple>
 #include <vector>
 
-#include <GL/glew.h>
-
 #include <glm/glm.hpp>
 
-#include "OGL/Enums.h"
 #include "OGL/ArrayBuffer.h"
 #include "OGL/ElementArrayBuffer.h"
 

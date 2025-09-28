@@ -28,3 +28,16 @@ OGL uses CMake as its build system. It is cross-platform and can be used on Wind
 
 # Getting started
 This repo contains a CMake example project in the `example` folder. You can use it as an showcase of how to use OGL in your own projects.
+
+# Build Documentation
+To generate Doxygen documentation for the project run the following commands:
+```bash
+cd ./docs
+doxygen
+```
+
+# External libraries
+- [g-truc/glm](https://github.com/g-truc/glm): OpenGL Mathematics (GLM)
+- [nigels-com/glew](https://github.com/nigels-com/glew): The OpenGL Extension Wrangler Library
+- [nothings/stb](https://github.com/nothings/stb): stb single-file public domain libraries for C/C++
+- [glfw/glfw](https://github.com/glfw/glfw): A multi-platform library for OpenGL, OpenGL ES, Vulkan, window and input

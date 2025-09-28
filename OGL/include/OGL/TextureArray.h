@@ -3,8 +3,6 @@
  */
 #pragma once
 
-#include <glm/glm.hpp>
-
 #include "OGL/Enums.h"
 #include "OGL/Image.h"
 

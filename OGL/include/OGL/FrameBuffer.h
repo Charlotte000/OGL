@@ -3,9 +3,6 @@
  */
 #pragma once
 
-#include <GL/glew.h>
-
-#include "OGL/Enums.h"
 #include "OGL/Texture.h"
 
 namespace OGL

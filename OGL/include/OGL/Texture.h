@@ -3,10 +3,6 @@
  */
 #pragma once
 
-#include <GL/glew.h>
-
-#include <glm/glm.hpp>
-
 #include "OGL/Image.h"
 #include "OGL/Enums.h"
 

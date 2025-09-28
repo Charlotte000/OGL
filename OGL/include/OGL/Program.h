@@ -3,8 +3,6 @@
  */
 #pragma once
 
-#include <GL/glew.h>
-
 #include "OGL/Shader.h"
 
 namespace OGL

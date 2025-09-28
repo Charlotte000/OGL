@@ -7,8 +7,6 @@
 #include <string>
 #include <filesystem>
 
-#include <GL/glew.h>
-
 #include <glm/glm.hpp>
 
 #include "OGL/Enums.h"
