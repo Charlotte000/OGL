@@ -6,7 +6,7 @@
 
 using namespace OGL;
 
-FrameBuffer::FrameBuffer(Texture&& colorTexture, Texture&& depthTexture)
+FrameBuffer::FrameBuffer(Texture2D&& colorTexture, Texture2D&& depthTexture)
     : colorTexture(std::move(colorTexture)), depthTexture(std::move(depthTexture))
 {
     // Create framebuffer
@@ -27,7 +27,7 @@ FrameBuffer::FrameBuffer(Texture&& colorTexture, Texture&& depthTexture)
 }
 
 FrameBuffer::FrameBuffer(glm::uvec2 size)
-    : FrameBuffer(Texture(size, ImageFormat::RGBA32F), Texture(size, ImageFormat::DEPTH32))
+    : FrameBuffer(Texture2D(size, ImageFormat::RGBA32F), Texture2D(size, ImageFormat::DEPTH32))
 {
 }
 

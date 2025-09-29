@@ -12,9 +12,13 @@ add_library(
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Shader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Program.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Texture.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Texture1D.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Texture2D.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Texture3D.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/FrameBuffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/VertexArray.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/TextureArray.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Texture1DArray.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Texture2DArray.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/StorageBuffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UniformBuffer.cpp
 )

@@ -9,7 +9,7 @@ OGL uses CMake as its build system. It is cross-platform and can be used on Wind
 - Array Buffers (VBO)
 - Element Array Buffers (EBO)
 - Vertex Array Objects (VAO)
-- Textures (2D, 2D Array)
+- Textures (1D, 2D, 3D, 1D Array, 2D Array)
 - Framebuffer Objects (FBO)
 - Shaders
 - Shader Programs

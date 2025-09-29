@@ -269,4 +269,4 @@ static size_t getTypeSize(Type type)
     return 0;
 }
 
-};
+}

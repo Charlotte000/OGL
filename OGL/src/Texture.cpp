@@ -4,23 +4,39 @@
 
 using namespace OGL;
 
-Texture::Texture(glm::uvec2 size, ImageFormat internalFormat, Filter filter, Wrap wrap)
+template <GLenum Target, size_t N>
+Texture<Target, N>::Texture(glm::vec<N, glm::uint> size, ImageFormat internalFormat, Filter filter, Wrap wrap)
 {
     glCreateTextures(GL_TEXTURE_2D, 1, &this->handler);
     glTextureParameteri(this->handler, GL_TEXTURE_MAG_FILTER, (GLint)filter);
     glTextureParameteri(this->handler, GL_TEXTURE_MIN_FILTER, (GLint)filter);
     glTextureParameteri(this->handler, GL_TEXTURE_WRAP_S, (GLint)wrap);
     glTextureParameteri(this->handler, GL_TEXTURE_WRAP_T, (GLint)wrap);
-    glTextureStorage2D(this->handler, 1, (GLenum)internalFormat, size.x, size.y);
+    glTextureParameteri(this->handler, GL_TEXTURE_WRAP_R, (GLint)wrap);
+
+    if constexpr (N == 1)
+    {
+        glTextureStorage1D(this->handler, 1, (GLenum)internalFormat, size[0]);
+    }
+    else if (N == 2)
+    {
+        glTextureStorage2D(this->handler, 1, (GLenum)internalFormat, size[0], size[1]);
+    }
+    else if (N == 3)
+    {
+        glTextureStorage3D(this->handler, 1, (GLenum)internalFormat, size[0], size[1], size[2]);
+    }
 }
 
-Texture::Texture(Texture&& tex)
+template <GLenum Target, size_t N>
+Texture<Target, N>::Texture(Texture<Target, N>&& tex)
     : handler(tex.handler)
 {
     tex.handler = -1;
 }
 
-Texture::~Texture()
+template <GLenum Target, size_t N>
+Texture<Target, N>::~Texture()
 {
     if (this->handler != -1)
     {
@@ -28,72 +44,107 @@ Texture::~Texture()
     }
 }
 
-void Texture::bindSampler(unsigned int binding)
+template <GLenum Target, size_t N>
+void Texture<Target, N>::bindSampler(unsigned int binding)
 {
     glBindTextureUnit(binding, this->handler);
 }
 
-void Texture::bindImage(unsigned int binding, Access access, ImageUnitFormat format)
+template <GLenum Target, size_t N>
+void Texture<Target, N>::bindImage(unsigned int binding, Access access, ImageUnitFormat format)
 {
     glBindImageTexture(binding, this->handler, 0, GL_FALSE, 0, (GLenum)access, (GLenum)format);
 }
 
-void Texture::update(const void* pixels, glm::uvec2 offset, glm::uvec2 size, PixelFormat format, Type type)
+template <GLenum Target, size_t N>
+void Texture<Target, N>::update(const void* pixels, glm::vec<N, glm::uint> offset, glm::vec<N, glm::uint> size, PixelFormat format, Type type)
 {
     assert(glm::all(glm::lessThanEqual(offset + size, this->getSize())));
-    glTextureSubImage2D(this->handler, 0, offset.x, offset.y, size.x, size.y, (GLenum)format, (GLenum)type, pixels);
+
+    if constexpr (N == 1)
+    {
+        glTextureSubImage1D(this->handler, 0, offset[0], size[0], (GLenum)format, (GLenum)type, pixels);
+    }
+    else if (N == 2)
+    {
+        glTextureSubImage2D(this->handler, 0, offset[0], offset[1], size[0], size[1], (GLenum)format, (GLenum)type, pixels);
+    }
+    else if (N == 3)
+    {
+        glTextureSubImage3D(this->handler, 0, offset[0], offset[1], offset[2], size[0], size[1], size[2], (GLenum)format, (GLenum)type, pixels);
+    }
 }
 
-void Texture::update(const Image& image, glm::uvec2 offset)
+template <GLenum Target, size_t N>
+void Texture<Target, N>::read(void* pixels, size_t bufSize, glm::vec<N, glm::uint> offset, glm::vec<N, glm::uint> size, OGL::PixelFormat format, Type type) const
 {
-    return this->update(image.pixels.data(), offset, image.size, PixelFormat::RGBA, Type::FLOAT);
-}
-
-Image Texture::read(glm::uvec2 offset, glm::uvec2 size) const
-{
-    glm::uvec2 texSize = this->getSize();
+    glm::vec<N, glm::uint> texSize = this->getSize();
     assert(glm::all(glm::lessThanEqual(offset + size, texSize)));
 
-    Image img(size);
-
-    if (offset == glm::uvec2(0, 0) && size == texSize)
+    if (offset == glm::vec<N, glm::uint>(0) && size == texSize)
     {
         // Whole read
-        glGetTextureImage(this->handler, 0, GL_RGBA, GL_FLOAT, img.pixels.size() * sizeof(float), img.pixels.data());
+        glGetTextureImage(this->handler, 0, GL_RGBA, GL_FLOAT, bufSize, pixels);
     }
     else
     {
         // Partial read
-        glGetTextureSubImage(this->handler, 0, offset.x, offset.y, 0, size.x, size.y, 1, GL_RGBA, GL_FLOAT, img.pixels.size() * sizeof(float), img.pixels.data());
+        if constexpr (N == 1)
+        {
+            glGetTextureSubImage(this->handler, 0, offset[0], 0, 0, size[0], 1, 1, GL_RGBA, GL_FLOAT, bufSize, pixels);
+        }
+        else if (N == 2)
+        {
+            glGetTextureSubImage(this->handler, 0, offset[0], offset[1], 0, size[0], size[1], 1, GL_RGBA, GL_FLOAT, bufSize, pixels);
+        }
+        else if (N == 3)
+        {
+            glGetTextureSubImage(this->handler, 0, offset[0], offset[1], offset[2], size[0], size[1], size[2], GL_RGBA, GL_FLOAT, bufSize, pixels);
+        }
     }
-
-    return img;
 }
 
-Image Texture::read() const
-{
-    return this->read(glm::uvec2(0, 0), this->getSize());
-}
-
-void Texture::clear()
+template <GLenum Target, size_t N>
+void Texture<Target, N>::clear()
 {
     glClearTexImage(this->handler, 0, GL_RGBA, GL_FLOAT, nullptr);
 }
 
-GLuint Texture::getHandler() const
+template <GLenum Target, size_t N>
+GLuint Texture<Target, N>::getHandler() const
 {
     return this->handler;
 }
 
-glm::uvec2 Texture::getSize() const
+template <GLenum Target, size_t N>
+glm::vec<N, glm::uint> Texture<Target, N>::getSize() const
 {
-    GLint width, height;
-    glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_WIDTH, &width);
-    glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_HEIGHT, &height);
-    return glm::uvec2(width, height);
+    glm::vec<N, glm::uint> size;
+
+    GLint val;
+    if constexpr (N > 0)
+    {
+        glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_WIDTH, &val);
+        size[0] = val;
+    }
+
+    if constexpr (N > 1)
+    {
+        glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_HEIGHT, &val);
+        size[1] = val;
+    }
+
+    if constexpr (N > 2)
+    {
+        glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_DEPTH, &val);
+        size[2] = val;
+    }
+
+    return size;
 }
 
-ImageFormat Texture::getInternalFormat() const
+template <GLenum Target, size_t N>
+ImageFormat Texture<Target, N>::getInternalFormat() const
 {
     GLint internalFormat;
     glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_INTERNAL_FORMAT, &internalFormat);

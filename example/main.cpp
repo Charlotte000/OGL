@@ -109,8 +109,8 @@ int main()
     });
 
     OGL::FrameBuffer frameBuffer(
-        OGL::Texture(glm::uvec2(5, 5), OGL::ImageFormat::RGBA32F, OGL::Filter::NEAREST),
-        OGL::Texture(glm::uvec2(5, 5), OGL::ImageFormat::DEPTH32, OGL::Filter::NEAREST)
+        OGL::Texture2D(glm::uvec2(5, 5), OGL::ImageFormat::RGBA32F, OGL::Filter::NEAREST),
+        OGL::Texture2D(glm::uvec2(5, 5), OGL::ImageFormat::DEPTH32, OGL::Filter::NEAREST)
     );
 
     OGL::Camera<float> camera;
