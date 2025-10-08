@@ -68,6 +68,18 @@ Shader::~Shader()
     }
 }
 
+Shader& Shader::operator=(Shader&& shader)
+{
+    if (this->handler != -1)
+    {
+        glDeleteProgram(this->handler);
+    }
+
+    this->handler = shader.handler;
+    shader.handler = -1;
+    return *this;
+}
+
 GLuint Shader::getHandler() const
 {
     return this->handler;

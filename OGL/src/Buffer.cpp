@@ -27,6 +27,19 @@ Buffer<Target>::~Buffer()
 }
 
 template <GLenum Target>
+Buffer<Target>& Buffer<Target>::operator=(Buffer<Target>&& buff)
+{
+    if (this->handler != -1)
+    {
+        glDeleteBuffers(1, &this->handler);
+    }
+
+    this->handler = buff.handler;
+    buff.handler = -1;
+    return *this;
+}
+
+template <GLenum Target>
 void Buffer<Target>::write(const void* data, size_t size, DataUsage usage)
 {
     glNamedBufferData(this->handler, size, data, (GLenum)usage);

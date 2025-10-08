@@ -26,6 +26,8 @@ public:
 
     ~Texture();
 
+    Texture<Target, N>& operator=(Texture<Target, N>&& tex);
+
     /**
      * @brief Bind the texture to the specified texture unit.
      * @param binding The texture unit, to which the texture object should be bound to.

@@ -22,6 +22,8 @@ public:
 
     ~Program();
 
+    Program& operator=(Program&& program);
+
     /**
      * @brief Bind the shader program to the OpenGL context for rendering or compute operations.
      */
@@ -97,7 +99,7 @@ public:
 private:
     GLuint handler = -1;
 
-    void checkStatus() const;
+    void checkStatus(GLenum param) const;
 };
 
 }

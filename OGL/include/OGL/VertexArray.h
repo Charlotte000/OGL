@@ -49,6 +49,8 @@ public:
 
     ~VertexArray();
 
+    VertexArray& operator=(VertexArray&& vao);
+
     /**
      * @brief Renders vertex array from array data (VBO).
      * @param mode The type of primitives to render.

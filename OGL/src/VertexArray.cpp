@@ -70,6 +70,22 @@ VertexArray::~VertexArray()
     }
 }
 
+VertexArray& VertexArray::operator=(VertexArray&& vao)
+{
+    if (this->handler != -1)
+    {
+        glDeleteVertexArrays(1, &this->handler);
+    }
+
+    this->handler = vao.handler;
+    this->indexType = vao.indexType;
+    this->vbo = std::move(vao.vbo);
+    this->ebo = std::move(vao.ebo);
+
+    vao.handler = -1;
+    return *this;
+}
+
 void VertexArray::drawArrays(PrimitiveType mode, glm::uvec2 pos, glm::uvec2 size)
 {
     const size_t count = this->vbo.getSize() / vertexStride;

@@ -26,6 +26,8 @@ public:
 
     ~Buffer();
 
+    Buffer<Target>& operator=(Buffer<Target>&& buff);
+
     /**
      * @brief Allocate and initialize new data storage for the buffer object.
      * 

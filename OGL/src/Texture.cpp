@@ -45,6 +45,19 @@ Texture<Target, N>::~Texture()
 }
 
 template <GLenum Target, size_t N>
+Texture<Target, N>& Texture<Target, N>::operator=(Texture<Target, N>&& tex)
+{
+    if (this->handler != -1)
+    {
+        glDeleteTextures(1, &this->handler);
+    }
+
+    this->handler = tex.handler;
+    tex.handler = -1;
+    return *this;
+}
+
+template <GLenum Target, size_t N>
 void Texture<Target, N>::bindSampler(unsigned int binding)
 {
     glBindTextureUnit(binding, this->handler);

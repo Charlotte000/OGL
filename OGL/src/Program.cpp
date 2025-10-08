@@ -16,8 +16,10 @@ Program::Program(const std::initializer_list<Shader>& shaders)
     }
 
     glLinkProgram(this->handler);
-
-    this->checkStatus();
+    this->checkStatus(GL_LINK_STATUS);
+    
+    glValidateProgram(this->handler);
+    this->checkStatus(GL_VALIDATE_STATUS);
 }
 
 Program::Program(Program&& program)
@@ -32,6 +34,18 @@ Program::~Program()
     {
         glDeleteProgram(this->handler);
     }
+}
+
+Program& Program::operator=(Program&& program)
+{
+    if (this->handler != -1)
+    {
+        glDeleteProgram(this->handler);
+    }
+
+    this->handler = program.handler;
+    program.handler = -1;
+    return *this;
 }
 
 void Program::use()
@@ -80,10 +94,10 @@ void Program::stopUse()
     glUseProgram(0);
 }
 
-void Program::checkStatus() const
+void Program::checkStatus(GLenum param) const
 {
     GLint status;
-    glGetProgramiv(this->handler, GL_LINK_STATUS, &status);
+    glGetProgramiv(this->handler, param, &status);
     if (status != GL_TRUE)
     {
         GLint logSize;

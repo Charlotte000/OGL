@@ -45,6 +45,21 @@ FrameBuffer::~FrameBuffer()
     }
 }
 
+FrameBuffer& FrameBuffer::operator=(FrameBuffer&& fbo)
+{
+    if (this->handler != -1)
+    {
+        glDeleteFramebuffers(1, &this->handler);
+    }
+
+    this->handler = fbo.handler;
+    this->colorTexture = std::move(fbo.colorTexture);
+    this->depthTexture = std::move(fbo.depthTexture);
+
+    fbo.handler = -1;
+    return *this;
+}
+
 void FrameBuffer::use()
 {
     const glm::uvec2 size = this->getSize();

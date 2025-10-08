@@ -51,6 +51,8 @@ public:
 
     ~Shader();
 
+    Shader& operator=(Shader&& shader);
+
     /**
      * @brief Get the OpenGL handler of the shader.
      * @return OpenGL handler.
