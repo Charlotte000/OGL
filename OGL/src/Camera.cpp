@@ -13,7 +13,7 @@ glm::vec<3, T> Camera<T>::right() const
 template <class T>
 glm::mat<4, 4, T> Camera<T>::createProjection(glm::vec2 size, glm::vec2 zClip) const
 {
-    return glm::perspectiveFov(this->fov, (T)size.x, (T)size.y, (T)zClip.x, (T)zClip.y);
+    return glm::perspectiveFov(this->fov, static_cast<T>(size.x), static_cast<T>(size.y), static_cast<T>(zClip.x), static_cast<T>(zClip.y));
 }
 
 template <class T>

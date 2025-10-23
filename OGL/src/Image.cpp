@@ -59,7 +59,7 @@ void Image::saveToFile(const std::filesystem::path& path) const
     std::vector<unsigned char> data(this->pixels.size());
     for (size_t i = 0; i < this->pixels.size(); i++)
     {
-        data[i] = (unsigned char)(this->pixels[i] * 255);
+        data[i] = static_cast<unsigned char>(this->pixels[i] * 255);
     }
 
     // JPEG

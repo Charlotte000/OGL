@@ -8,23 +8,23 @@ template <GLenum Target, size_t N>
 Texture<Target, N>::Texture(glm::vec<N, glm::uint> size, ImageFormat internalFormat, Filter filter, Wrap wrap)
 {
     glCreateTextures(GL_TEXTURE_2D, 1, &this->handler);
-    glTextureParameteri(this->handler, GL_TEXTURE_MAG_FILTER, (GLint)filter);
-    glTextureParameteri(this->handler, GL_TEXTURE_MIN_FILTER, (GLint)filter);
-    glTextureParameteri(this->handler, GL_TEXTURE_WRAP_S, (GLint)wrap);
-    glTextureParameteri(this->handler, GL_TEXTURE_WRAP_T, (GLint)wrap);
-    glTextureParameteri(this->handler, GL_TEXTURE_WRAP_R, (GLint)wrap);
+    glTextureParameteri(this->handler, GL_TEXTURE_MAG_FILTER, static_cast<GLint>(filter));
+    glTextureParameteri(this->handler, GL_TEXTURE_MIN_FILTER, static_cast<GLint>(filter));
+    glTextureParameteri(this->handler, GL_TEXTURE_WRAP_S, static_cast<GLint>(wrap));
+    glTextureParameteri(this->handler, GL_TEXTURE_WRAP_T, static_cast<GLint>(wrap));
+    glTextureParameteri(this->handler, GL_TEXTURE_WRAP_R, static_cast<GLint>(wrap));
 
     if constexpr (N == 1)
     {
-        glTextureStorage1D(this->handler, 1, (GLenum)internalFormat, size[0]);
+        glTextureStorage1D(this->handler, 1, static_cast<GLenum>(internalFormat), size[0]);
     }
     else if (N == 2)
     {
-        glTextureStorage2D(this->handler, 1, (GLenum)internalFormat, size[0], size[1]);
+        glTextureStorage2D(this->handler, 1, static_cast<GLenum>(internalFormat), size[0], size[1]);
     }
     else if (N == 3)
     {
-        glTextureStorage3D(this->handler, 1, (GLenum)internalFormat, size[0], size[1], size[2]);
+        glTextureStorage3D(this->handler, 1, static_cast<GLenum>(internalFormat), size[0], size[1], size[2]);
     }
 }
 
@@ -66,7 +66,7 @@ void Texture<Target, N>::bindSampler(unsigned int binding)
 template <GLenum Target, size_t N>
 void Texture<Target, N>::bindImage(unsigned int binding, Access access, ImageUnitFormat format)
 {
-    glBindImageTexture(binding, this->handler, 0, GL_FALSE, 0, (GLenum)access, (GLenum)format);
+    glBindImageTexture(binding, this->handler, 0, GL_FALSE, 0, static_cast<GLenum>(access), static_cast<GLenum>(format));
 }
 
 template <GLenum Target, size_t N>
@@ -76,15 +76,15 @@ void Texture<Target, N>::update(const void* pixels, glm::vec<N, glm::uint> offse
 
     if constexpr (N == 1)
     {
-        glTextureSubImage1D(this->handler, 0, offset[0], size[0], (GLenum)format, (GLenum)type, pixels);
+        glTextureSubImage1D(this->handler, 0, offset[0], size[0], static_cast<GLenum>(format), static_cast<GLenum>(type), pixels);
     }
     else if (N == 2)
     {
-        glTextureSubImage2D(this->handler, 0, offset[0], offset[1], size[0], size[1], (GLenum)format, (GLenum)type, pixels);
+        glTextureSubImage2D(this->handler, 0, offset[0], offset[1], size[0], size[1], static_cast<GLenum>(format), static_cast<GLenum>(type), pixels);
     }
     else if (N == 3)
     {
-        glTextureSubImage3D(this->handler, 0, offset[0], offset[1], offset[2], size[0], size[1], size[2], (GLenum)format, (GLenum)type, pixels);
+        glTextureSubImage3D(this->handler, 0, offset[0], offset[1], offset[2], size[0], size[1], size[2], static_cast<GLenum>(format), static_cast<GLenum>(type), pixels);
     }
 }
 
@@ -161,5 +161,5 @@ ImageFormat Texture<Target, N>::getInternalFormat() const
 {
     GLint internalFormat;
     glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_INTERNAL_FORMAT, &internalFormat);
-    return (ImageFormat)internalFormat;
+    return static_cast<ImageFormat>(internalFormat);
 }

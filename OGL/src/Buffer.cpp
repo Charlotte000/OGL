@@ -42,7 +42,7 @@ Buffer<Target>& Buffer<Target>::operator=(Buffer<Target>&& buff)
 template <GLenum Target>
 void Buffer<Target>::write(const void* data, size_t size, DataUsage usage)
 {
-    glNamedBufferData(this->handler, size, data, (GLenum)usage);
+    glNamedBufferData(this->handler, size, data, static_cast<GLenum>(usage));
 }
 
 template <GLenum Target>
@@ -96,7 +96,7 @@ DataUsage Buffer<Target>::getUsage() const
 {
     GLint usage;
     glGetNamedBufferParameteriv(this->handler, GL_BUFFER_USAGE, &usage);
-    return (DataUsage)usage;
+    return static_cast<DataUsage>(usage);
 }
 
 template <GLenum Target>

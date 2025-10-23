@@ -9,10 +9,10 @@ using namespace OGL;
 Shader::Shader(const std::string& src, ShaderType type)
 {
     // Create shader
-    this->handler = glCreateShader((GLenum)type);
+    this->handler = glCreateShader(static_cast<GLenum>(type));
 
     // Attach code
-    const GLchar* code = (const GLchar*)src.c_str();
+    const GLchar* code = static_cast<const GLchar*>(src.c_str());
     glShaderSource(this->handler, 1, &code, 0);
 
     glCompileShader(this->handler);
@@ -23,7 +23,7 @@ Shader::Shader(const std::string& src, ShaderType type)
 Shader::Shader(const std::filesystem::path& path, ShaderType type)
 {
     // Create shader
-    this->handler = glCreateShader((GLenum)type);
+    this->handler = glCreateShader(static_cast<GLenum>(type));
 
     // Attach code
     std::ifstream file(path);
@@ -34,7 +34,7 @@ Shader::Shader(const std::filesystem::path& path, ShaderType type)
 
     std::string src((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
     file.close();
-    const GLchar* code = (const GLchar*)src.c_str();
+    const GLchar* code = static_cast<const GLchar*>(src.c_str());
     glShaderSource(this->handler, 1, &code, 0);
 
     glCompileShader(this->handler);
@@ -45,7 +45,7 @@ Shader::Shader(const std::filesystem::path& path, ShaderType type)
 Shader::Shader(const unsigned char src[], size_t srcSize, ShaderType type)
 {
     // Create shader
-    this->handler = glCreateShader((GLenum)type);
+    this->handler = glCreateShader(static_cast<GLenum>(type));
 
     // Attach code
     glShaderBinary(1, &this->handler, GL_SHADER_BINARY_FORMAT_SPIR_V, src, srcSize);

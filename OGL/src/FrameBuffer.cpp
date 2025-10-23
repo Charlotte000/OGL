@@ -65,7 +65,6 @@ void FrameBuffer::use()
     const glm::uvec2 size = this->getSize();
 
     glBindFramebuffer(GL_FRAMEBUFFER, this->handler);
-    glEnable(GL_DEPTH_TEST);
     glViewport(0, 0, size.x, size.y);
 }
 
@@ -93,7 +92,6 @@ void FrameBuffer::clear(glm::vec4 color, float depth, int stencil)
 
 void FrameBuffer::stopUse()
 {
-    glDisable(GL_DEPTH_TEST);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

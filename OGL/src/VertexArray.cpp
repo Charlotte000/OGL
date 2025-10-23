@@ -42,7 +42,7 @@ VertexArray::VertexArray(size_t vertexStride, const std::vector<std::tuple<Type,
     for (const auto& [ type, count, offset ] : vertexAttributes)
     {
         glEnableVertexArrayAttrib(this->handler, index);
-        glVertexArrayAttribFormat(this->handler, index, count, (GLenum)type, GL_FALSE, offset);
+        glVertexArrayAttribFormat(this->handler, index, count, static_cast<GLenum>(type), GL_FALSE, offset);
         glVertexArrayAttribBinding(this->handler, index, bindingindex);
         index++;
     }
@@ -92,7 +92,7 @@ void VertexArray::drawArrays(PrimitiveType mode, glm::uvec2 pos, glm::uvec2 size
 
     glBindVertexArray(this->handler);
     glViewport(pos.x, pos.y, size.x, size.y);
-    glDrawArrays((GLenum)mode, 0, count);
+    glDrawArrays(static_cast<GLenum>(mode), 0, count);
     glBindVertexArray(0);
 }
 
@@ -102,7 +102,7 @@ void VertexArray::drawElements(PrimitiveType mode, glm::uvec2 pos, glm::uvec2 si
 
     glBindVertexArray(this->handler);
     glViewport(pos.x, pos.y, size.x, size.y);
-    glDrawElements((GLenum)mode, count, (GLenum)this->indexType, nullptr);
+    glDrawElements(static_cast<GLenum>(mode), count, static_cast<GLenum>(this->indexType), nullptr);
     glBindVertexArray(0);
 }
 
@@ -112,7 +112,7 @@ void VertexArray::drawArraysInstanced(PrimitiveType mode, size_t instanceCount, 
 
     glBindVertexArray(this->handler);
     glViewport(pos.x, pos.y, size.x, size.y);
-    glDrawArraysInstanced((GLenum)mode, 0, count, instanceCount);
+    glDrawArraysInstanced(static_cast<GLenum>(mode), 0, count, instanceCount);
     glBindVertexArray(0);
 }
 
@@ -122,7 +122,7 @@ void VertexArray::drawElementsInstanced(PrimitiveType mode, size_t instanceCount
 
     glBindVertexArray(this->handler);
     glViewport(pos.x, pos.y, size.x, size.y);
-    glDrawElementsInstanced((GLenum)mode, count, (GLenum)this->indexType, nullptr, instanceCount);
+    glDrawElementsInstanced(static_cast<GLenum>(mode), count, static_cast<GLenum>(this->indexType), nullptr, instanceCount);
     glBindVertexArray(0);
 }
 

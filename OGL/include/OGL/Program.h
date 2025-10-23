@@ -89,7 +89,7 @@ public:
      * @brief Apply a compute shader with the specified number of work groups.
      * @param groups
      */
-    static void applyCompute(glm::ivec3 groups);
+    static void applyCompute(glm::uvec3 groups);
 
     /**
      * @brief Unbind any program from the OpenGL context.
