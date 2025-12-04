@@ -83,10 +83,9 @@ GLuint Program::getHandler() const
     return this->handler;
 }
 
-void Program::applyCompute(glm::uvec3 groups)
+void Program::dispatchCompute(glm::uvec3 groups)
 {
     glDispatchCompute(groups.x, groups.y, groups.z);
-    glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 }
 
 void Program::stopUse()

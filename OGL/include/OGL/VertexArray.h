@@ -54,36 +54,16 @@ public:
     /**
      * @brief Renders vertex array from array data (VBO).
      * @param mode The type of primitives to render.
-     * @param pos Coordinates of the viewport rectangle position where (0, 0) is the top-left corner.
-     * @param size The size of the viewport rectangle.
+     * @param instanceCount The number of instances of indices to be rendered. Use gl_InstanceID from a vertex shader.
      */
-    void drawArrays(PrimitiveType mode, glm::uvec2 pos, glm::uvec2 size);
+    void drawArrays(PrimitiveType mode, size_t instanceCount = 1);
 
     /**
      * @brief Renders vertex array from array data (VBO) using indices (EBO).
      * @param mode The type of primitives to render.
-     * @param pos Coordinates of the viewport rectangle position where (0, 0) is the top-left corner.
-     * @param size The size of the viewport rectangle.
-     */
-    void drawElements(PrimitiveType mode, glm::uvec2 pos, glm::uvec2 size);
-
-    /**
-     * @brief Renders multiple instances of vertex array from array data (VBO).
-     * @param mode The type of primitives to render.
      * @param instanceCount The number of instances of indices to be rendered. Use gl_InstanceID from a vertex shader.
-     * @param pos Coordinates of the viewport rectangle position where (0, 0) is the top-left corner.
-     * @param size The size of the viewport rectangle.
      */
-    void drawArraysInstanced(PrimitiveType mode, size_t instanceCount, glm::uvec2 pos, glm::uvec2 size);
-
-    /**
-     * @brief Renders multiple instances of vertex array from array data (VBO) using indices (EBO).
-     * @param mode The type of primitives to render.
-     * @param instanceCount The number of instances of indices to be rendered. Use gl_InstanceID from a vertex shader.
-     * @param pos Coordinates of the viewport rectangle position where (0, 0) is the top-left corner.
-     * @param size The size of the viewport rectangle.
-     */
-    void drawElementsInstanced(PrimitiveType mode, size_t instanceCount, glm::uvec2 pos, glm::uvec2 size);
+    void drawElements(PrimitiveType mode, size_t instanceCount = 1);
 
     /**
      * @brief Get the OpenGL handler of the vertex array.

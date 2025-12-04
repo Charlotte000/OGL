@@ -10,6 +10,7 @@
 
 #include <OGL/Camera.h>
 #include <OGL/Program.h>
+#include <OGL/Context.h>
 #include <OGL/VertexArray.h>
 #include <OGL/FrameBuffer.h>
 #include <OGL/UniformBuffer.h>
@@ -159,7 +160,8 @@ int main()
         // Render framebuffer
         frameBuffer.use(); uvShader.use();
         {
-            quad.drawArrays(OGL::PrimitiveType::TRIANGLES, glm::uvec2(0, 0), frameBuffer.getSize());
+            OGL::Context::Viewport::setBox(glm::uvec2(0, 0), frameBuffer.getSize());
+            quad.drawArrays(OGL::PrimitiveType::TRIANGLES);
         }
         OGL::Program::stopUse(); OGL::FrameBuffer::stopUse();
 
@@ -172,7 +174,8 @@ int main()
             rayTracerShader.updateUniform("cameraUp", camera.up);
             rayTracerShader.updateUniform("cameraFOV", camera.fov);
             rayTracerShader.updateUniform("aspectRatio", 1.f);
-            quad.drawArrays(OGL::PrimitiveType::TRIANGLES, glm::uvec2(0, 0), glm::uvec2(600, 600));
+            OGL::Context::Viewport::setBox(glm::uvec2(0, 0), glm::uvec2(600, 600));
+            quad.drawArrays(OGL::PrimitiveType::TRIANGLES);
         }
         OGL::Program::stopUse();
 
@@ -180,7 +183,8 @@ int main()
         viewShader.use();
         {
             frameBuffer.colorTexture.bindSampler(0);
-            quad.drawElements(OGL::PrimitiveType::TRIANGLES, glm::uvec2(400, 400), glm::uvec2(200, 200));
+            OGL::Context::Viewport::setBox(glm::uvec2(400, 400), glm::uvec2(200, 200));
+            quad.drawElements(OGL::PrimitiveType::TRIANGLES);
         }
         OGL::Program::stopUse();
 

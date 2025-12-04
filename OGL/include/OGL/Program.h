@@ -87,13 +87,12 @@ public:
 
     /**
      * @brief Apply a compute shader with the specified number of work groups.
-     * @param groups
+     * @param groups The number of work groups to be launched in X, Y, Z dimensions.
      */
-    static void applyCompute(glm::uvec3 groups);
+    static void dispatchCompute(glm::uvec3 groups);
 
     /**
      * @brief Unbind any program from the OpenGL context.
-     * 
      */
     static void stopUse();
 private:

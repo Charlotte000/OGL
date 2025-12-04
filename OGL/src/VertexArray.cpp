@@ -86,42 +86,20 @@ VertexArray& VertexArray::operator=(VertexArray&& vao)
     return *this;
 }
 
-void VertexArray::drawArrays(PrimitiveType mode, glm::uvec2 pos, glm::uvec2 size)
+void VertexArray::drawArrays(PrimitiveType mode, size_t instanceCount)
 {
     const size_t count = this->vbo.getSize() / vertexStride;
 
     glBindVertexArray(this->handler);
-    glViewport(pos.x, pos.y, size.x, size.y);
-    glDrawArrays(static_cast<GLenum>(mode), 0, count);
-    glBindVertexArray(0);
-}
-
-void VertexArray::drawElements(PrimitiveType mode, glm::uvec2 pos, glm::uvec2 size)
-{
-    const size_t count = this->ebo.getSize() / getTypeSize(this->indexType);
-
-    glBindVertexArray(this->handler);
-    glViewport(pos.x, pos.y, size.x, size.y);
-    glDrawElements(static_cast<GLenum>(mode), count, static_cast<GLenum>(this->indexType), nullptr);
-    glBindVertexArray(0);
-}
-
-void VertexArray::drawArraysInstanced(PrimitiveType mode, size_t instanceCount, glm::uvec2 pos, glm::uvec2 size)
-{
-    const size_t count = this->vbo.getSize() / vertexStride;
-
-    glBindVertexArray(this->handler);
-    glViewport(pos.x, pos.y, size.x, size.y);
     glDrawArraysInstanced(static_cast<GLenum>(mode), 0, count, instanceCount);
     glBindVertexArray(0);
 }
 
-void VertexArray::drawElementsInstanced(PrimitiveType mode, size_t instanceCount, glm::uvec2 pos, glm::uvec2 size)
+void VertexArray::drawElements(PrimitiveType mode, size_t instanceCount)
 {
     const size_t count = this->ebo.getSize() / getTypeSize(this->indexType);
 
     glBindVertexArray(this->handler);
-    glViewport(pos.x, pos.y, size.x, size.y);
     glDrawElementsInstanced(static_cast<GLenum>(mode), count, static_cast<GLenum>(this->indexType), nullptr, instanceCount);
     glBindVertexArray(0);
 }

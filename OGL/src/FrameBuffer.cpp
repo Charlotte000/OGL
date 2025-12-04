@@ -62,10 +62,7 @@ FrameBuffer& FrameBuffer::operator=(FrameBuffer&& fbo)
 
 void FrameBuffer::use()
 {
-    const glm::uvec2 size = this->getSize();
-
     glBindFramebuffer(GL_FRAMEBUFFER, this->handler);
-    glViewport(0, 0, size.x, size.y);
 }
 
 void FrameBuffer::clearColor(glm::vec4 color)
