@@ -192,12 +192,10 @@ enum class ImageUnitFormat : GLenum
 {
     R16F = GL_R16F,
     RG16F = GL_RG16F,
-    RGB16F = GL_RGB16F,
     RGBA16F = GL_RGBA16F,
 
     R32F = GL_R32F,
     RG32F = GL_RG32F,
-    RGB32F = GL_RGB32F,
     RGBA32F = GL_RGBA32F,
 };
 

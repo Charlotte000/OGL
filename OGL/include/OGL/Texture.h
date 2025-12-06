@@ -37,10 +37,10 @@ public:
     /**
      * @brief Bind the texture to the specified image unit.
      * @param binding The index of the image unit to which to bind the texture.
-     * @param access Type of access that will be performed on the image.
      * @param format The format that the elements of the image will be treated as for the purposes of formatted stores. Must be compatible with the internal format of the texture.
+     * @param access Type of access that will be performed on the image.
      */
-    void bindImage(unsigned int binding, Access access = Access::READ_WRITE, OGL::ImageUnitFormat format = ImageUnitFormat::RGBA32F);
+    void bindImage(unsigned int binding, OGL::ImageUnitFormat format = ImageUnitFormat::RGBA32F, Access access = Access::READ_WRITE);
 
     /**
      * @brief Update a region of the texure object's image.

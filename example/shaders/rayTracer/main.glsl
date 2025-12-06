@@ -1,14 +1,21 @@
 #version 430 core
+#pragma shader_stage(compute)
 
-in vec2 TexCoords;
-out vec4 FragColor;
+layout (local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
 
 uniform vec3 cameraPos;
 uniform vec3 cameraForward;
 uniform vec3 cameraUp;
 uniform float cameraFOV;
 uniform float aspectRatio;
+layout(rgba32f, binding=1) writeonly uniform image2D outImage;
 layout(binding=0) uniform sampler2D environment;
+
+ivec2 Size = imageSize(outImage);
+ivec2 TexelCoord = ivec2(gl_GlobalInvocationID.xy);
+vec2 UV = vec2(TexelCoord.x, TexelCoord.y) / Size;
+
+vec3 Light = normalize(vec3(1, 1, -1));
 
 struct Ray
 {
@@ -41,7 +48,6 @@ Sphere spheres[] =
     Sphere(vec3(0), 1, Material(vec3(1, 0, 1))),
     Sphere(vec3(-3, 0, 0), 1, Material(vec3(0, 1, 0))),
 };
-vec3 light = normalize(vec3(1, 1, -1));
 
 bool raySphereCollide(in Ray ray, in Sphere sphere, inout CollisionManifold collisionManifold)
 {
@@ -81,7 +87,9 @@ bool rayCollision(in Ray ray, out CollisionManifold collisionManifold)
 
 void main()
 {
-    vec2 coord = (TexCoords - .5) * 2 * vec2(1, aspectRatio) * tan(cameraFOV * .5);
+    vec2 coord = (UV - .5) * 2 * vec2(1, aspectRatio) * tan(cameraFOV * .5);
+
+    vec3 resultColor;
     Ray ray = Ray(cameraPos, normalize(cameraForward + cross(cameraForward, cameraUp) * coord.x + cameraUp * coord.y));
 
     for (uint i = 0; i < 10; i++)
@@ -89,12 +97,14 @@ void main()
         CollisionManifold collisionManifold;
         if (!rayCollision(ray, collisionManifold))
         {
-            FragColor = texture(environment, vec2(atan(ray.dir.z, ray.dir.x) * 0.15915494309189533 + 0.5, acos(ray.dir.y) * 0.31830988618379067));
+            resultColor = texture(environment, vec2(atan(ray.dir.z, ray.dir.x) * 0.15915494309189533 + 0.5, acos(ray.dir.y) * 0.31830988618379067)).rgb;
             break;
         }
 
-        FragColor = vec4(collisionManifold.material.color * dot(collisionManifold.normal, light), 1);
+        resultColor = collisionManifold.material.color * dot(collisionManifold.normal, Light);
         ray.pos = collisionManifold.pos;
         ray.dir = reflect(ray.dir, collisionManifold.normal);
     }
+
+    imageStore(outImage, TexelCoord, vec4(resultColor, 1));
 }

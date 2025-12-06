@@ -72,27 +72,44 @@ int main()
     OGL::VertexArray quad(
         { { OGL::Type::FLOAT, 2 }, { OGL::Type::FLOAT, 2 } }
     );
-
     {
-        const float vertices[] =
+        const float vertices[]
         { // x,  y,    u, v
-            -1, -1,    0, 0,
-            -1,  1,    0, 1,
-             1,  1,    1, 1,
-            -1, -1,    0, 0,
-             1,  1,    1, 1,
-             1, -1,    1, 0,
+            -1, -1,    0, 0, // 0
+            -1,  1,    0, 1, // 1
+             1,  1,    1, 1, // 2
+            -1, -1,    0, 0, // 3
+             1,  1,    1, 1, // 4
+             1, -1,    1, 0, // 5
         };
         quad.vbo.write(vertices, sizeof(vertices));
 
-        const unsigned int indices[] =
+        const unsigned int indices[]
         {
             0, 1, 2,
+            0, 2, 5,
         };
         quad.ebo.write(indices, sizeof(indices));
     }
 
-    std::filesystem::path shaderPath("../../example/shaders/");
+    OGL::VertexArray geometry({ { OGL::Type::FLOAT, 2 } });
+    {
+        const float vertices[]
+        { //   x, y
+            -0.8, 0,
+            -0.4, 0,
+               0, 0,
+             0.4, 0,
+             0.8, 0,
+
+        };
+        geometry.vbo.write(vertices, sizeof(vertices));
+
+        const unsigned int indices[] { 0, 1, 2, 3, 4 };
+        geometry.ebo.write(indices, sizeof(indices));
+    }
+
+    const std::filesystem::path shaderPath("../../example/shaders/");
     OGL::Program uvShader(
     {
         OGL::Shader(shaderPath / "uv"/ "vertex.glsl", OGL::ShaderType::VERTEX),
@@ -105,14 +122,20 @@ int main()
     });
     OGL::Program rayTracerShader(
     {
-        OGL::Shader(shaderPath / "rayTracer" / "vertex.glsl", OGL::ShaderType::VERTEX),
-        OGL::Shader(shaderPath / "rayTracer" / "fragment.glsl", OGL::ShaderType::FRAGMENT),
+        OGL::Shader(shaderPath / "rayTracer" / "main.glsl", OGL::ShaderType::COMPUTE)
+    });
+    OGL::Program geometryShader(
+    {
+        OGL::Shader(shaderPath / "geometry" / "vertex.glsl", OGL::ShaderType::VERTEX),
+        OGL::Shader(shaderPath / "geometry" / "fragment.glsl", OGL::ShaderType::FRAGMENT),
     });
 
-    OGL::FrameBuffer frameBuffer(
+    OGL::FrameBuffer uvFrameBuffer(
         OGL::Texture2D(glm::uvec2(5, 5), OGL::ImageFormat::RGBA32F, OGL::Filter::NEAREST),
         OGL::Texture2D(glm::uvec2(5, 5), OGL::ImageFormat::DEPTH32, OGL::Filter::NEAREST)
     );
+    OGL::Texture2D rayTracerTexture(glm::uvec2(300, 300), OGL::ImageFormat::RGBA32F);
+    OGL::FrameBuffer geometryFrameBuffer(glm::uvec2(300, 300));
 
     OGL::Camera<float> camera;
 
@@ -157,10 +180,10 @@ int main()
             camera.forward = glm::rotate(camera.forward, -mouseDelta.x / 200, camera.up);
         }
 
-        // Render framebuffer
-        frameBuffer.use(); uvShader.use();
+        // Render uv
+        uvFrameBuffer.use(); uvShader.use();
         {
-            OGL::Context::Viewport::setBox(glm::uvec2(0, 0), frameBuffer.getSize());
+            OGL::Context::Viewport::setBox(glm::uvec2(0, 0), uvFrameBuffer.getSize());
             quad.drawArrays(OGL::PrimitiveType::TRIANGLES);
         }
         OGL::Program::stopUse(); OGL::FrameBuffer::stopUse();
@@ -168,23 +191,45 @@ int main()
         // Render ray tracer
         rayTracerShader.use();
         {
-            frameBuffer.colorTexture.bindSampler(0);
+            uvFrameBuffer.colorTexture.bindSampler(0);
+            rayTracerTexture.bindImage(1, OGL::ImageUnitFormat::RGBA32F, OGL::Access::WRITE_ONLY);
+
             rayTracerShader.updateUniform("cameraPos", camera.pos);
             rayTracerShader.updateUniform("cameraForward", camera.forward);
             rayTracerShader.updateUniform("cameraUp", camera.up);
             rayTracerShader.updateUniform("cameraFOV", camera.fov);
             rayTracerShader.updateUniform("aspectRatio", 1.f);
-            OGL::Context::Viewport::setBox(glm::uvec2(0, 0), glm::uvec2(600, 600));
-            quad.drawArrays(OGL::PrimitiveType::TRIANGLES);
+            OGL::Program::dispatchCompute(glm::uvec3(500, 500, 1));
         }
         OGL::Program::stopUse();
+
+        // Render geometry
+        geometryFrameBuffer.use(); geometryShader.use();
+        {
+            OGL::Context::Viewport::setBox(glm::uvec2(0, 0), geometryFrameBuffer.getSize());
+            OGL::Context::Point::setSize(10);
+            geometry.drawElements(OGL::PrimitiveType::POINTS, -1, 0, 5, 0);
+        }
+        OGL::Program::stopUse(); OGL::FrameBuffer::stopUse();
 
         // Render framebuffer
         viewShader.use();
         {
-            frameBuffer.colorTexture.bindSampler(0);
-            OGL::Context::Viewport::setBox(glm::uvec2(400, 400), glm::uvec2(200, 200));
+            OGL::Context::Depth::setTest(false);
+
+            rayTracerTexture.bindSampler(0);
+            OGL::Context::Viewport::setBox(glm::uvec2(0, 0), glm::uvec2(300, 300));
             quad.drawElements(OGL::PrimitiveType::TRIANGLES);
+
+            uvFrameBuffer.colorTexture.bindSampler(0);
+            OGL::Context::Viewport::setBox(glm::uvec2(0, 300), glm::uvec2(300, 300));
+            quad.drawElements(OGL::PrimitiveType::TRIANGLES, 3);
+
+            geometryFrameBuffer.colorTexture.bindSampler(0);
+            OGL::Context::Viewport::setBox(glm::uvec2(300, 300), glm::uvec2(300, 300));
+            quad.drawElements(OGL::PrimitiveType::TRIANGLES);
+
+            OGL::Context::Depth::setTest(true);
         }
         OGL::Program::stopUse();
 

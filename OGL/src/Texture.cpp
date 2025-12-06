@@ -64,7 +64,7 @@ void Texture<Target, N>::bindSampler(unsigned int binding)
 }
 
 template <GLenum Target, size_t N>
-void Texture<Target, N>::bindImage(unsigned int binding, Access access, ImageUnitFormat format)
+void Texture<Target, N>::bindImage(unsigned int binding, ImageUnitFormat format, Access access)
 {
     glBindImageTexture(binding, this->handler, 0, GL_FALSE, 0, static_cast<GLenum>(access), static_cast<GLenum>(format));
 }

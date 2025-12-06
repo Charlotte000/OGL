@@ -91,22 +91,35 @@ void VertexArray::use()
     glBindVertexArray(this->handler);
 }
 
-void VertexArray::drawArrays(PrimitiveType mode, size_t instanceCount)
+void VertexArray::drawArrays(PrimitiveType mode, unsigned int count, unsigned int offset, unsigned int instanceCount)
 {
-    const size_t count = this->vbo.getSize() / vertexStride;
+    const size_t maxCount = this->vbo.getSize() / vertexStride;
+    if (count == -1) count = maxCount;
+
+    assert(offset + count <= maxCount);
 
     this->use();
-    glBindVertexArray(this->handler);
-    glDrawArraysInstanced(static_cast<GLenum>(mode), 0, count, instanceCount);
+    glDrawArraysInstanced(static_cast<GLenum>(mode), offset, count, instanceCount);
     VertexArray::stopUse();
 }
 
-void VertexArray::drawElements(PrimitiveType mode, size_t instanceCount)
+void VertexArray::drawElements(PrimitiveType mode, unsigned int count, unsigned int offset, unsigned int instanceCount, unsigned int vertexOffset)
 {
-    const size_t count = this->ebo.getSize() / getTypeSize(this->indexType);
+    const size_t stride = getTypeSize(this->indexType);
+    const size_t maxCount = this->ebo.getSize() / stride;
+    if (count == -1) count = maxCount;
+
+    assert(offset + count <= maxCount);
 
     this->use();
-    glDrawElementsInstanced(static_cast<GLenum>(mode), count, static_cast<GLenum>(this->indexType), nullptr, instanceCount);
+    glDrawElementsInstancedBaseVertex(
+        static_cast<GLenum>(mode),
+        count,
+        static_cast<GLenum>(this->indexType),
+        (const void*)(offset * stride),
+        instanceCount,
+        vertexOffset
+    );
     VertexArray::stopUse();
 }
 

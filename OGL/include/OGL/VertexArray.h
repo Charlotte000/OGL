@@ -61,14 +61,14 @@ public:
      * @param mode The type of primitives to render.
      * @param instanceCount The number of instances of indices to be rendered. Use gl_InstanceID from a vertex shader.
      */
-    void drawArrays(PrimitiveType mode, size_t instanceCount = 1);
+    void drawArrays(PrimitiveType mode, unsigned int count = -1, unsigned int offset = 0, unsigned int instanceCount = 1);
 
     /**
      * @brief Renders vertex array from array data (VBO) using indices (EBO).
      * @param mode The type of primitives to render.
      * @param instanceCount The number of instances of indices to be rendered. Use gl_InstanceID from a vertex shader.
      */
-    void drawElements(PrimitiveType mode, size_t instanceCount = 1);
+    void drawElements(PrimitiveType mode, unsigned int count = -1, unsigned int offset = 0, unsigned int instanceCount = 1, unsigned int vertexOffset = 0);
 
     /**
      * @brief Get the OpenGL handler of the vertex array.

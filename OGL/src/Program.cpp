@@ -17,7 +17,7 @@ Program::Program(const std::initializer_list<Shader>& shaders)
 
     glLinkProgram(this->handler);
     this->checkStatus(GL_LINK_STATUS);
-    
+
     glValidateProgram(this->handler);
     this->checkStatus(GL_VALIDATE_STATUS);
 }
