@@ -52,6 +52,11 @@ public:
     VertexArray& operator=(VertexArray&& vao);
 
     /**
+     * @brief Bind the vertex array to the OpenGL context.
+     */
+    void use();
+
+    /**
      * @brief Renders vertex array from array data (VBO).
      * @param mode The type of primitives to render.
      * @param instanceCount The number of instances of indices to be rendered. Use gl_InstanceID from a vertex shader.
@@ -70,6 +75,11 @@ public:
      * @return OpenGL handler.
      */
     GLuint getHandler() const;
+
+    /**
+     * @brief Unbind any vertex array from the OpenGL context.
+     */
+    static void stopUse();
 private:
     GLuint handler = -1;
     size_t vertexStride;

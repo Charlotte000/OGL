@@ -86,25 +86,36 @@ VertexArray& VertexArray::operator=(VertexArray&& vao)
     return *this;
 }
 
+void VertexArray::use()
+{
+    glBindVertexArray(this->handler);
+}
+
 void VertexArray::drawArrays(PrimitiveType mode, size_t instanceCount)
 {
     const size_t count = this->vbo.getSize() / vertexStride;
 
+    this->use();
     glBindVertexArray(this->handler);
     glDrawArraysInstanced(static_cast<GLenum>(mode), 0, count, instanceCount);
-    glBindVertexArray(0);
+    VertexArray::stopUse();
 }
 
 void VertexArray::drawElements(PrimitiveType mode, size_t instanceCount)
 {
     const size_t count = this->ebo.getSize() / getTypeSize(this->indexType);
 
-    glBindVertexArray(this->handler);
+    this->use();
     glDrawElementsInstanced(static_cast<GLenum>(mode), count, static_cast<GLenum>(this->indexType), nullptr, instanceCount);
-    glBindVertexArray(0);
+    VertexArray::stopUse();
 }
 
 GLuint VertexArray::getHandler() const
 {
     return this->handler;
+}
+
+void VertexArray::stopUse()
+{
+    glBindVertexArray(0);
 }

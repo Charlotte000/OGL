@@ -43,6 +43,18 @@ static inline void set##name(type val)                  \
     glSetFunc(static_cast<GLenum>(val));                \
 }
 
+#define OGL_PARAM_FLOAT(name, glGetName, glSetFunc) \
+static inline float get##name()                     \
+{                                                   \
+    GLfloat val;                                    \
+    glGetFloatv(glGetName, &val);                   \
+    return val;                                     \
+}                                                   \
+static inline void set##name(float val)             \
+{                                                   \
+    glSetFunc(val);                                 \
+}
+
 #define OGL_PARAM_FLOAT2(name, glGetName, glSetFunc)    \
 static inline glm::vec2 get##name()                     \
 {                                                       \
@@ -115,6 +127,32 @@ OGL_PARAM_INT(Func, GL_DEPTH_FUNC, glDepthFunc, Func);
 OGL_PARAM_FLOAT2(Range, GL_DEPTH_RANGE, glDepthRange);
 
 OGL_PARAM_BOOL(WriteMask, GL_DEPTH_WRITEMASK, glDepthMask);
+
+}
+
+// TODO
+namespace Blend
+{
+
+OGL_PARAM_BOOL_EN_DIS(Enable, GL_BLEND);
+
+}
+
+namespace Point
+{
+
+OGL_PARAM_BOOL_EN_DIS(Smooth, GL_POINT_SMOOTH);
+
+OGL_PARAM_FLOAT(Size, GL_POINT_SIZE, glPointSize);
+
+}
+
+namespace CullFace
+{
+
+OGL_PARAM_BOOL_EN_DIS(Enable, GL_CULL_FACE);
+
+OGL_PARAM_INT(Mode, GL_CULL_FACE_MODE, glCullFace, CullFaceMode);
 
 }
 

@@ -243,6 +243,13 @@ enum class Func : GLenum
     ALWAYS = GL_ALWAYS,
 };
 
+enum class CullFaceMode : GLenum
+{
+    FRONT = GL_FRONT,
+    BACK = GL_BACK,
+    FRONT_AND_BACK = GL_FRONT_AND_BACK,
+};
+
 static size_t getTypeSize(TypeU type)
 {
     switch (type)
