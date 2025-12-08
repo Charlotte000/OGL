@@ -7,7 +7,7 @@ using namespace OGL;
 template <GLenum Target, size_t N>
 Texture<Target, N>::Texture(glm::vec<N, glm::uint> size, ImageFormat internalFormat, Filter filter, Wrap wrap)
 {
-    glCreateTextures(GL_TEXTURE_2D, 1, &this->handler);
+    glCreateTextures(Target, 1, &this->handler);
     glTextureParameteri(this->handler, GL_TEXTURE_MAG_FILTER, static_cast<GLint>(filter));
     glTextureParameteri(this->handler, GL_TEXTURE_MIN_FILTER, static_cast<GLint>(filter));
     glTextureParameteri(this->handler, GL_TEXTURE_WRAP_S, static_cast<GLint>(wrap));

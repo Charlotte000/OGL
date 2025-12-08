@@ -16,17 +16,16 @@ namespace OGL
  * 
  * @tparam Target OpenGL buffer target (e.g., GL_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER, GL_UNIFORM_BUFFER, etc.).
  */
-template <GLenum Target>
 class Buffer
 {
 public:
     Buffer();
 
-    Buffer(Buffer<Target>&& buff);
+    Buffer(Buffer&& buff);
 
     ~Buffer();
 
-    Buffer<Target>& operator=(Buffer<Target>&& buff);
+    Buffer& operator=(Buffer&& buff);
 
     /**
      * @brief Allocate and initialize new data storage for the buffer object.
@@ -78,7 +77,7 @@ public:
     /**
      * @brief Bind the buffer to the OpenGL context.
      */
-    void use();
+    void use(GLenum target);
 
     /**
      * @brief Get the OpenGL handler of the buffer object.
@@ -102,14 +101,9 @@ public:
     /**
      * @brief Unbind any buffer from the OpenGL context.
      */
-    static void stopUse();
+    static void stopUse(GLenum target);
 protected:
     GLuint handler = -1;
 };
-
-template class Buffer<GL_ARRAY_BUFFER>;
-template class Buffer<GL_ELEMENT_ARRAY_BUFFER>;
-template class Buffer<GL_SHADER_STORAGE_BUFFER>;
-template class Buffer<GL_UNIFORM_BUFFER>;
 
 }

@@ -15,8 +15,21 @@ namespace OGL
  * They are typically used in conjunction with vertex array objects (VAOs) to define the format and source of vertex data for rendering.
  * Use VertexArray::drawArrays or VertexArray::drawElements to render using the vertex data stored in an ArrayBuffer.
  */
-class ArrayBuffer : public Buffer<GL_ARRAY_BUFFER>
+class ArrayBuffer : public Buffer
 {
+public:
+    using Buffer::use;
+    using Buffer::stopUse;
+
+    /**
+     * @brief Bind the buffer to the OpenGL context.
+     */
+    void use();
+
+    /**
+     * @brief Unbind any buffer from the OpenGL context.
+     */
+    static void stopUse();
 };
 
 }

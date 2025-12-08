@@ -25,8 +25,7 @@ void initGLFW()
 
 void initGLEW()
 {
-    GLenum status = glewInit();
-    if (status != GLEW_OK)
+    if (GLenum status = glewInit(); status != GLEW_OK)
     {
         throw std::runtime_error((const char*)glewGetErrorString(status));
     }
@@ -34,7 +33,7 @@ void initGLEW()
 
 GLFWwindow* createWindow()
 {
-    GLFWwindow* window = glfwCreateWindow(600, 600, "Hello GLFW Template", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(600, 600, "OLG Example", nullptr, nullptr);
     if (window == nullptr)
     {
         throw std::runtime_error("GLFW Create Window error");
@@ -101,7 +100,6 @@ int main()
                0, 0,
              0.4, 0,
              0.8, 0,
-
         };
         geometry.vbo.write(vertices, sizeof(vertices));
 
