@@ -10,7 +10,7 @@ void Texture1DArray::update(const Image& image, glm::uvec2 offset)
 Image Texture1DArray::read(glm::uvec2 offset, glm::uvec2 size) const
 {
     Image img(size);
-    Texture::read(img.pixels.data(), img.pixels.size() * sizeof(float), offset, size, OGL::PixelFormat::RGBA, OGL::Type::FLOAT);
+    Texture::read(img.pixels.data(), img.pixels.size() * sizeof(float), offset, size, PixelFormat::RGBA, Type::FLOAT);
     return img;
 }
 

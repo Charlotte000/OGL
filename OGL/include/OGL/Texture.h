@@ -20,9 +20,19 @@ class Texture
 public:
     static_assert(N > 0 && N < 4, "Only 1D, 2D and 3D textures are supported");
 
-    Texture(glm::vec<N, glm::uint> size, OGL::ImageFormat internalFormat, Filter filter = Filter::LINEAR, Wrap wrap = Wrap::REPEAT);
+    Texture(
+        glm::vec<N, glm::uint> size,
+        ImageFormat internalFormat,
+        Filter magFilter = Filter::LINEAR,
+        Filter minFilter = Filter::LINEAR,
+        Wrap wrapS = Wrap::REPEAT,
+        Wrap wrapT = Wrap::REPEAT,
+        Wrap wrapR = Wrap::REPEAT
+    );
 
     Texture(Texture<Target, N>&& tex);
+
+    Texture(const Texture<Target, N>& tex);
 
     ~Texture();
 
@@ -40,7 +50,7 @@ public:
      * @param format The format that the elements of the image will be treated as for the purposes of formatted stores. Must be compatible with the internal format of the texture.
      * @param access Type of access that will be performed on the image.
      */
-    void bindImage(unsigned int binding, OGL::ImageUnitFormat format = ImageUnitFormat::RGBA32F, Access access = Access::READ_WRITE);
+    void bindImage(unsigned int binding, ImageUnitFormat format = ImageUnitFormat::RGBA32F, Access access = Access::READ_WRITE);
 
     /**
      * @brief Update a region of the texure object's image.
@@ -50,7 +60,7 @@ public:
      * @param format The format of the pixel data.
      * @param type The data type of the pixel data.
      */
-    void update(const void* pixels, glm::vec<N, glm::uint> offset, glm::vec<N, glm::uint> size, OGL::PixelFormat format = OGL::PixelFormat::RGBA, Type type = Type::FLOAT);
+    void update(const void* pixels, glm::vec<N, glm::uint> offset, glm::vec<N, glm::uint> size, PixelFormat format = PixelFormat::RGBA, Type type = Type::FLOAT);
 
     /**
      * @brief Read the region of the texture object's store.
@@ -61,7 +71,7 @@ public:
      * @param format The format of the pixel data.
      * @param type The data type of the pixel data.
      */
-    void read(void* pixels, size_t bufSize, glm::vec<N, glm::uint> offset, glm::vec<N, glm::uint> size, OGL::PixelFormat format = OGL::PixelFormat::RGBA, Type type = Type::FLOAT) const;
+    void read(void* pixels, size_t bufSize, glm::vec<N, glm::uint> offset, glm::vec<N, glm::uint> size, PixelFormat format = PixelFormat::RGBA, Type type = Type::FLOAT) const;
 
     /**
      * @brief Clear the texture with zeroes.
@@ -87,7 +97,31 @@ public:
      * 
      * @return The internal format of the texture.
      */
-    OGL::ImageFormat getInternalFormat() const;
+    ImageFormat getInternalFormat() const;
+
+    Filter getMagFilter() const;
+
+    Filter getMinFilter() const;
+
+    Wrap getWrapS() const;
+
+    Wrap getWrapT() const;
+
+    Wrap getWrapR() const;
+
+    void setMagFilter(Filter filter);
+
+    void setMinFilter(Filter filter);
+
+    void setFilter(Filter filter);
+
+    void setWrapS(Wrap wrap);
+
+    void setWrapT(Wrap wrap);
+
+    void setWrapR(Wrap wrap);
+
+    void setWrap(Wrap wrap);
 protected:
     GLuint handler = -1;
 };

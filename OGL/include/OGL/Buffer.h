@@ -23,9 +23,13 @@ public:
 
     Buffer(Buffer&& buff);
 
+    Buffer(const Buffer& buff);
+
     ~Buffer();
 
     Buffer& operator=(Buffer&& buff);
+
+    Buffer& operator=(const Buffer& buff);
 
     /**
      * @brief Allocate and initialize new data storage for the buffer object.

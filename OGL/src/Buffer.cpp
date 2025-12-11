@@ -15,6 +15,12 @@ Buffer::Buffer(Buffer&& buff)
     buff.handler = -1;
 }
 
+Buffer::Buffer(const Buffer& buff)
+    : Buffer()
+{
+    glCopyNamedBufferSubData(buff.getHandler(), this->handler, 0, 0, buff.getSize());
+}
+
 Buffer::~Buffer()
 {
     if (this->handler != -1)
@@ -32,6 +38,18 @@ Buffer& Buffer::operator=(Buffer&& buff)
 
     this->handler = buff.handler;
     buff.handler = -1;
+    return *this;
+}
+
+Buffer& Buffer::operator=(const Buffer& buff)
+{
+    if (this->handler != -1)
+    {
+        glDeleteBuffers(1, &this->handler);
+    }
+
+    glCreateBuffers(1, &this->handler);
+    glCopyNamedBufferSubData(buff.getHandler(), this->handler, 0, 0, buff.getSize());
     return *this;
 }
 

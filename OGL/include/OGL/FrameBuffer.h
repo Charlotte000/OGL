@@ -3,6 +3,8 @@
  */
 #pragma once
 
+#include <unordered_map>
+
 #include "OGL/Texture2D.h"
 
 namespace OGL
@@ -17,21 +19,9 @@ namespace OGL
 class FrameBuffer
 {
 public:
-    /**
-     * @brief Color attachment texture.
-     * 
-     * This texture stores the color output of rendering operations.
-     * It is attached to the framebuffer as GL_COLOR_ATTACHMENT0.
-     */
-    Texture2D colorTexture;
+    std::unordered_map<Attachment, Texture2D> textures;
 
-    /**
-     * @brief Depth attachment texture.
-     * 
-     * This texture stores depth information of rendering operations.
-     * It is attached to the framebuffer as GL_DEPTH_ATTACHMENT.
-     */
-    Texture2D depthTexture;
+    FrameBuffer(std::initializer_list<std::pair<const Attachment, Texture2D&&>> textures);
 
     FrameBuffer(Texture2D&& colorTexture, Texture2D&& depthTexture);
 
@@ -40,8 +30,6 @@ public:
     FrameBuffer(FrameBuffer&& fbo);
 
     ~FrameBuffer();
-
-    FrameBuffer& operator=(FrameBuffer&& fbo);
 
     /**
      * @brief Bind the framebuffer to the OpenGL context.

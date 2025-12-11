@@ -129,13 +129,14 @@ int main()
     });
 
     OGL::FrameBuffer uvFrameBuffer(
-        OGL::Texture2D(glm::uvec2(5, 5), OGL::ImageFormat::RGBA32F, OGL::Filter::NEAREST),
-        OGL::Texture2D(glm::uvec2(5, 5), OGL::ImageFormat::DEPTH32, OGL::Filter::NEAREST)
-    );
+    {
+        { OGL::Attachment::COLOR0, OGL::Texture2D(glm::uvec2(5, 5), OGL::ImageFormat::RGBA32F, OGL::Filter::NEAREST) }
+    });
     OGL::Texture2D rayTracerTexture(glm::uvec2(300, 300), OGL::ImageFormat::RGBA32F);
     OGL::FrameBuffer geometryFrameBuffer(glm::uvec2(300, 300));
 
     OGL::Camera<float> camera;
+    camera.pos = glm::vec3(-1.5, 0, -5);
 
     double time = glfwGetTime(), elapsedTime = 0;
     glm::vec2 mouseDelta;
@@ -189,7 +190,7 @@ int main()
         // Render ray tracer
         rayTracerShader.use();
         {
-            uvFrameBuffer.colorTexture.bindSampler(0);
+            uvFrameBuffer.textures.at(OGL::Attachment::COLOR0).bindSampler(0);
             rayTracerTexture.bindImage(1, OGL::ImageUnitFormat::RGBA32F, OGL::Access::WRITE_ONLY);
 
             rayTracerShader.updateUniform("cameraPos", camera.pos);
@@ -219,11 +220,11 @@ int main()
             OGL::Context::Viewport::setBox(glm::uvec2(0, 0), glm::uvec2(300, 300));
             quad.drawElements(OGL::PrimitiveType::TRIANGLES);
 
-            uvFrameBuffer.colorTexture.bindSampler(0);
+            uvFrameBuffer.textures.at(OGL::Attachment::COLOR0).bindSampler(0);
             OGL::Context::Viewport::setBox(glm::uvec2(0, 300), glm::uvec2(300, 300));
             quad.drawElements(OGL::PrimitiveType::TRIANGLES, 3);
 
-            geometryFrameBuffer.colorTexture.bindSampler(0);
+            geometryFrameBuffer.textures.at(OGL::Attachment::COLOR0).bindSampler(0);
             OGL::Context::Viewport::setBox(glm::uvec2(300, 300), glm::uvec2(300, 300));
             quad.drawElements(OGL::PrimitiveType::TRIANGLES);
 

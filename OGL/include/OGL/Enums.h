@@ -248,6 +248,16 @@ enum class CullFaceMode : GLenum
     FRONT_AND_BACK = GL_FRONT_AND_BACK,
 };
 
+enum class Attachment : GLenum
+{
+    DEPTH = GL_DEPTH_ATTACHMENT,
+    STENCIL = GL_STENCIL_ATTACHMENT,
+    DEPTH_STENCIL = GL_DEPTH_STENCIL_ATTACHMENT,
+    COLOR0 = GL_COLOR_ATTACHMENT0,
+    COLOR1 = GL_COLOR_ATTACHMENT1,
+    COLOR2 = GL_COLOR_ATTACHMENT2,
+};
+
 static size_t getTypeSize(TypeU type)
 {
     switch (type)

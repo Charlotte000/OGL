@@ -6,33 +6,34 @@
 
 using namespace OGL;
 
-FrameBuffer::FrameBuffer(Texture2D&& colorTexture, Texture2D&& depthTexture)
-    : colorTexture(std::move(colorTexture)), depthTexture(std::move(depthTexture))
+FrameBuffer::FrameBuffer(std::initializer_list<std::pair<const Attachment, Texture2D&&>> textures)
 {
-    // Create framebuffer
     glCreateFramebuffers(1, &this->handler);
 
-    // Attach color texture
-    glNamedFramebufferTexture(this->handler, GL_COLOR_ATTACHMENT0, this->colorTexture.getHandler(), 0);
-
-    // Attach depth texture
-    glNamedFramebufferTexture(this->handler, GL_DEPTH_ATTACHMENT, this->depthTexture.getHandler(), 0);
+    for (auto& [att, tex] : textures)
+    {
+        glNamedFramebufferTexture(this->handler, static_cast<GLenum>(att), tex.getHandler(), 0);
+        this->textures.emplace(att, std::move(tex));
+    }
 
     if (const GLenum status = glCheckNamedFramebufferStatus(this->handler, GL_FRAMEBUFFER); status != GL_FRAMEBUFFER_COMPLETE)
     {
         throw std::runtime_error("Frame buffer failed: " + std::to_string(status));
     }
+}
 
-    this->clearDepth();
+FrameBuffer::FrameBuffer(Texture2D&& colorTexture, Texture2D&& depthTexture)
+    : FrameBuffer({ { Attachment::COLOR0, std::move(colorTexture) }, { Attachment::DEPTH, std::move(depthTexture) } })
+{
 }
 
 FrameBuffer::FrameBuffer(glm::uvec2 size)
-    : FrameBuffer(Texture2D(size, ImageFormat::RGBA32F), Texture2D(size, ImageFormat::DEPTH32))
+    : FrameBuffer({ { Attachment::COLOR0, Texture2D(size, ImageFormat::RGBA32F) }, { Attachment::DEPTH, Texture2D(size, ImageFormat::DEPTH32) } })
 {
 }
 
 FrameBuffer::FrameBuffer(FrameBuffer&& fbo)
-    : handler(fbo.handler), colorTexture(std::move(fbo.colorTexture)), depthTexture(std::move(fbo.depthTexture))
+    : handler(fbo.handler), textures(std::move(fbo.textures))
 {
     fbo.handler = -1;
 }
@@ -43,21 +44,6 @@ FrameBuffer::~FrameBuffer()
     {
         glDeleteFramebuffers(1, &this->handler);
     }
-}
-
-FrameBuffer& FrameBuffer::operator=(FrameBuffer&& fbo)
-{
-    if (this->handler != -1)
-    {
-        glDeleteFramebuffers(1, &this->handler);
-    }
-
-    this->handler = fbo.handler;
-    this->colorTexture = std::move(fbo.colorTexture);
-    this->depthTexture = std::move(fbo.depthTexture);
-
-    fbo.handler = -1;
-    return *this;
 }
 
 void FrameBuffer::use()
@@ -99,5 +85,5 @@ GLuint FrameBuffer::getHandler() const
 
 glm::uvec2 FrameBuffer::getSize() const
 {
-    return this->colorTexture.getSize();
+    return this->textures.at(Attachment::COLOR0).getSize();
 }
