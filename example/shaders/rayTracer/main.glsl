@@ -45,8 +45,8 @@ struct Sphere
 
 Sphere spheres[] =
 {
-    Sphere(vec3(0), 1, Material(vec3(1, 0, 1))),
-    Sphere(vec3(-3, 0, 0), 1, Material(vec3(0, 1, 0))),
+    Sphere(vec3(0), 1, Material(vec3(1, .5, .5))),
+    Sphere(vec3(-3, 0, 0), 1, Material(vec3(.5, 1, .5))),
 };
 
 bool raySphereCollide(in Ray ray, in Sphere sphere, inout CollisionManifold collisionManifold)
@@ -89,7 +89,8 @@ void main()
 {
     vec2 coord = (UV - .5) * 2 * vec2(1, aspectRatio) * tan(cameraFOV * .5);
 
-    vec3 resultColor;
+    vec3 throughput = vec3(1);
+    vec3 radiance = vec3(0);
     Ray ray = Ray(cameraPos, normalize(cameraForward + cross(cameraForward, cameraUp) * coord.x + cameraUp * coord.y));
 
     for (uint i = 0; i < 10; i++)
@@ -97,14 +98,15 @@ void main()
         CollisionManifold collisionManifold;
         if (!rayCollision(ray, collisionManifold))
         {
-            resultColor = texture(environment, vec2(atan(ray.dir.z, ray.dir.x) * 0.15915494309189533 + 0.5, acos(ray.dir.y) * 0.31830988618379067)).rgb;
+            radiance += texture(environment, vec2(atan(ray.dir.z, ray.dir.x) * 0.15915494309189533 + 0.5, acos(ray.dir.y) * 0.31830988618379067)).rgb * throughput;
             break;
         }
 
-        resultColor = collisionManifold.material.color * dot(collisionManifold.normal, Light);
+        throughput *= collisionManifold.material.color;
+
         ray.pos = collisionManifold.pos;
         ray.dir = reflect(ray.dir, collisionManifold.normal);
     }
 
-    imageStore(outImage, TexelCoord, vec4(resultColor, 1));
+    imageStore(outImage, TexelCoord, vec4(radiance, 1));
 }

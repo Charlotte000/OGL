@@ -116,7 +116,7 @@ void VertexArray::drawElements(PrimitiveType mode, unsigned int count, unsigned 
         static_cast<GLenum>(mode),
         count,
         static_cast<GLenum>(this->indexType),
-        (const void*)(offset * stride),
+        reinterpret_cast<const void*>(offset * stride),
         instanceCount,
         vertexOffset
     );
