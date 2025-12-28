@@ -45,8 +45,9 @@ struct Sphere
 
 Sphere spheres[] =
 {
-    Sphere(vec3(0), 1, Material(vec3(1, .5, .5))),
-    Sphere(vec3(-3, 0, 0), 1, Material(vec3(.5, 1, .5))),
+    Sphere(vec3(-3, 0, 0), 1, Material(vec3(1, .5, .5))),
+    Sphere(vec3(0, 0, 0), 1, Material(vec3(.5, 1, .5))),
+    Sphere(vec3(3, 0, 0), 1, Material(vec3(.5, .5, 1))),
 };
 
 bool raySphereCollide(in Ray ray, in Sphere sphere, inout CollisionManifold collisionManifold)

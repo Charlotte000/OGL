@@ -83,7 +83,7 @@ GLuint FrameBuffer::getHandler() const
     return this->handler;
 }
 
-glm::uvec2 FrameBuffer::getSize() const
+glm::uvec2 FrameBuffer::getSize(Attachment attachment) const
 {
-    return this->textures.at(Attachment::COLOR0).getSize();
+    return this->textures.at(attachment).getSize();
 }

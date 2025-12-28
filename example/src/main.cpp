@@ -8,6 +8,7 @@
 
 #include <GLFW/glfw3.h>
 
+#include <imgui_internal.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
@@ -133,7 +134,7 @@ int main()
     SceneExample sceneExample(glm::uvec2(800, 800), shaderPath);
 
     OGL::Camera<float> camera;
-    camera.pos = glm::vec3(-1.5, 0, -5);
+    camera.pos = glm::vec3(0, 0, -5);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -156,12 +157,11 @@ int main()
             }
         }
 
-        rayTracerExample.render(camera);
-        instancedExample.render();
-        sceneExample.render(camera);
-
         {
-            ImGui::Begin("Scene Example");
+            if (ImGui::Begin("Scene Example"))
+            {
+                sceneExample.render(camera);
+            }
 
             drawFillImage(sceneExample.output(), true);
             if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
@@ -173,7 +173,10 @@ int main()
         }
 
         {
-            ImGui::Begin("Ray Tracer Example");
+            if (ImGui::Begin("Ray Tracer Example"))
+            {
+                rayTracerExample.render(camera);
+            }
 
             drawFillImage(rayTracerExample.output(), true);
             if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
@@ -185,7 +188,10 @@ int main()
         }
 
         {
-            ImGui::Begin("Instanced Example");
+            if (ImGui::Begin("Instanced Example"))
+            {
+                instancedExample.render();
+            }
 
             drawFillImage(instancedExample.output(), true);
 

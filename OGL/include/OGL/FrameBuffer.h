@@ -83,7 +83,7 @@ public:
      * 
      * @return The size of the framebuffer.
      */
-    glm::uvec2 getSize() const;
+    glm::uvec2 getSize(Attachment attachment = Attachment::COLOR0) const;
 
     /**
      * @brief Unbind any framebuffer from the OpenGL context and revert to the default framebuffer (screen).
