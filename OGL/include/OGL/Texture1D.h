@@ -3,6 +3,7 @@
  */
 #pragma once
 
+#include "OGL/Image1D.h"
 #include "OGL/Texture.h"
 
 namespace OGL
@@ -24,13 +25,13 @@ public:
      * @param size Size of the texture's region to be copied.
      * @return Image copied from the texture.
      */
-    Image read(glm::uvec1 offset, glm::uvec1 size) const;
+    Image1D read(glm::uvec1 offset, glm::uvec1 size) const;
 
     /**
      * @brief Read the texture store.
      * @return Image copied from the texture.
      */
-    Image read() const;
+    Image1D read() const;
 };
 
 }

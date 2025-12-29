@@ -7,7 +7,7 @@ layout(rgba32f, binding=0) writeonly uniform image2D outImage;
 
 ivec2 Size = imageSize(outImage);
 ivec2 TexelCoord = ivec2(gl_GlobalInvocationID.xy);
-vec2 UV = vec2(TexelCoord) / Size;
+vec2 UV = vec2(TexelCoord) / (Size - 1);
 
 void main()
 {

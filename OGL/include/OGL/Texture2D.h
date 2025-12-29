@@ -3,6 +3,7 @@
  */
 #pragma once
 
+#include "OGL/Image2D.h"
 #include "OGL/Texture.h"
 
 namespace OGL
@@ -23,7 +24,7 @@ public:
      * @param image The image to be copied to the texture store.
      * @param offset Offset into the texture object's data store where image replacement will begin.
      */
-    void update(const Image& image, glm::uvec2 offset);
+    void update(const Image2D& image, glm::uvec2 offset);
 
     /**
      * @brief Read the region of the texture store.
@@ -31,13 +32,13 @@ public:
      * @param size Size of the texture's region to be copied.
      * @return Image copied from the texture.
      */
-    Image read(glm::uvec2 offset, glm::uvec2 size) const;
+    Image2D read(glm::uvec2 offset, glm::uvec2 size) const;
 
     /**
      * @brief Read the texture store.
      * @return Image copied from the texture.
      */
-    Image read() const;
+    Image2D read() const;
 };
 
 }

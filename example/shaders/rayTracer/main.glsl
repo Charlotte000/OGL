@@ -13,7 +13,7 @@ layout(binding=0) uniform sampler2D environment;
 
 ivec2 Size = imageSize(outImage);
 ivec2 TexelCoord = ivec2(gl_GlobalInvocationID.xy);
-vec2 UV = vec2(TexelCoord.x, TexelCoord.y) / Size;
+vec2 UV = vec2(TexelCoord) / (Size - 1);
 
 vec3 Light = normalize(vec3(1, 1, -1));
 

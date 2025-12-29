@@ -6,11 +6,13 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_library(
     ${PROJECT_NAME}
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Image.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Camera.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Buffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Shader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Program.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Image1D.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Image2D.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Image3D.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Texture.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Texture1D.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Texture2D.cpp

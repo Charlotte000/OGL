@@ -61,5 +61,6 @@ vec3 shadow()
 void main()
 {
     vec3 result = (ambient() + (1.0 - shadow()) * (diffuse() + specular())) * ObjColor;
+    result = clamp(result, vec3(0), vec3(1));
     FragColor = vec4(result, 1);
 }
