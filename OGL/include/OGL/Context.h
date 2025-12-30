@@ -1,6 +1,7 @@
+/**
+ * @file Context.h
+ */
 #pragma once
-
-#include <GL/glew.h>
 
 #include <glm/glm.hpp>
 

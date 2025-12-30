@@ -26,6 +26,7 @@ public:
      * @brief Load a GLSL shader from provided string.
      * @param src Source code of the shader.
      * @param type Shader stage.
+     * @throw std::runtime_error if the shader cannot be created.
      */
     Shader(const std::string& src, ShaderType type);
 
@@ -33,6 +34,7 @@ public:
      * @brief Load a GLSL shader from a file.
      * @param path Path to the shader code.
      * @param type Shader stage.
+     * @throw std::runtime_error if the shader cannot be created.
      */
     Shader(const std::filesystem::path& path, ShaderType type);
 
@@ -44,6 +46,7 @@ public:
      * @param src Source binary.
      * @param srcSize Size of the source binary.
      * @param type Shader stage.
+     * @throw std::runtime_error if the shader cannot be created.
      */
     Shader(const unsigned char src[], size_t srcSize, ShaderType type);
 

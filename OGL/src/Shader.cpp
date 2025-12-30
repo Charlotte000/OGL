@@ -100,6 +100,6 @@ void Shader::checkStatus() const
         delete[] info;
 
         glDeleteShader(this->handler);
-        throw std::runtime_error(msg);
+        throw std::runtime_error("Shader failed: " + msg);
     }
 }

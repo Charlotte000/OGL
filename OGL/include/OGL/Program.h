@@ -16,6 +16,9 @@ namespace OGL
 class Program
 {
 public:
+    /**
+     * @throw std::runtime_error if the program cannot be created.
+     */
     Program(const std::initializer_list<Shader>& shaders);
 
     Program(Program&& program);

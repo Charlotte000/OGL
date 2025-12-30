@@ -103,11 +103,11 @@ void Program::checkStatus(GLenum param) const
         glGetProgramiv(this->handler, GL_INFO_LOG_LENGTH, &logSize);
 
         char* info = new char[logSize + 1];
-        glGetShaderInfoLog(this->handler, logSize, nullptr, info);
+        glGetProgramInfoLog(this->handler, logSize, nullptr, info);
         std::string msg(info);
         delete[] info;
 
         glDeleteProgram(this->handler);
-        throw std::runtime_error(msg);
+        throw std::runtime_error("Program failed: " + msg);
     }
 }

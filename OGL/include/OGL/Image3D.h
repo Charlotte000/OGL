@@ -1,5 +1,5 @@
 /**
- * @file Image.h
+ * @file Image3D.h
  */
 #pragma once
 

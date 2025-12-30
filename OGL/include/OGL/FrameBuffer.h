@@ -21,10 +21,19 @@ class FrameBuffer
 public:
     std::unordered_map<Attachment, Texture2D> textures;
 
+    /**
+     * @throw std::runtime_error if the framebuffer cannot be created.
+     */
     FrameBuffer(std::initializer_list<std::pair<const Attachment, Texture2D&&>> textures);
 
+    /**
+     * @throw std::runtime_error if the framebuffer cannot be created.
+     */
     FrameBuffer(Texture2D&& colorTexture, Texture2D&& depthTexture);
 
+    /**
+     * @throw std::runtime_error if the framebuffer cannot be created.
+     */
     FrameBuffer(glm::uvec2 size);
 
     FrameBuffer(FrameBuffer&& fbo);

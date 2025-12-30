@@ -1,12 +1,7 @@
 /**
- * @file Image.h
+ * @file Image2D.h
  */
 #pragma once
-
-#include <vector>
-#include <filesystem>
-
-#include <glm/glm.hpp>
 
 #include "OGL/Image3D.h"
 

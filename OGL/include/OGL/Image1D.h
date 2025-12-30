@@ -1,15 +1,9 @@
 /**
- * @file Image.h
+ * @file Image1D.h
  */
 #pragma once
 
-#include <vector>
-#include <filesystem>
-
-#include <glm/glm.hpp>
-
 #include "OGL/Image2D.h"
-#include "OGL/Image3D.h"
 
 namespace OGL
 {
