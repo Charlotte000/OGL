@@ -40,6 +40,13 @@ public:
     Image1D(glm::uvec1 size, const std::initializer_list<glm::vec4>& pixels = {});
 
     /**
+     * @brief Create an image with the specified size and pixel data.
+     * @param size Size of the image in pixels (width).
+     * @param data Pixel data where each pixel consists of 4 floating-point values (R, G, B, A).
+     */
+    Image1D(glm::uvec1 size, const void* data);
+
+    /**
      * @brief Convert to 2D image.
      * @return The copied 2D image with height 1.
      */

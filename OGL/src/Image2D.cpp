@@ -38,6 +38,11 @@ Image2D::Image2D(glm::uvec2 size, const std::initializer_list<glm::vec4>& pixels
     assert(this->size.x * this->size.y == this->pixels.size());
 }
 
+Image2D::Image2D(glm::uvec2 size, const void* data)
+    : size(size), pixels(reinterpret_cast<const glm::vec4*>(data), reinterpret_cast<const glm::vec4*>(data) + size.x * size.y)
+{
+}
+
 Image2D::operator Image3D() const
 {
     Image3D img(glm::uvec3(this->size, 1));

@@ -61,9 +61,16 @@ public:
      * If the pixel data is not provided, the pixel data is initialized to zeros.
      * 
      * @param size Size of the image in pixels (width, height).
-     * @param pixels Pixel data.
+     * @param pixels Pixel data in a row-major order.
      */
     Image2D(glm::uvec2 size, const std::initializer_list<glm::vec4>& pixels = {});
+
+    /**
+     * @brief Create an image with the specified size and pixel data.
+     * @param size Size of the image in pixels (width, height).
+     * @param data Pixel data where each pixel consists of 4 floating-point values (R, G, B, A) in a row-major order.
+     */
+    Image2D(glm::uvec2 size, const void* data);
 
     /**
      * @brief Convert to 3D image.

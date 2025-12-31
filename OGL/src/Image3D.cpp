@@ -11,6 +11,11 @@ Image3D::Image3D(glm::uvec3 size, const std::initializer_list<glm::vec4>& pixels
     assert(this->size.x * this->size.y * this->size.z == this->pixels.size());
 }
 
+Image3D::Image3D(glm::uvec3 size, const void* data)
+    : size(size), pixels(reinterpret_cast<const glm::vec4*>(data), reinterpret_cast<const glm::vec4*>(data) + size.x * size.y * size.z)
+{
+}
+
 glm::vec4& Image3D::operator[](glm::uvec3 coords)
 {
     assert(coords.x < this->size.x && coords.y < this->size.y && coords.z < this->size.z);

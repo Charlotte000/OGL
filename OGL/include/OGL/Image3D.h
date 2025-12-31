@@ -25,7 +25,7 @@ public:
     glm::uvec3 size;
 
     /**
-     * @brief Pixel data stored in a row-major order.
+     * @brief Pixel data stored in row, column, depth order.
      * 
      * Each pixel consists of 4 floating-point values (R, G, B, A).
      * The total number of pixels is size.x * size.y * size.z.
@@ -41,6 +41,13 @@ public:
      * @param pixels Pixel data.
      */
     Image3D(glm::uvec3 size, const std::initializer_list<glm::vec4>& pixels = {});
+
+    /**
+     * @brief Create an image with the specified size and pixel data.
+     * @param size Size of the image in pixels (width, height, depth).
+     * @param data Pixel data where each pixel consists of 4 floating-point values (R, G, B, A) in row, column, depth order.
+     */
+    Image3D(glm::uvec3 size, const void* data);
 
     /**
      * @brief Access pixel at the specified coordinates.

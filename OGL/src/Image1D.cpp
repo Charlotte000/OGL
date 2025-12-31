@@ -11,6 +11,11 @@ Image1D::Image1D(glm::uvec1 size, const std::initializer_list<glm::vec4>& pixels
     assert(this->size.x == this->pixels.size());
 }
 
+Image1D::Image1D(glm::uvec1 size, const void* data)
+    : size(size), pixels(reinterpret_cast<const glm::vec4*>(data), reinterpret_cast<const glm::vec4*>(data) + size.x)
+{
+}
+
 Image1D::operator Image2D() const
 {
     Image2D img(glm::uvec2(this->size, 1));
