@@ -28,7 +28,7 @@ public:
      * @param type Shader stage.
      * @throw std::runtime_error if the shader cannot be created.
      */
-    Shader(const std::string& src, ShaderType type);
+    Shader(const char src[], ShaderType type);
 
     /**
      * @brief Load a GLSL shader from a file.

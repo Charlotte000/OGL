@@ -66,6 +66,20 @@ FrameBuffer::~FrameBuffer()
     }
 }
 
+FrameBuffer& FrameBuffer::operator=(FrameBuffer&& fbo)
+{
+    if (this->handler != -1)
+    {
+        this->textures.clear();
+        glDeleteFramebuffers(1, &this->handler);
+    }
+
+    this->handler = fbo.handler;
+    this->textures = std::move(fbo.textures);
+    fbo.handler = -1;
+    return *this;
+}
+
 void FrameBuffer::use()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, this->handler);

@@ -6,13 +6,13 @@
 
 using namespace OGL;
 
-Shader::Shader(const std::string& src, ShaderType type)
+Shader::Shader(const char src[], ShaderType type)
 {
     // Create shader
     this->handler = glCreateShader(static_cast<GLenum>(type));
 
     // Attach code
-    const GLchar* code = static_cast<const GLchar*>(src.c_str());
+    const GLchar* code = static_cast<const GLchar*>(src);
     glShaderSource(this->handler, 1, &code, 0);
 
     glCompileShader(this->handler);

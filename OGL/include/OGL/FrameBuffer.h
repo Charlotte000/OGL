@@ -40,6 +40,8 @@ public:
 
     ~FrameBuffer();
 
+    FrameBuffer& operator=(FrameBuffer&& fbo);
+
     /**
      * @brief Bind the framebuffer to the OpenGL context.
      * 
