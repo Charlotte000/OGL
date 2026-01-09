@@ -31,6 +31,18 @@ Texture2D::Texture2D(const Texture2D& tex)
     );
 }
 
+Texture2D& Texture2D::operator=(Texture2D&& tex)
+{
+    if (this->handler != -1)
+    {
+        glDeleteTextures(1, &this->handler);
+    }
+
+    this->handler = tex.handler;
+    tex.handler = -1;
+    return *this;
+}
+
 void Texture2D::update(const void* pixels, glm::uvec2 offset, glm::uvec2 size, PixelFormat format, Type type)
 {
     assert(glm::all(glm::lessThanEqual(offset + size, this->getSize())));

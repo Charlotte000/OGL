@@ -31,6 +31,8 @@ public:
 
     Texture1DArray(const Texture1DArray& tex);
 
+    Texture1DArray& operator=(Texture1DArray&& tex);
+
     /**
      * @brief Update a region of the texure object's image.
      * @param pixels Pointer to the new image that will be copied into the texture store.

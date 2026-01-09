@@ -31,6 +31,8 @@ public:
 
     Texture2D(const Texture2D& tex);
 
+    Texture2D& operator=(Texture2D&& tex);
+
     /**
      * @brief Update a region of the texure object's image.
      * @param pixels Pointer to the new image that will be copied into the texture store.

@@ -31,6 +31,18 @@ Texture2DArray::Texture2DArray(const Texture2DArray& tex)
     );
 }
 
+Texture2DArray& Texture2DArray::operator=(Texture2DArray&& tex)
+{
+    if (this->handler != -1)
+    {
+        glDeleteTextures(1, &this->handler);
+    }
+
+    this->handler = tex.handler;
+    tex.handler = -1;
+    return *this;
+}
+
 void Texture2DArray::update(const void* pixels, glm::uvec3 offset, glm::uvec3 size, PixelFormat format, Type type)
 {
     assert(glm::all(glm::lessThanEqual(offset + size, this->getSize())));

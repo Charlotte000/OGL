@@ -31,6 +31,18 @@ Texture3D::Texture3D(const Texture3D& tex)
     );
 }
 
+Texture3D& Texture3D::operator=(Texture3D&& tex)
+{
+    if (this->handler != -1)
+    {
+        glDeleteTextures(1, &this->handler);
+    }
+
+    this->handler = tex.handler;
+    tex.handler = -1;
+    return *this;
+}
+
 void Texture3D::update(const void* pixels, glm::uvec3 offset, glm::uvec3 size, PixelFormat format, Type type)
 {
     assert(glm::all(glm::lessThanEqual(offset + size, this->getSize())));

@@ -31,6 +31,18 @@ Texture1D::Texture1D(const Texture1D& tex)
     );
 }
 
+Texture1D& Texture1D::operator=(Texture1D&& tex)
+{
+    if (this->handler != -1)
+    {
+        glDeleteTextures(1, &this->handler);
+    }
+
+    this->handler = tex.handler;
+    tex.handler = -1;
+    return *this;
+}
+
 void Texture1D::update(const void* pixels, glm::uvec1 offset, glm::uvec1 size, PixelFormat format, Type type)
 {
     assert(glm::all(glm::lessThanEqual(offset + size, this->getSize())));
