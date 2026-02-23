@@ -24,6 +24,8 @@ add_library(
     ${CMAKE_CURRENT_SOURCE_DIR}/src/UniformBuffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Texture1DArray.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Texture2DArray.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/TextureCubeMap.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/TextureCubeMapArray.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ElementArrayBuffer.cpp
 )
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

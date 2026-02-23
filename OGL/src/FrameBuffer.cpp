@@ -63,6 +63,7 @@ FrameBuffer::~FrameBuffer()
     if (this->handler != -1)
     {
         glDeleteFramebuffers(1, &this->handler);
+        this->handler = -1;
     }
 }
 

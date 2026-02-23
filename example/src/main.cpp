@@ -128,10 +128,12 @@ int main()
     GLFWwindow* window = createWindow();
     initGLEW();
 
-    const std::filesystem::path shaderPath("../../example/shaders/");
+    const std::filesystem::path contentPath("../../example");
+    const std::filesystem::path shaderPath = contentPath / "shaders";
+    const std::filesystem::path imagePath  = contentPath / "images";
     RayTracerExample rayTracerExample(glm::uvec2(800, 800), shaderPath);
     InstancedExample instancedExample(glm::uvec2(300, 300), shaderPath);
-    SceneExample sceneExample(glm::uvec2(800, 800), shaderPath);
+    SceneExample sceneExample(glm::uvec2(800, 800), shaderPath, imagePath);
 
     OGL::Camera<float> camera;
     camera.pos = glm::vec3(0, 0, -5);

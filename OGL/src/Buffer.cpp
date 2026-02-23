@@ -26,6 +26,7 @@ Buffer::~Buffer()
     if (this->handler != -1)
     {
         glDeleteBuffers(1, &this->handler);
+        this->handler = -1;
     }
 }
 

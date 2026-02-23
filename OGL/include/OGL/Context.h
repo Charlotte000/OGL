@@ -131,7 +131,6 @@ OGL_PARAM_BOOL(WriteMask, GL_DEPTH_WRITEMASK, glDepthMask);
 
 }
 
-// TODO
 namespace Blend
 {
 
@@ -154,6 +153,13 @@ namespace CullFace
 OGL_PARAM_BOOL_EN_DIS(Enable, GL_CULL_FACE);
 
 OGL_PARAM_INT(Mode, GL_CULL_FACE_MODE, glCullFace, CullFaceMode);
+
+}
+
+namespace CubeMap
+{
+
+OGL_PARAM_BOOL_EN_DIS(Seamless, GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
 }
 

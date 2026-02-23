@@ -33,6 +33,7 @@ Program::~Program()
     if (this->handler != -1)
     {
         glDeleteProgram(this->handler);
+        this->handler = -1;
     }
 }
 

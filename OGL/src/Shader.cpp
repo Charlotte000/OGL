@@ -64,7 +64,8 @@ Shader::~Shader()
 {
     if (this->handler != -1)
     {
-        glDeleteProgram(this->handler);
+        glDeleteShader(this->handler);
+        this->handler = -1;
     }
 }
 
@@ -72,7 +73,7 @@ Shader& Shader::operator=(Shader&& shader)
 {
     if (this->handler != -1)
     {
-        glDeleteProgram(this->handler);
+        glDeleteShader(this->handler);
     }
 
     this->handler = shader.handler;

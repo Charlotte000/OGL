@@ -15,6 +15,7 @@ Texture::~Texture()
     if (this->handler != -1)
     {
         glDeleteTextures(1, &this->handler);
+        this->handler = -1;
     }
 }
 
