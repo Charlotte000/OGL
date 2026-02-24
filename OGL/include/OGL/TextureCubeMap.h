@@ -12,6 +12,8 @@ namespace OGL
 /**
  * @brief Texture Cubemap is used to store a cube map texture.
  * 
+ * A cube map textute contains 6 2D image slices corresponding to the six faces of the cube: X+, X-, Y+, Y-, Z+, Z- directions respectively.
+ * 
  * Texture objects are immutable, meaning their size, internal format, filter and wrap modes can not be changed after creation.
  */
 class TextureCubeMap : public Texture
