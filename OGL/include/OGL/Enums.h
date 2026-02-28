@@ -229,6 +229,9 @@ enum class ShaderType : GLenum
     GEOMETRY = GL_GEOMETRY_SHADER,
 };
 
+/**
+ * @brief Comparison functions for depth and stencil testing.
+ */
 enum class Func : GLenum
 {
     NEVER = GL_NEVER,
@@ -241,7 +244,7 @@ enum class Func : GLenum
     ALWAYS = GL_ALWAYS,
 };
 
-enum class CullFaceMode : GLenum
+enum class FaceMode : GLenum
 {
     FRONT = GL_FRONT,
     BACK = GL_BACK,
@@ -259,6 +262,12 @@ enum class Attachment : GLenum
     COLOR3 = GL_COLOR_ATTACHMENT3,
     COLOR4 = GL_COLOR_ATTACHMENT4,
     COLOR5 = GL_COLOR_ATTACHMENT5,
+};
+
+enum class WindingOrder : GLenum
+{
+    CCW = GL_CCW, // Counter-clockwise
+    CW = GL_CW,   // Clockwise
 };
 
 static size_t getTypeSize(TypeU type)

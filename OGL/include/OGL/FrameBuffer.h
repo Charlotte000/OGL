@@ -102,6 +102,8 @@ public:
     static void stopUse();
 private:
     GLuint handler = -1;
+
+    void checkStatus() const;
 };
 
 }

@@ -232,8 +232,8 @@ glm::mat4 SceneExample::renderShadow()
 
     OGL::Context::Viewport::setBox(glm::uvec2(0, 0), this->shadowMap.getSize(OGL::Attachment::DEPTH));
     OGL::Context::CullFace::setEnable(true);
-    OGL::Context::CullFace::setMode(OGL::CullFaceMode::FRONT);
-    OGL::Context::Depth::setTest(true);
+    OGL::Context::CullFace::setMode(OGL::FaceMode::FRONT);
+    OGL::Context::Depth::setEnable(true);
     OGL::Context::Depth::setFunc(OGL::Func::LESS);
 
     this->shadowMap.use();
@@ -254,8 +254,8 @@ void SceneExample::renderSkyBox(const glm::mat4& PVM)
 {
     OGL::Context::Viewport::setBox(glm::uvec2(0, 0), this->frame.getSize());
     OGL::Context::CullFace::setEnable(false);
-    OGL::Context::CullFace::setMode(OGL::CullFaceMode::BACK);
-    OGL::Context::Depth::setTest(true);
+    OGL::Context::CullFace::setMode(OGL::FaceMode::BACK);
+    OGL::Context::Depth::setEnable(true);
     OGL::Context::Depth::setFunc(OGL::Func::LEQUAL);
     OGL::Context::CubeMap::setSeamless(true);
 
@@ -274,8 +274,8 @@ void SceneExample::renderScene(const OGL::Camera<float>& camera, const glm::mat4
 {
     OGL::Context::Viewport::setBox(glm::uvec2(0, 0), this->frame.getSize());
     OGL::Context::CullFace::setEnable(true);
-    OGL::Context::CullFace::setMode(OGL::CullFaceMode::BACK);
-    OGL::Context::Depth::setTest(true);
+    OGL::Context::CullFace::setMode(OGL::FaceMode::BACK);
+    OGL::Context::Depth::setEnable(true);
     OGL::Context::Depth::setFunc(OGL::Func::LESS);
 
     this->frame.use();

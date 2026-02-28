@@ -45,7 +45,7 @@ void InstancedExample::render()
 {
     OGL::Context::Viewport::setBox(glm::uvec2(0, 0), this->frame.getSize());
     OGL::Context::Point::setSize(10);
-    OGL::Context::Depth::setTest(false);
+    OGL::Context::Depth::setEnable(false);
 
     this->frame.use();
     this->program.use();
