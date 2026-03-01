@@ -31,9 +31,9 @@ InstancedExample::InstancedExample(glm::uvec2 size, const std::filesystem::path&
     { //   x, y
         -0.8, 0,
         -0.4, 0,
-        0, 0,
-        0.4, 0,
-        0.8, 0,
+           0, 0,
+         0.4, 0,
+         0.8, 0,
     };
     this->points.vbo.write(vertices, sizeof(vertices));
 

@@ -84,6 +84,26 @@ public:
     void use(GLenum target);
 
     /**
+     * @brief Map the buffer to memory for direct access.
+     * 
+     * Map the buffer object's data store into the client's address space. This allows for direct read/write access to the buffer's data without needing to use glBufferSubData or glGetBufferSubData.
+     * 
+     * @param access The access policy for the mapped buffer.
+     * @return Pointer to the mapped memory. The pointer is valid until the buffer is unmapped using Buffer::unmap or the buffer is deleted. The behavior of accessing the mapped memory after unmapping or deleting the buffer is undefined.
+     * @throw std::runtime_error if the buffer cannot be mapped.
+     */
+    void* map(Access access);
+
+    /**
+     * @brief Unmap the buffer from memory.
+     * 
+     * Release the mapping of the buffer object's data store from the client's address space. After this call, the pointer returned by Buffer::map is no longer valid and should not be accessed.
+     * 
+     * @throw std::runtime_error if the buffer cannot be unmapped (e.g., if the data store contents have become corrupt during the time it was mapped).
+     */
+    void unmap();
+
+    /**
      * @brief Get the OpenGL handler of the buffer object.
      * @return The OpenGL handler of the buffer object.
      */
@@ -91,7 +111,6 @@ public:
 
     /**
      * @brief Get the size of the buffer object's data store in bytes.
-     * 
      * @return Size in bytes of the buffer object's data store.
      */
     size_t getSize() const;

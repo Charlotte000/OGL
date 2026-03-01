@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdexcept>
 
 #include "OGL/Buffer.h"
 
@@ -84,6 +85,26 @@ void Buffer::bind(GLenum target, unsigned int binding)
 void Buffer::use(GLenum target)
 {
     glBindBuffer(target, this->handler);
+}
+
+void* Buffer::map(Access access)
+{
+    void *ptr = glMapNamedBuffer(this->handler, static_cast<GLenum>(access));
+    if (ptr == nullptr)
+    {
+        throw std::runtime_error("Failed to map buffer");
+    }
+
+    return ptr;
+}
+
+void Buffer::unmap()
+{
+    bool result = glUnmapNamedBuffer(this->handler);
+    if (!result)
+    {
+        throw std::runtime_error("Failed to unmap buffer");
+    }
 }
 
 GLuint Buffer::getHandler() const
