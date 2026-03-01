@@ -61,10 +61,12 @@ public:
      * @return OpenGL handler.
      */
     GLuint getHandler() const;
+
+    ShaderType getType() const;
 private:
     GLuint handler = -1;
 
-    void checkStatus() const;
+    void checkStatus(GLenum param) const;
 };
 
 }

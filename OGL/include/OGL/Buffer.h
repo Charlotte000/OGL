@@ -69,6 +69,16 @@ public:
     void read(void* data, size_t size) const;
 
     /**
+     * @brief Copy data from this buffer to another buffer.
+     * @param srcOffset Offset in bytes into this buffer's data store from which data will be read.
+     * @param dst Destination buffer object to which data will be copied.
+     * @param dstOffset Offset in bytes into the destination buffer's data store where data replacement will begin.
+     * @param size Size in bytes of the data to be copied.
+     * @throw std::runtime_error if the source or destination buffers do not have enough data store size to perform the copy operation.
+     */
+    void copy(size_t srcOffset, Buffer& dst, size_t dstOffset, size_t size) const;
+
+    /**
      * @brief Bind the buffer to a specified target and binding point.
      * 
      * This method binds the buffer to the specified target (e.g., GL_ARRAY_BUFFER) and binding point (for targets that support binding points, such as GL_UNIFORM_BUFFER).

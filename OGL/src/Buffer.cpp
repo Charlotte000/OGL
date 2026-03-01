@@ -77,6 +77,12 @@ void Buffer::read(void* data, size_t size) const
     return this->read(data, 0, size);
 }
 
+void Buffer::copy(size_t srcOffset, Buffer& dst, size_t dstOffset, size_t size) const
+{
+    assert(srcOffset + size <= this->getSize() && dstOffset + size <= dst.getSize());
+    glCopyNamedBufferSubData(this->handler, dst.getHandler(), srcOffset, dstOffset, size);
+}
+
 void Buffer::bind(GLenum target, unsigned int binding)
 {
     glBindBufferBase(target, binding, this->handler);

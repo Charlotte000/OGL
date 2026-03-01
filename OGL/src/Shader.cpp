@@ -17,7 +17,7 @@ Shader::Shader(const char src[], ShaderType type)
 
     glCompileShader(this->handler);
 
-    this->checkStatus();
+    this->checkStatus(GL_COMPILE_STATUS);
 }
 
 Shader::Shader(const std::filesystem::path& path, ShaderType type)
@@ -39,7 +39,7 @@ Shader::Shader(const std::filesystem::path& path, ShaderType type)
 
     glCompileShader(this->handler);
 
-    this->checkStatus();
+    this->checkStatus(GL_COMPILE_STATUS);
 }
 
 Shader::Shader(const unsigned char src[], size_t srcSize, ShaderType type)
@@ -51,7 +51,7 @@ Shader::Shader(const unsigned char src[], size_t srcSize, ShaderType type)
     glShaderBinary(1, &this->handler, GL_SHADER_BINARY_FORMAT_SPIR_V, src, srcSize);
     glSpecializeShader(this->handler, "main", 0, nullptr, nullptr);
 
-    this->checkStatus();
+    this->checkStatus(GL_COMPILE_STATUS);
 }
 
 Shader::Shader(Shader&& shader)
@@ -86,10 +86,17 @@ GLuint Shader::getHandler() const
     return this->handler;
 }
 
-void Shader::checkStatus() const
+ShaderType Shader::getType() const
+{
+    GLint val;
+    glGetShaderiv(this->handler, GL_SHADER_TYPE, &val);
+    return static_cast<ShaderType>(val);
+}
+
+void Shader::checkStatus(GLenum param) const
 {
     GLint status;
-    glGetShaderiv(this->handler, GL_COMPILE_STATUS, &status);
+    glGetShaderiv(this->handler, param, &status);
     if (status != GL_TRUE)
     {
         GLint logSize;

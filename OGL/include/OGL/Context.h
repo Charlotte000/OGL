@@ -3,6 +3,8 @@
  */
 #pragma once
 
+#include <stdexcept>
+
 #include <glm/glm.hpp>
 
 #include "OGL/Enums.h"
