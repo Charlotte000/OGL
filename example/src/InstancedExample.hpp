@@ -43,9 +43,9 @@ InstancedExample::InstancedExample(glm::uvec2 size, const std::filesystem::path&
 
 void InstancedExample::render()
 {
-    OGL::Context::Viewport::setBox(glm::uvec2(0, 0), this->frame.getSize());
-    OGL::Context::Point::setSize(10);
-    OGL::Context::Depth::setEnable(false);
+    OGL::Context::reset();
+    OGL::Context::Viewport::box(glm::uvec2(0, 0), this->frame.getSize());
+    OGL::Context::Point::size(10);
 
     this->frame.use();
     this->program.use();

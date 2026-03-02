@@ -74,7 +74,7 @@ void Texture1D::read(void* pixels, size_t bufSize, glm::uvec1 offset, glm::uvec1
 Image1D Texture1D::read(glm::uvec1 offset, glm::uvec1 size) const
 {
     Image1D img(size);
-    this->read(img.pixels.data(), img.pixels.size() * sizeof(float) * 4, offset, size, PixelFormat::RGBA, Type::FLOAT);
+    this->read(img.pixels.data(), img.pixels.size() * sizeof(glm::vec4), offset, size, PixelFormat::RGBA, Type::FLOAT);
     return img;
 }
 

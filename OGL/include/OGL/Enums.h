@@ -270,6 +270,13 @@ enum class WindingOrder : GLenum
     CW = GL_CW,   // Clockwise
 };
 
+enum class PolygonMode : GLenum
+{
+    POINT = GL_POINT,
+    LINE = GL_LINE,
+    FILL = GL_FILL,
+};
+
 static size_t getTypeSize(TypeU type)
 {
     switch (type)

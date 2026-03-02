@@ -74,7 +74,7 @@ void Texture2DArray::read(void* pixels, size_t bufSize, glm::uvec3 offset, glm::
 Image3D Texture2DArray::read(glm::uvec3 offset, glm::uvec3 size) const
 {
     Image3D img(size);
-    this->read(img.pixels.data(), img.pixels.size() * sizeof(float) * 4, offset, size, PixelFormat::RGBA, Type::FLOAT);
+    this->read(img.pixels.data(), img.pixels.size() * sizeof(glm::vec4), offset, size, PixelFormat::RGBA, Type::FLOAT);
     return img;
 }
 

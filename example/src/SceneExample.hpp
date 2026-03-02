@@ -230,11 +230,11 @@ glm::mat4 SceneExample::renderShadow()
     const glm::mat4 V = glm::lookAt(this->lightPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
     const glm::mat4 PV = P * V;
 
-    OGL::Context::Viewport::setBox(glm::uvec2(0, 0), this->shadowMap.getSize(OGL::Attachment::DEPTH));
-    OGL::Context::CullFace::setEnable(true);
-    OGL::Context::CullFace::setMode(OGL::FaceMode::FRONT);
-    OGL::Context::Depth::setEnable(true);
-    OGL::Context::Depth::setFunc(OGL::Func::LESS);
+    OGL::Context::reset();
+    OGL::Context::Viewport::box(glm::uvec2(0, 0), this->shadowMap.getSize(OGL::Attachment::DEPTH));
+    OGL::Context::CullFace::enable(true);
+    OGL::Context::CullFace::mode(OGL::FaceMode::FRONT);
+    OGL::Context::Depth::enable(true);
 
     this->shadowMap.use();
     this->shadowMapProgram.use();
@@ -252,12 +252,12 @@ glm::mat4 SceneExample::renderShadow()
 
 void SceneExample::renderSkyBox(const glm::mat4& PVM)
 {
-    OGL::Context::Viewport::setBox(glm::uvec2(0, 0), this->frame.getSize());
-    OGL::Context::CullFace::setEnable(false);
-    OGL::Context::CullFace::setMode(OGL::FaceMode::BACK);
-    OGL::Context::Depth::setEnable(true);
-    OGL::Context::Depth::setFunc(OGL::Func::LEQUAL);
-    OGL::Context::CubeMap::setSeamless(true);
+    OGL::Context::reset();
+    OGL::Context::Viewport::box(glm::uvec2(0, 0), this->frame.getSize());
+    OGL::Context::CullFace::enable(false);
+    OGL::Context::Depth::enable(true);
+    OGL::Context::Depth::func(OGL::Func::LEQUAL);
+    OGL::Context::CubeMap::seamless(true);
 
     this->frame.use();
     this->skyBoxProgram.use();
@@ -272,11 +272,10 @@ void SceneExample::renderSkyBox(const glm::mat4& PVM)
 
 void SceneExample::renderScene(const OGL::Camera<float>& camera, const glm::mat4& PVM, const glm::mat4& lightPV)
 {
-    OGL::Context::Viewport::setBox(glm::uvec2(0, 0), this->frame.getSize());
-    OGL::Context::CullFace::setEnable(true);
-    OGL::Context::CullFace::setMode(OGL::FaceMode::BACK);
-    OGL::Context::Depth::setEnable(true);
-    OGL::Context::Depth::setFunc(OGL::Func::LESS);
+    OGL::Context::reset();
+    OGL::Context::Viewport::box(glm::uvec2(0, 0), this->frame.getSize());
+    OGL::Context::CullFace::enable(true);
+    OGL::Context::Depth::enable(true);
 
     this->frame.use();
     this->program.use();
