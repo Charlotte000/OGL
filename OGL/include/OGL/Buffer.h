@@ -105,13 +105,23 @@ public:
     void* map(Access access);
 
     /**
+     * @brief Map the buffer to memory for read-only access.
+     *
+     * This is a convenience method that maps the buffer with Access::READ_ONLY access policy.
+     *  
+     * @return Pointer to the mapped memory for read-only access. The pointer is valid until the buffer is unmapped using Buffer::unmap or the buffer is deleted. The behavior of accessing the mapped memory after unmapping or deleting the buffer is undefined.
+     * @throw std::runtime_error if the buffer cannot be mapped.
+     */
+    const void* map() const;
+
+    /**
      * @brief Unmap the buffer from memory.
      * 
      * Release the mapping of the buffer object's data store from the client's address space. After this call, the pointer returned by Buffer::map is no longer valid and should not be accessed.
      * 
      * @throw std::runtime_error if the buffer cannot be unmapped (e.g., if the data store contents have become corrupt during the time it was mapped).
      */
-    void unmap();
+    void unmap() const;
 
     /**
      * @brief Get the OpenGL handler of the buffer object.

@@ -29,6 +29,16 @@ public:
         Wrap wrapR       = Wrap::REPEAT
     );
 
+    TextureCubeMap(
+        const Image3D& image,
+        ImageFormat internalFormat,
+        Filter magFilter = Filter::LINEAR,
+        Filter minFilter = Filter::LINEAR,
+        Wrap wrapS       = Wrap::REPEAT,
+        Wrap wrapT       = Wrap::REPEAT,
+        Wrap wrapR       = Wrap::REPEAT
+    );
+
     TextureCubeMap(TextureCubeMap&& tex);
 
     TextureCubeMap(const TextureCubeMap& tex);

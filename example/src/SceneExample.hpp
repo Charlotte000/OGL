@@ -127,7 +127,7 @@ SceneExample::SceneExample(glm::uvec2 size, const std::filesystem::path& shaderP
         OGL::Shader(shaderPath / "scene" / "skyBox" / "vertex.glsl", OGL::ShaderType::VERTEX),
         OGL::Shader(shaderPath / "scene" / "skyBox" / "fragment.glsl", OGL::ShaderType::FRAGMENT),
     }),
-    skyBoxMap(glm::uvec2(1, 1), OGL::ImageFormat::RGBA32F),
+    skyBoxMap(parseSkybox(imagesPath / "skybox.png"), OGL::ImageFormat::RGBA32F),
     frame(size),
     shadowMap({ { OGL::Attachment::DEPTH, OGL::Texture2D(glm::uvec2(1024, 1024), OGL::ImageFormat::DEPTH32F) } }),
     scene({ { OGL::Type::FLOAT, 3 }, { OGL::Type::FLOAT, 3 }, { OGL::Type::FLOAT, 3 } }),
@@ -195,12 +195,6 @@ SceneExample::SceneExample(glm::uvec2 size, const std::filesystem::path& shaderP
             -0.5f,  0.5f, -0.5f,
         };
         this->skyBox.vbo.write(vertices, sizeof(vertices));
-    }
-
-    {
-        OGL::Image3D map = parseSkybox(imagesPath / "skybox.png");
-        this->skyBoxMap = OGL::TextureCubeMap(glm::uvec2(map.size), OGL::ImageFormat::RGBA32F);
-        this->skyBoxMap.update(map, glm::uvec3(0));
     }
 }
 

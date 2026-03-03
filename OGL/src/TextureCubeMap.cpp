@@ -15,13 +15,26 @@ TextureCubeMap::TextureCubeMap(
     glTextureStorage2D(this->handler, 1, static_cast<GLenum>(internalFormat), size.x, size.y);
 }
 
+TextureCubeMap::TextureCubeMap(
+    const Image3D& image,
+    ImageFormat internalFormat,
+    Filter magFilter,
+    Filter minFilter,
+    Wrap wrapS,
+    Wrap wrapT,
+    Wrap wrapR
+) : TextureCubeMap(glm::uvec2(image.size.x, image.size.y), internalFormat, magFilter, minFilter, wrapS, wrapT, wrapR)
+{
+    this->update(image, glm::uvec3(0));
+}
+
 TextureCubeMap::TextureCubeMap(TextureCubeMap&& tex)
     : Texture(std::move(tex))
 {
 }
 
 TextureCubeMap::TextureCubeMap(const TextureCubeMap& tex)
-    : TextureCubeMap(tex.getSize(), tex.getInternalFormat(), tex.getMagFilter(), tex.getMinFilter(), tex.getWrapS(), tex.getWrapT(), tex.getWrapR())
+    : TextureCubeMap(glm::uvec2(tex.getSize().x, tex.getSize().y), tex.getInternalFormat(), tex.getMagFilter(), tex.getMinFilter(), tex.getWrapS(), tex.getWrapT(), tex.getWrapR())
 {
     const glm::uvec3 size = tex.getSize();
     glCopyImageSubData(

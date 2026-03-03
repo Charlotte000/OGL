@@ -15,6 +15,19 @@ Texture1DArray::Texture1DArray(
     glTextureStorage2D(this->handler, 1, static_cast<GLenum>(internalFormat), size.x, size.y);
 }
 
+Texture1DArray::Texture1DArray(
+    const Image2D& image,
+    ImageFormat internalFormat,
+    Filter magFilter,
+    Filter minFilter,
+    Wrap wrapS,
+    Wrap wrapT,
+    Wrap wrapR
+) : Texture1DArray(image.size, internalFormat, magFilter, minFilter, wrapS, wrapT, wrapR)
+{
+    this->update(image, glm::uvec2(0));
+}
+
 Texture1DArray::Texture1DArray(Texture1DArray&& tex)
     : Texture(std::move(tex))
 {

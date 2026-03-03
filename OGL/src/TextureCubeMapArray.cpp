@@ -15,6 +15,19 @@ TextureCubeMapArray::TextureCubeMapArray(
     glTextureStorage3D(this->handler, 1, static_cast<GLenum>(internalFormat), size.x, size.y, size.z * 6);
 }
 
+TextureCubeMapArray::TextureCubeMapArray(
+    const Image3D& image,
+    ImageFormat internalFormat,
+    Filter magFilter,
+    Filter minFilter,
+    Wrap wrapS,
+    Wrap wrapT,
+    Wrap wrapR
+) : TextureCubeMapArray(image.size, internalFormat, magFilter, minFilter, wrapS, wrapT, wrapR)
+{
+    this->update(image, glm::uvec3(0));
+}
+
 TextureCubeMapArray::TextureCubeMapArray(TextureCubeMapArray&& tex)
     : Texture(std::move(tex))
 {

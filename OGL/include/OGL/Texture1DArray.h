@@ -27,6 +27,16 @@ public:
         Wrap wrapR       = Wrap::REPEAT
     );
 
+    Texture1DArray(
+        const Image2D& image,
+        ImageFormat internalFormat,
+        Filter magFilter = Filter::LINEAR,
+        Filter minFilter = Filter::LINEAR,
+        Wrap wrapS       = Wrap::REPEAT,
+        Wrap wrapT       = Wrap::REPEAT,
+        Wrap wrapR       = Wrap::REPEAT
+    );
+
     Texture1DArray(Texture1DArray&& tex);
 
     Texture1DArray(const Texture1DArray& tex);

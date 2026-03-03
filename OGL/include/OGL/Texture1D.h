@@ -27,6 +27,16 @@ public:
         Wrap wrapR       = Wrap::REPEAT
     );
 
+    Texture1D(
+        const Image1D& image,
+        ImageFormat internalFormat,
+        Filter magFilter = Filter::LINEAR,
+        Filter minFilter = Filter::LINEAR,
+        Wrap wrapS       = Wrap::REPEAT,
+        Wrap wrapT       = Wrap::REPEAT,
+        Wrap wrapR       = Wrap::REPEAT
+    );
+
     Texture1D(Texture1D&& tex);
 
     Texture1D(const Texture1D& tex);

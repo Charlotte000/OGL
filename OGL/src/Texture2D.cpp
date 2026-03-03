@@ -15,6 +15,19 @@ Texture2D::Texture2D(
     glTextureStorage2D(this->handler, 1, static_cast<GLenum>(internalFormat), size.x, size.y);
 }
 
+Texture2D::Texture2D(
+    const Image2D& image,
+    ImageFormat internalFormat,
+    Filter magFilter,
+    Filter minFilter,
+    Wrap wrapS,
+    Wrap wrapT,
+    Wrap wrapR
+) : Texture2D(image.size, internalFormat, magFilter, minFilter, wrapS, wrapT, wrapR)
+{
+    this->update(image, glm::uvec2(0));
+}
+
 Texture2D::Texture2D(Texture2D&& tex)
     : Texture(std::move(tex))
 {

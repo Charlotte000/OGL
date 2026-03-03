@@ -15,6 +15,19 @@ Texture2DArray::Texture2DArray(
     glTextureStorage3D(this->handler, 1, static_cast<GLenum>(internalFormat), size.x, size.y, size.z);
 }
 
+Texture2DArray::Texture2DArray(
+    const Image3D& image,
+    ImageFormat internalFormat,
+    Filter magFilter,
+    Filter minFilter,
+    Wrap wrapS,
+    Wrap wrapT,
+    Wrap wrapR
+) : Texture2DArray(image.size, internalFormat, magFilter, minFilter, wrapS, wrapT, wrapR)
+{
+    this->update(image, glm::uvec3(0));
+}
+
 Texture2DArray::Texture2DArray(Texture2DArray&& tex)
     : Texture(std::move(tex))
 {

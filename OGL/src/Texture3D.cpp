@@ -15,6 +15,19 @@ Texture3D::Texture3D(
     glTextureStorage3D(this->handler, 1, static_cast<GLenum>(internalFormat), size.x, size.y, size.z);
 }
 
+Texture3D::Texture3D(
+    const Image3D& image,
+    ImageFormat internalFormat,
+    Filter magFilter,
+    Filter minFilter,
+    Wrap wrapS,
+    Wrap wrapT,
+    Wrap wrapR
+) : Texture3D(image.size, internalFormat, magFilter, minFilter, wrapS, wrapT, wrapR)
+{
+    this->update(image, glm::uvec3(0));
+}
+
 Texture3D::Texture3D(Texture3D&& tex)
     : Texture(std::move(tex))
 {

@@ -15,6 +15,19 @@ Texture1D::Texture1D(
     glTextureStorage1D(this->handler, 1, static_cast<GLenum>(internalFormat), size.x);
 }
 
+Texture1D::Texture1D(
+    const Image1D& image,
+    ImageFormat internalFormat,
+    Filter magFilter,
+    Filter minFilter,
+    Wrap wrapS,
+    Wrap wrapT,
+    Wrap wrapR
+) : Texture1D(image.size, internalFormat, magFilter, minFilter, wrapS, wrapT, wrapR)
+{
+    this->update(image, glm::uvec1(0));
+}
+
 Texture1D::Texture1D(Texture1D&& tex)
     : Texture(std::move(tex))
 {
