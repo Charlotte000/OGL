@@ -123,7 +123,7 @@ OGL_PARAM_ENABLE(enable, GL_DEPTH_TEST);
 
 OGL_PARAM_ENABLE(clamp, GL_DEPTH_CLAMP);
 
-OGL_PARAM_INT(func, GL_DEPTH_FUNC, glDepthFunc, Func);
+OGL_PARAM_INT(func, GL_DEPTH_FUNC, glDepthFunc, CompFunc);
 
 OGL_PARAM_FLOAT2(range, GL_DEPTH_RANGE, glDepthRange);
 
@@ -148,6 +148,21 @@ namespace Blend
 {
 
 OGL_PARAM_ENABLE(enable, GL_BLEND);
+
+static inline glm::vec<2, Factor> func()
+{
+    GLint src, dst;
+    glGetIntegerv(GL_BLEND_SRC, &src);
+    glGetIntegerv(GL_BLEND_DST, &dst);
+    return glm::vec<2, Factor>(static_cast<Factor>(src), static_cast<Factor>(dst));
+}
+
+static inline void func(Factor src, Factor dst)
+{
+    glBlendFunc(static_cast<GLenum>(src), static_cast<GLenum>(dst));
+}
+
+OGL_PARAM_INT(equation, GL_BLEND_EQUATION, glBlendEquation, EqFunc);
 
 }
 
@@ -268,13 +283,15 @@ static inline void reset()
 
     Depth::enable(false);
     Depth::clamp(false);
-    Depth::func(Func::LESS);
+    Depth::func(CompFunc::LESS);
     Depth::range(glm::vec2(0, 1));
     Depth::writeMask(true);
 
     Stencil::enable(false);
 
     Blend::enable(false);
+    Blend::func(Factor::ONE, Factor::ZERO);
+    Blend::equation(EqFunc::ADD);
 
     Point::smooth(false);
     Point::size(1);

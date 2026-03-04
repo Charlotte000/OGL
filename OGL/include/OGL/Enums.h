@@ -232,7 +232,7 @@ enum class ShaderType : GLenum
 /**
  * @brief Comparison functions for depth and stencil testing.
  */
-enum class Func : GLenum
+enum class CompFunc : GLenum
 {
     NEVER = GL_NEVER,
     LESS = GL_LESS,
@@ -242,6 +242,45 @@ enum class Func : GLenum
     NOTEQUAL = GL_NOTEQUAL,
     GEQUAL = GL_GEQUAL,
     ALWAYS = GL_ALWAYS,
+};
+
+enum class EqFunc : GLenum
+{
+    ADD = GL_FUNC_ADD, // a + b
+    SUBTRACT = GL_FUNC_SUBTRACT, // a - b
+    REVERSE_SUBTRACT = GL_FUNC_REVERSE_SUBTRACT, // b - a
+    MIN = GL_MIN, // min(a, b)
+    MAX = GL_MAX, // max(a, b)
+};
+
+enum class Factor : GLenum
+{
+    ZERO = GL_ZERO,
+    ONE = GL_ONE,
+
+    SRC_COLOR = GL_SRC_COLOR,
+    ONE_MINUS_SRC_COLOR = GL_ONE_MINUS_SRC_COLOR,
+
+    DST_COLOR = GL_DST_COLOR,
+    ONE_MINUS_DST_COLOR = GL_ONE_MINUS_DST_COLOR,
+
+    SRC_ALPHA = GL_SRC_ALPHA,
+    ONE_MINUS_SRC_ALPHA = GL_ONE_MINUS_SRC_ALPHA,
+
+    DST_ALPHA = GL_DST_ALPHA,
+    ONE_MINUS_DST_ALPHA = GL_ONE_MINUS_DST_ALPHA,
+
+    CONSTANT_COLOR = GL_CONSTANT_COLOR,
+    ONE_MINUS_CONSTANT_COLOR = GL_ONE_MINUS_CONSTANT_COLOR,
+
+    CONSTANT_ALPHA = GL_CONSTANT_ALPHA,
+    ONE_MINUS_CONSTANT_ALPHA = GL_ONE_MINUS_CONSTANT_ALPHA,
+
+    SRC_ALPHA_SATURATE = GL_SRC_ALPHA_SATURATE,
+    SRC1_COLOR = GL_SRC1_COLOR,
+    ONE_MINUS_SRC1_COLOR = GL_ONE_MINUS_SRC1_COLOR,
+    SRC1_ALPHA = GL_SRC1_ALPHA,
+    ONE_MINUS_SRC1_ALPHA = GL_ONE_MINUS_SRC1_ALPHA,
 };
 
 enum class FaceMode : GLenum

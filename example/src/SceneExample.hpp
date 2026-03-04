@@ -250,7 +250,7 @@ void SceneExample::renderSkyBox(const glm::mat4& PVM)
     OGL::Context::Viewport::box(glm::uvec2(0, 0), this->frame.size());
     OGL::Context::CullFace::enable(false);
     OGL::Context::Depth::enable(true);
-    OGL::Context::Depth::func(OGL::Func::LEQUAL);
+    OGL::Context::Depth::func(OGL::CompFunc::LEQUAL);
     OGL::Context::CubeMap::seamless(true);
 
     this->frame.use();
