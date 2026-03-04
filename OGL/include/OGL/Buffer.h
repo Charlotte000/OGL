@@ -133,13 +133,13 @@ public:
      * @brief Get the size of the buffer object's data store in bytes.
      * @return Size in bytes of the buffer object's data store.
      */
-    size_t getSize() const;
+    size_t size() const;
 
     /**
      * @brief Get the usage pattern of the buffer object's data store.
      * @return The usage pattern (DataUsage) of the buffer object's data store.
      */
-    DataUsage getUsage() const;
+    DataUsage usage() const;
 
     /**
      * @brief Unbind any buffer from the OpenGL context.

@@ -58,6 +58,16 @@ FrameBuffer& FrameBuffer::operator=(FrameBuffer&& fbo)
     return *this;
 }
 
+Texture2D& FrameBuffer::operator[](Attachment attachment)
+{
+    return this->textures.at(attachment);
+}
+
+const Texture2D& FrameBuffer::operator[](Attachment attachment) const
+{
+    return this->textures.at(attachment);
+}
+
 void FrameBuffer::use()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, this->handler);
@@ -95,9 +105,9 @@ GLuint FrameBuffer::getHandler() const
     return this->handler;
 }
 
-glm::uvec2 FrameBuffer::getSize(Attachment attachment) const
+glm::uvec2 FrameBuffer::size(Attachment attachment) const
 {
-    return this->textures.at(attachment).getSize();
+    return this->textures.at(attachment).size();
 }
 
 void FrameBuffer::checkStatus() const

@@ -17,24 +17,32 @@ namespace OGL
 class Texture3D : public Texture
 {
 public:
+    /**
+     * @brief Construct a new 3D Texture object
+     * @param size Size of the texture in pixels (width, height, depth).
+     * @param internalFormat Internal format of the texture.
+     * @param filter Filter mode of the texture (magnification and minification).
+     * @param wrap Wrap mode of the texture (for S, T and R texture coordinates).
+     */
     Texture3D(
         glm::uvec3 size,
         ImageFormat internalFormat,
-        Filter magFilter = Filter::LINEAR,
-        Filter minFilter = Filter::LINEAR,
-        Wrap wrapS       = Wrap::REPEAT,
-        Wrap wrapT       = Wrap::REPEAT,
-        Wrap wrapR       = Wrap::REPEAT
+        glm::vec<2, Filter> filter = glm::vec<2, Filter>(Filter::LINEAR),
+        glm::vec<3, Wrap> wrap = glm::vec<3, Wrap>(Wrap::REPEAT)
     );
 
+    /**
+     * @brief Construct a new 3D Texture object from the specified image.
+     * @param image The image to be copied to the texture store.
+     * @param internalFormat Internal format of the texture.
+     * @param filter Filter mode of the texture (magnification and minification).
+     * @param wrap Wrap mode of the texture (for S, T and R texture coordinates).
+     */
     Texture3D(
         const Image3D& image,
         ImageFormat internalFormat,
-        Filter magFilter = Filter::LINEAR,
-        Filter minFilter = Filter::LINEAR,
-        Wrap wrapS       = Wrap::REPEAT,
-        Wrap wrapT       = Wrap::REPEAT,
-        Wrap wrapR       = Wrap::REPEAT
+        glm::vec<2, Filter> filter = glm::vec<2, Filter>(Filter::LINEAR),
+        glm::vec<3, Wrap> wrap = glm::vec<3, Wrap>(Wrap::REPEAT)
     );
 
     Texture3D(Texture3D&& tex);
@@ -84,12 +92,6 @@ public:
      * @return Image copied from the texture.
      */
     Image3D read() const;
-
-    /**
-     * @brief Get the size of the texture.
-     * @return The size of the texture.
-     */
-    glm::uvec3 getSize() const;
 };
 
 }

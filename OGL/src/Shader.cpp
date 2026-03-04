@@ -86,7 +86,7 @@ GLuint Shader::getHandler() const
     return this->handler;
 }
 
-ShaderType Shader::getType() const
+ShaderType Shader::type() const
 {
     GLint val;
     glGetShaderiv(this->handler, GL_SHADER_TYPE, &val);

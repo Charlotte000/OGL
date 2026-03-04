@@ -44,7 +44,7 @@ InstancedExample::InstancedExample(glm::uvec2 size, const std::filesystem::path&
 void InstancedExample::render()
 {
     OGL::Context::reset();
-    OGL::Context::Viewport::box(glm::uvec2(0, 0), this->frame.getSize());
+    OGL::Context::Viewport::box(glm::uvec2(0, 0), this->frame.size());
     OGL::Context::Point::size(10);
 
     this->frame.use();
@@ -58,5 +58,5 @@ void InstancedExample::render()
 
 OGL::Texture2D& InstancedExample::output()
 {
-    return this->frame.textures.at(OGL::Attachment::COLOR0);
+    return this->frame[OGL::Attachment::COLOR0];
 }

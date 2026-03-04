@@ -42,7 +42,7 @@ void RayTracerExample::render(const OGL::Camera<float>& camera)
     this->program.updateUniform("cameraUp", camera.up);
     this->program.updateUniform("cameraFOV", camera.fov);
     this->program.updateUniform("aspectRatio", 1.f);
-    OGL::Program::dispatchCompute(RayTracerExample::getGroupSize(this->frame.getSize()));
+    OGL::Program::dispatchCompute(RayTracerExample::getGroupSize(this->frame.size()));
 
     OGL::Program::stopUse();
 }
@@ -57,7 +57,7 @@ void RayTracerExample::renderBackground()
     this->backgroundProgram.use();
 
     this->background.bindImage(0, OGL::ImageUnitFormat::RGBA32F, OGL::Access::WRITE_ONLY);
-    OGL::Program::dispatchCompute(RayTracerExample::getGroupSize(this->background.getSize()));
+    OGL::Program::dispatchCompute(RayTracerExample::getGroupSize(this->background.size()));
 
     OGL::Program::stopUse();
 }

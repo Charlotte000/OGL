@@ -202,7 +202,7 @@ void SceneExample::render(const OGL::Camera<float>& camera)
 {
     this->lightPos = glm::rotateY(this->lightPos, 1.0f * ImGui::GetIO().DeltaTime);
 
-    const glm::mat4 P = camera.createProjection(this->frame.getSize(), glm::vec2(0.01, 100));
+    const glm::mat4 P = camera.createProjection(this->frame.size(), glm::vec2(0.01, 100));
     const glm::mat4 V = camera.createView();
     const glm::mat4 PV = P * V;
 
@@ -215,7 +215,7 @@ void SceneExample::render(const OGL::Camera<float>& camera)
 
 OGL::Texture2D& SceneExample::output()
 {
-    return this->frame.textures.at(OGL::Attachment::COLOR0);
+    return this->frame[OGL::Attachment::COLOR0];
 }
 
 glm::mat4 SceneExample::renderShadow()
@@ -225,7 +225,7 @@ glm::mat4 SceneExample::renderShadow()
     const glm::mat4 PV = P * V;
 
     OGL::Context::reset();
-    OGL::Context::Viewport::box(glm::uvec2(0, 0), this->shadowMap.getSize(OGL::Attachment::DEPTH));
+    OGL::Context::Viewport::box(glm::uvec2(0, 0), this->shadowMap.size(OGL::Attachment::DEPTH));
     OGL::Context::CullFace::enable(true);
     OGL::Context::CullFace::mode(OGL::FaceMode::FRONT);
     OGL::Context::Depth::enable(true);
@@ -247,7 +247,7 @@ glm::mat4 SceneExample::renderShadow()
 void SceneExample::renderSkyBox(const glm::mat4& PVM)
 {
     OGL::Context::reset();
-    OGL::Context::Viewport::box(glm::uvec2(0, 0), this->frame.getSize());
+    OGL::Context::Viewport::box(glm::uvec2(0, 0), this->frame.size());
     OGL::Context::CullFace::enable(false);
     OGL::Context::Depth::enable(true);
     OGL::Context::Depth::func(OGL::Func::LEQUAL);
@@ -267,14 +267,14 @@ void SceneExample::renderSkyBox(const glm::mat4& PVM)
 void SceneExample::renderScene(const OGL::Camera<float>& camera, const glm::mat4& PVM, const glm::mat4& lightPV)
 {
     OGL::Context::reset();
-    OGL::Context::Viewport::box(glm::uvec2(0, 0), this->frame.getSize());
+    OGL::Context::Viewport::box(glm::uvec2(0, 0), this->frame.size());
     OGL::Context::CullFace::enable(true);
     OGL::Context::Depth::enable(true);
 
     this->frame.use();
     this->program.use();
 
-    this->shadowMap.textures.at(OGL::Attachment::DEPTH).bindSampler(0);
+    this->shadowMap[OGL::Attachment::DEPTH].bindSampler(0);
     this->program.updateUniform("LightPV", lightPV);
     this->program.updateUniform("LightColor", glm::vec3(1, 1, 1));
     this->program.updateUniform("LightPos", this->lightPos);

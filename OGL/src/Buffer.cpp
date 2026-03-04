@@ -19,7 +19,7 @@ Buffer::Buffer(Buffer&& buff)
 Buffer::Buffer(const Buffer& buff)
     : Buffer()
 {
-    glCopyNamedBufferSubData(buff.getHandler(), this->handler, 0, 0, buff.getSize());
+    glCopyNamedBufferSubData(buff.getHandler(), this->handler, 0, 0, buff.size());
 }
 
 Buffer::~Buffer()
@@ -51,7 +51,7 @@ Buffer& Buffer::operator=(const Buffer& buff)
     }
 
     glCreateBuffers(1, &this->handler);
-    glCopyNamedBufferSubData(buff.getHandler(), this->handler, 0, 0, buff.getSize());
+    glCopyNamedBufferSubData(buff.getHandler(), this->handler, 0, 0, buff.size());
     return *this;
 }
 
@@ -62,13 +62,13 @@ void Buffer::write(const void* data, size_t size, DataUsage usage)
 
 void Buffer::update(const void* data, size_t offset, size_t size)
 {
-    assert(offset + size <= this->getSize());
+    assert(offset + size <= this->size());
     glNamedBufferSubData(this->handler, offset, size, data);
 }
 
 void Buffer::read(void* data, size_t offset, size_t size) const
 {
-    assert(offset + size <= this->getSize());
+    assert(offset + size <= this->size());
     glGetNamedBufferSubData(this->handler, offset, size, data);
 }
 
@@ -79,7 +79,7 @@ void Buffer::read(void* data, size_t size) const
 
 void Buffer::copy(size_t srcOffset, Buffer& dst, size_t dstOffset, size_t size) const
 {
-    assert(srcOffset + size <= this->getSize() && dstOffset + size <= dst.getSize());
+    assert(srcOffset + size <= this->size() && dstOffset + size <= dst.size());
     glCopyNamedBufferSubData(this->handler, dst.getHandler(), srcOffset, dstOffset, size);
 }
 
@@ -129,14 +129,14 @@ GLuint Buffer::getHandler() const
     return this->handler;
 }
 
-size_t Buffer::getSize() const
+size_t Buffer::size() const
 {
     GLint size;
     glGetNamedBufferParameteriv(this->handler, GL_BUFFER_SIZE, &size);
     return size;
 }
 
-DataUsage Buffer::getUsage() const
+DataUsage Buffer::usage() const
 {
     GLint usage;
     glGetNamedBufferParameteriv(this->handler, GL_BUFFER_USAGE, &usage);

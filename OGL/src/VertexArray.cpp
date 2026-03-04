@@ -93,7 +93,7 @@ void VertexArray::use()
 
 void VertexArray::drawArrays(PrimitiveType mode, unsigned int count, unsigned int offset, unsigned int instanceCount)
 {
-    const size_t maxCount = this->vbo.getSize() / vertexStride;
+    const size_t maxCount = this->vbo.size() / vertexStride;
     if (count == -1) count = maxCount;
 
     assert(offset + count <= maxCount);
@@ -106,7 +106,7 @@ void VertexArray::drawArrays(PrimitiveType mode, unsigned int count, unsigned in
 void VertexArray::drawElements(PrimitiveType mode, unsigned int count, unsigned int offset, unsigned int instanceCount, unsigned int vertexOffset)
 {
     const size_t stride = getTypeSize(this->indexType);
-    const size_t maxCount = this->ebo.getSize() / stride;
+    const size_t maxCount = this->ebo.size() / stride;
     if (count == -1) count = maxCount;
 
     assert(offset + count <= maxCount);

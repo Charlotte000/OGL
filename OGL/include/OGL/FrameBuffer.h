@@ -19,8 +19,6 @@ namespace OGL
 class FrameBuffer
 {
 public:
-    std::unordered_map<Attachment, Texture2D> textures;
-
     /**
      * @throw std::runtime_error if the framebuffer cannot be created.
      */
@@ -41,6 +39,16 @@ public:
     ~FrameBuffer();
 
     FrameBuffer& operator=(FrameBuffer&& fbo);
+
+    /**
+     * @throw std::runtime_error if there is no texture attached to the specified attachment point.
+     */
+    Texture2D& operator[](Attachment attachment);
+
+    /**
+     * @throw std::runtime_error if there is no texture attached to the specified attachment point
+     */
+    const Texture2D& operator[](Attachment attachment) const;
 
     /**
      * @brief Bind the framebuffer to the OpenGL context.
@@ -94,7 +102,7 @@ public:
      * 
      * @return The size of the framebuffer.
      */
-    glm::uvec2 getSize(Attachment attachment = Attachment::COLOR0) const;
+    glm::uvec2 size(Attachment attachment = Attachment::COLOR0) const;
 
     /**
      * @brief Unbind any framebuffer from the OpenGL context and revert to the default framebuffer (screen).
@@ -102,6 +110,7 @@ public:
     static void stopUse();
 private:
     GLuint handler = -1;
+    std::unordered_map<Attachment, Texture2D> textures;
 
     void checkStatus() const;
 };

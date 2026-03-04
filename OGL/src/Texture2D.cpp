@@ -5,12 +5,9 @@ using namespace OGL;
 Texture2D::Texture2D(
     glm::uvec2 size,
     ImageFormat internalFormat,
-    Filter magFilter,
-    Filter minFilter,
-    Wrap wrapS,
-    Wrap wrapT,
-    Wrap wrapR
-) : Texture(GL_TEXTURE_2D, magFilter, minFilter, wrapS, wrapT, wrapR)
+    glm::vec<2, Filter> filter,
+    glm::vec<2, Wrap> wrap
+) : Texture(GL_TEXTURE_2D, filter, glm::vec<3, Wrap>(wrap.x, wrap.y, Wrap::REPEAT))
 {
     glTextureStorage2D(this->handler, 1, static_cast<GLenum>(internalFormat), size.x, size.y);
 }
@@ -18,12 +15,9 @@ Texture2D::Texture2D(
 Texture2D::Texture2D(
     const Image2D& image,
     ImageFormat internalFormat,
-    Filter magFilter,
-    Filter minFilter,
-    Wrap wrapS,
-    Wrap wrapT,
-    Wrap wrapR
-) : Texture2D(image.size, internalFormat, magFilter, minFilter, wrapS, wrapT, wrapR)
+    glm::vec<2, Filter> filter,
+    glm::vec<2, Wrap> wrap
+) : Texture2D(image.size, internalFormat, filter, wrap)
 {
     this->update(image, glm::uvec2(0));
 }
@@ -34,9 +28,9 @@ Texture2D::Texture2D(Texture2D&& tex)
 }
 
 Texture2D::Texture2D(const Texture2D& tex)
-    : Texture2D(tex.getSize(), tex.getInternalFormat(), tex.getMagFilter(), tex.getMinFilter(), tex.getWrapS(), tex.getWrapT(), tex.getWrapR())
+    : Texture2D(tex.size(), tex.internalFormat(), tex.filter(), tex.wrap())
 {
-    const glm::uvec2 size = tex.getSize();
+    const glm::uvec2 size = tex.size();
     glCopyImageSubData(
         tex.getHandler(), GL_TEXTURE_2D, 0, 0, 0, 0,
         this->handler,    GL_TEXTURE_2D, 0, 0, 0, 0,
@@ -58,7 +52,8 @@ Texture2D& Texture2D::operator=(Texture2D&& tex)
 
 void Texture2D::update(const void* pixels, glm::uvec2 offset, glm::uvec2 size, PixelFormat format, Type type)
 {
-    assert(glm::all(glm::lessThanEqual(offset + size, this->getSize())));
+    glm::uvec2 texSize = this->size();
+    assert(glm::all(glm::lessThanEqual(offset + size, texSize)));
     glTextureSubImage2D(this->handler, 0, offset.x, offset.y, size.x, size.y, static_cast<GLenum>(format), static_cast<GLenum>(type), pixels);
 }
 
@@ -69,7 +64,7 @@ void Texture2D::update(const Image2D& image, glm::uvec2 offset)
 
 void Texture2D::read(void* pixels, size_t bufSize, glm::uvec2 offset, glm::uvec2 size, PixelFormat format, Type type) const
 {
-    glm::uvec2 texSize = this->getSize();
+    glm::uvec2 texSize = this->size();
     assert(glm::all(glm::lessThanEqual(offset + size, texSize)));
 
     if (offset == glm::uvec2(0) && size == texSize)
@@ -93,13 +88,10 @@ Image2D Texture2D::read(glm::uvec2 offset, glm::uvec2 size) const
 
 Image2D Texture2D::read() const
 {
-    return this->read(glm::uvec2(0, 0), this->getSize());
+    return this->read(glm::uvec2(0, 0), this->size());
 }
 
-glm::uvec2 Texture2D::getSize() const
+glm::uvec2 Texture2D::size() const
 {
-    GLint width, height;
-    glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_WIDTH,  &width);
-    glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_HEIGHT, &height);
-    return glm::uvec2(width, height);
+    return Texture::size();
 }

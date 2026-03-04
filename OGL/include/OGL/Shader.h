@@ -62,7 +62,7 @@ public:
      */
     GLuint getHandler() const;
 
-    ShaderType getType() const;
+    ShaderType type() const;
 private:
     GLuint handler = -1;
 

@@ -19,24 +19,32 @@ namespace OGL
 class TextureCubeMap : public Texture
 {
 public:
+    /**
+    * @brief Construct a new Texture Cubemap object
+    * @param size Size of the texture in pixels (width and height of each cube face).
+    * @param internalFormat Internal format of the texture.
+    * @param filter Filter mode of the texture (magnification and minification).
+    * @param wrap Wrap mode of the texture (for S, T and R texture coordinates).
+    */
     TextureCubeMap(
         glm::uvec2 size,
         ImageFormat internalFormat,
-        Filter magFilter = Filter::LINEAR,
-        Filter minFilter = Filter::LINEAR,
-        Wrap wrapS       = Wrap::REPEAT,
-        Wrap wrapT       = Wrap::REPEAT,
-        Wrap wrapR       = Wrap::REPEAT
+        glm::vec<2, Filter> filter = glm::vec<2, Filter>(Filter::LINEAR),
+        glm::vec<3, Wrap> wrap = glm::vec<3, Wrap>(Wrap::REPEAT)
     );
 
+    /**
+     * @brief Construct a new Texture Cubemap object from the specified image.
+     * @param image The image to be copied to the texture store.
+     * @param internalFormat Internal format of the texture.
+     * @param filter Filter mode of the texture (magnification and minification).
+     * @param wrap Wrap mode of the texture (for S, T and R texture coordinates).
+     */
     TextureCubeMap(
         const Image3D& image,
         ImageFormat internalFormat,
-        Filter magFilter = Filter::LINEAR,
-        Filter minFilter = Filter::LINEAR,
-        Wrap wrapS       = Wrap::REPEAT,
-        Wrap wrapT       = Wrap::REPEAT,
-        Wrap wrapR       = Wrap::REPEAT
+        glm::vec<2, Filter> filter = glm::vec<2, Filter>(Filter::LINEAR),
+        glm::vec<3, Wrap> wrap = glm::vec<3, Wrap>(Wrap::REPEAT)
     );
 
     TextureCubeMap(TextureCubeMap&& tex);
@@ -91,7 +99,7 @@ public:
      * @brief Get the size of the texture.
      * @return The size of the texture.
      */
-    glm::uvec3 getSize() const;
+    glm::uvec3 size() const;
 };
 
 }

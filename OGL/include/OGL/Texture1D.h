@@ -17,24 +17,32 @@ namespace OGL
 class Texture1D : public Texture
 {
 public:
+    /**
+     * @brief Construct a new 1D Texture object
+     * @param size Size of the texture in pixels (width).
+     * @param internalFormat Internal format of the texture.
+     * @param filter Filter mode of the texture (magnification and minification).
+     * @param wrap Wrap mode of the texture (for S texture coordinate).
+     */
     Texture1D(
         glm::uvec1 size,
         ImageFormat internalFormat,
-        Filter magFilter = Filter::LINEAR,
-        Filter minFilter = Filter::LINEAR,
-        Wrap wrapS       = Wrap::REPEAT,
-        Wrap wrapT       = Wrap::REPEAT,
-        Wrap wrapR       = Wrap::REPEAT
+        glm::vec<2, Filter> filter = glm::vec<2, Filter>(Filter::LINEAR),
+        glm::vec<1, Wrap> wrap = glm::vec<1, Wrap>(Wrap::REPEAT)
     );
 
+    /**
+     * @brief Construct a new 1D Texture object from the specified image.
+     * @param image The image to be copied to the texture store.
+     * @param internalFormat Internal format of the texture.
+     * @param filter Filter mode of the texture (magnification and minification).
+     * @param wrap Wrap mode of the texture (for S texture coordinate).
+     */
     Texture1D(
         const Image1D& image,
         ImageFormat internalFormat,
-        Filter magFilter = Filter::LINEAR,
-        Filter minFilter = Filter::LINEAR,
-        Wrap wrapS       = Wrap::REPEAT,
-        Wrap wrapT       = Wrap::REPEAT,
-        Wrap wrapR       = Wrap::REPEAT
+        glm::vec<2, Filter> filter = glm::vec<2, Filter>(Filter::LINEAR),
+        glm::vec<1, Wrap> wrap = glm::vec<1, Wrap>(Wrap::REPEAT)
     );
 
     Texture1D(Texture1D&& tex);
@@ -89,7 +97,7 @@ public:
      * @brief Get the size of the texture.
      * @return The size of the texture.
      */
-    glm::uvec1 getSize() const;
+    glm::uvec1 size() const;
 };
 
 }

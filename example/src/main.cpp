@@ -70,7 +70,7 @@ static inline GLFWwindow* createWindow()
 
 static inline std::tuple<ImVec2, ImVec2> drawFillImage(const OGL::Texture2D& texture, bool flipY = true)
 {
-    const float aspectRatio = (float)texture.getSize().x / texture.getSize().y;
+    const float aspectRatio = (float)texture.size().x / texture.size().y;
 
     const ImVec2 dstSize = ImGui::GetContentRegionAvail();
     const float dstAspectRatio = dstSize.x / dstSize.y;

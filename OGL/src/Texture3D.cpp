@@ -5,12 +5,10 @@ using namespace OGL;
 Texture3D::Texture3D(
     glm::uvec3 size,
     ImageFormat internalFormat,
-    Filter magFilter,
-    Filter minFilter,
-    Wrap wrapS,
-    Wrap wrapT,
-    Wrap wrapR
-) : Texture(GL_TEXTURE_3D, magFilter, minFilter, wrapS, wrapT, wrapR)
+    glm::vec<2, Filter> filter,
+    glm::vec<3, Wrap> wrap
+) : Texture(GL_TEXTURE_3D, filter, wrap)
+
 {
     glTextureStorage3D(this->handler, 1, static_cast<GLenum>(internalFormat), size.x, size.y, size.z);
 }
@@ -18,12 +16,9 @@ Texture3D::Texture3D(
 Texture3D::Texture3D(
     const Image3D& image,
     ImageFormat internalFormat,
-    Filter magFilter,
-    Filter minFilter,
-    Wrap wrapS,
-    Wrap wrapT,
-    Wrap wrapR
-) : Texture3D(image.size, internalFormat, magFilter, minFilter, wrapS, wrapT, wrapR)
+    glm::vec<2, Filter> filter,
+    glm::vec<3, Wrap> wrap
+) : Texture3D(image.size, internalFormat, filter, wrap)
 {
     this->update(image, glm::uvec3(0));
 }
@@ -34,9 +29,9 @@ Texture3D::Texture3D(Texture3D&& tex)
 }
 
 Texture3D::Texture3D(const Texture3D& tex)
-    : Texture3D(tex.getSize(), tex.getInternalFormat(), tex.getMagFilter(), tex.getMinFilter(), tex.getWrapS(), tex.getWrapT(), tex.getWrapR())
+    : Texture3D(tex.size(), tex.internalFormat(), tex.filter(), tex.wrap())
 {
-    const glm::uvec3 size = tex.getSize();
+    const glm::uvec3 size = tex.size();
     glCopyImageSubData(
         tex.getHandler(), GL_TEXTURE_3D, 0, 0, 0, 0,
         this->handler,    GL_TEXTURE_3D, 0, 0, 0, 0,
@@ -58,7 +53,8 @@ Texture3D& Texture3D::operator=(Texture3D&& tex)
 
 void Texture3D::update(const void* pixels, glm::uvec3 offset, glm::uvec3 size, PixelFormat format, Type type)
 {
-    assert(glm::all(glm::lessThanEqual(offset + size, this->getSize())));
+    glm::uvec3 texSize = this->size();
+    assert(glm::all(glm::lessThanEqual(offset + size, texSize)));
     glTextureSubImage3D(this->handler, 0, offset.x, offset.y, offset.z, size.x, size.y, size.z, static_cast<GLenum>(format), static_cast<GLenum>(type), pixels);
 }
 
@@ -69,7 +65,7 @@ void Texture3D::update(const Image3D& image, glm::uvec3 offset)
 
 void Texture3D::read(void* pixels, size_t bufSize, glm::uvec3 offset, glm::uvec3 size, PixelFormat format, Type type) const
 {
-    glm::uvec3 texSize = this->getSize();
+    glm::uvec3 texSize = this->size();
     assert(glm::all(glm::lessThanEqual(offset + size, texSize)));
 
     if (offset == glm::uvec3(0) && size == texSize)
@@ -93,14 +89,5 @@ Image3D Texture3D::read(glm::uvec3 offset, glm::uvec3 size) const
 
 Image3D Texture3D::read() const
 {
-    return this->read(glm::uvec3(0), this->getSize());
-}
-
-glm::uvec3 Texture3D::getSize() const
-{
-    GLint width, height, depth;
-    glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_WIDTH,  &width);
-    glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_HEIGHT, &height);
-    glGetTextureLevelParameteriv(this->handler, 0, GL_TEXTURE_DEPTH,  &depth);
-    return glm::uvec3(width, height, depth);
+    return this->read(glm::uvec3(0), this->size());
 }

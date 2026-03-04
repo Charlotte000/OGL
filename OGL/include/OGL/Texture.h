@@ -56,39 +56,54 @@ public:
      * 
      * @return The internal format of the texture.
      */
-    ImageFormat getInternalFormat() const;
+    ImageFormat internalFormat() const;
 
-    Filter getMagFilter() const;
+    /**
+     * @brief Get the filter mode of the texture object.
+     * 
+     * Filter mode describes the way that the texture is sampled when it is minified or magnified.
+     * 
+     * @return A vec2 containing the magnification and minification filter modes of the texture.
+     */
+    glm::vec<2, Filter> filter() const;
 
-    Filter getMinFilter() const;
+    /**
+     * @brief Set the filter mode of the texture object.
+     * 
+     * Filter mode describes the way that the texture is sampled when it is minified or magnified.
+     * 
+     * @param filter A vec2 containing the magnification and minification filter modes of the texture.
+     */
+    void filter(glm::vec<2, Filter> filter);
 
-    Wrap getWrapS() const;
+    /**
+     * @brief Get the wrap mode of the texture object.
+     * 
+     * Wrap mode describes the way that the texture is sampled when texture coordinates are outside the range [0, 1].
+     * 
+     * @return A vec3 containing the wrap modes of the texture for the S, T and R texture coordinates.
+     */
+    glm::vec<3, Wrap> wrap() const;
 
-    Wrap getWrapT() const;
+    /**
+     * @brief Set the wrap mode of the texture object.
+     * 
+     * Wrap mode describes the way that the texture is sampled when texture coordinates are outside the range [0, 1].
+     * 
+     * @param wrap A vec3 containing the wrap modes of the texture for the S, T and R texture coordinates.
+     */
+    void wrap(glm::vec<3, Wrap> wrap);
 
-    Wrap getWrapR() const;
-
-    void setMagFilter(Filter filter);
-
-    void setMinFilter(Filter filter);
-
-    void setFilter(Filter filter);
-
-    void setWrapS(Wrap wrap);
-
-    void setWrapT(Wrap wrap);
-
-    void setWrapR(Wrap wrap);
-
-    void setWrap(Wrap wrap);
+    /**
+     * @brief Get the size of the texture.
+     * @return The size of the texture.
+     */
+    glm::uvec3 size() const;
 protected:
     Texture(
         GLenum target,
-        Filter magFilter = Filter::LINEAR,
-        Filter minFilter = Filter::LINEAR,
-        Wrap wrapS       = Wrap::REPEAT,
-        Wrap wrapT       = Wrap::REPEAT,
-        Wrap wrapR       = Wrap::REPEAT
+        glm::vec<2, Filter> filter = glm::vec<2, Filter>(Filter::LINEAR),
+        glm::vec<3, Wrap> wrap = glm::vec<3, Wrap>(Wrap::REPEAT)
     );
 
     GLuint handler = -1;
