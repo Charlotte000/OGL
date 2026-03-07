@@ -71,13 +71,13 @@ static inline void name(glm::vec2 val)                  \
 }
 
 #define OGL_PARAM_BOX(name, glGetName, glSetFunc)           \
-static inline glm::uvec4 name()                             \
+static inline glm::ivec4 name()                             \
 {                                                           \
     GLint val[4];                                           \
     glGetIntegerv(glGetName, val);                          \
-    return glm::uvec4(val[0], val[1], val[2], val[3]);      \
+    return glm::ivec4(val[0], val[1], val[2], val[3]);      \
 }                                                           \
-static inline void name(glm::uvec2 pos, glm::uvec2 size)    \
+static inline void name(glm::ivec2 pos, glm::uvec2 size)    \
 {                                                           \
     glSetFunc(pos.x, pos.y, size.x, size.y);                \
 }
@@ -149,20 +149,43 @@ namespace Blend
 
 OGL_PARAM_ENABLE(enable, GL_BLEND);
 
-static inline glm::vec<2, Factor> func()
+static inline glm::vec<4, Factor> func()
 {
-    GLint src, dst;
-    glGetIntegerv(GL_BLEND_SRC, &src);
-    glGetIntegerv(GL_BLEND_DST, &dst);
-    return glm::vec<2, Factor>(static_cast<Factor>(src), static_cast<Factor>(dst));
+    GLint srcRGB, dstRGB, srcA, dstA;
+    glGetIntegerv(GL_BLEND_SRC_RGB, &srcRGB);
+    glGetIntegerv(GL_BLEND_DST_RGB, &dstRGB);
+    glGetIntegerv(GL_BLEND_SRC_ALPHA, &srcA);
+    glGetIntegerv(GL_BLEND_DST_ALPHA, &dstA);
+    return glm::vec<4, Factor>(
+        static_cast<Factor>(srcRGB),
+        static_cast<Factor>(dstRGB),
+        static_cast<Factor>(srcA),
+        static_cast<Factor>(dstA)
+    );
 }
 
-static inline void func(Factor src, Factor dst)
+static inline void func(Factor srcRGB, Factor dstRGB, Factor srcA, Factor dstA)
 {
-    glBlendFunc(static_cast<GLenum>(src), static_cast<GLenum>(dst));
+    glBlendFuncSeparate(
+        static_cast<GLenum>(srcRGB),
+        static_cast<GLenum>(dstRGB),
+        static_cast<GLenum>(srcA),
+        static_cast<GLenum>(dstA)
+    );
 }
 
-OGL_PARAM_INT(equation, GL_BLEND_EQUATION, glBlendEquation, EqFunc);
+static inline glm::vec<2, EqFunc> equation()
+{
+    GLint eqRGB, eqA;
+    glGetIntegerv(GL_BLEND_EQUATION_RGB, &eqRGB);
+    glGetIntegerv(GL_BLEND_EQUATION_ALPHA, &eqA);
+    return glm::vec<2, EqFunc>(static_cast<EqFunc>(eqRGB), static_cast<EqFunc>(eqA));
+}
+
+static inline void equation(EqFunc eqRGB, EqFunc eqA)
+{
+    glBlendEquationSeparate(static_cast<GLenum>(eqRGB), static_cast<GLenum>(eqA));
+}
 
 }
 
@@ -290,8 +313,8 @@ static inline void reset()
     Stencil::enable(false);
 
     Blend::enable(false);
-    Blend::func(Factor::ONE, Factor::ZERO);
-    Blend::equation(EqFunc::ADD);
+    Blend::func(Factor::ONE, Factor::ZERO, Factor::ONE, Factor::ZERO);
+    Blend::equation(EqFunc::ADD, EqFunc::ADD);
 
     Point::smooth(false);
     Point::size(1);
