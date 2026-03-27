@@ -97,6 +97,23 @@ glm::uvec3 Texture::size() const
     return glm::uvec3(width, height, depth);
 }
 
+GLenum Texture::target() const
+{
+    GLint target;
+    glGetTextureParameteriv(this->handler, GL_TEXTURE_TARGET, &target);
+    return static_cast<GLenum>(target);
+}
+
+void Texture::copy(glm::uvec3 srcOffset, Texture& dst, glm::uvec3 dstOffset, glm::uvec3 size) const
+{
+    assert(glm::all(glm::lessThanEqual(srcOffset + size, this->size())) && glm::all(glm::lessThanEqual(dstOffset + size, dst.size())));
+    glCopyImageSubData(
+        this->handler, this->target(), 0, srcOffset.x, srcOffset.y, srcOffset.z,
+        dst.getHandler(), dst.target(), 0, dstOffset.x, dstOffset.y, dstOffset.z,
+        size.x, size.y, size.z
+    );
+}
+
 Texture::Texture(GLenum target, glm::vec<2, Filter> filter, glm::vec<3, Wrap> wrap)
 {
     glCreateTextures(target, 1, &this->handler);

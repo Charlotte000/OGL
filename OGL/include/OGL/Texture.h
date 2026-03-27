@@ -99,6 +99,25 @@ public:
      * @return The size of the texture.
      */
     glm::uvec3 size() const;
+
+    /**
+     * @brief Get the target of the texture.
+     * @return The target of the texture. Can be either GL_TEXTURE_1D, GL_TEXTURE_2D, GL_TEXTURE_3D, GL_TEXTURE_1D_ARRAY, GL_TEXTURE_2D_ARRAY, GL_TEXTURE_CUBE_MAP or GL_TEXTURE_CUBE_MAP_ARRAY.
+     */
+    GLenum target() const;
+
+    /**
+     * @brief Copy a region of the texture to another texture.
+     * 
+     * The source and destination textures must have a compatible internal format and target.
+     * 
+     * @param srcOffset The offset of the region in the source texture.
+     * @param dst The destination texture.
+     * @param dstOffset The offset of the region in the destination texture.
+     * @param size The size of the region to copy.
+     * @throw std::runtime_error if the size of the region to copy exceeds the bounds of the source or destination textures.
+     */
+    void copy(glm::uvec3 srcOffset, Texture& dst, glm::uvec3 dstOffset, glm::uvec3 size) const;
 protected:
     Texture(
         GLenum target,
