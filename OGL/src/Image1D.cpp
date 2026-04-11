@@ -32,14 +32,14 @@ Image1D::operator Image3D() const
 
 glm::vec4& Image1D::operator[](glm::uvec1 coords)
 {
-    assert(coords.x < this->size.x);
+    assert(glm::all(glm::lessThan(coords, this->size)));
     const size_t index = coords.x;
     return this->pixels[index];
 }
 
 const glm::vec4& Image1D::operator[](glm::uvec1 coords) const
 {
-    assert(coords.x < this->size.x);
+    assert(glm::all(glm::lessThan(coords, this->size)));
     const size_t index = coords.x;
     return this->pixels[index];
 }

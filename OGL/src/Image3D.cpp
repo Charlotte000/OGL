@@ -18,14 +18,14 @@ Image3D::Image3D(glm::uvec3 size, const void* data)
 
 glm::vec4& Image3D::operator[](glm::uvec3 coords)
 {
-    assert(coords.x < this->size.x && coords.y < this->size.y && coords.z < this->size.z);
+    assert(glm::all(glm::lessThan(coords, this->size)));
     const size_t index = coords.z * this->size.x * this->size.y + coords.y * this->size.x + coords.x;
     return this->pixels[index];
 }
 
 const glm::vec4& Image3D::operator[](glm::uvec3 coords) const
 {
-    assert(coords.x < this->size.x && coords.y < this->size.y && coords.z < this->size.z);
+    assert(glm::all(glm::lessThan(coords, this->size)));
     const size_t index = coords.z * this->size.x * this->size.y + coords.y * this->size.x + coords.x;
     return this->pixels[index];
 }

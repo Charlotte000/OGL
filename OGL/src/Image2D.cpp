@@ -52,14 +52,14 @@ Image2D::operator Image3D() const
 
 glm::vec4& Image2D::operator[](glm::uvec2 coords)
 {
-    assert(coords.x < this->size.x && coords.y < this->size.y);
+    assert(glm::all(glm::lessThan(coords, this->size)));
     const size_t index = coords.y * this->size.x + coords.x;
     return this->pixels[index];
 }
 
 const glm::vec4& Image2D::operator[](glm::uvec2 coords) const
 {
-    assert(coords.x < this->size.x && coords.y < this->size.y);
+    assert(glm::all(glm::lessThan(coords, this->size)));
     const size_t index = coords.y * this->size.x + coords.x;
     return this->pixels[index];
 }

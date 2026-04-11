@@ -35,15 +35,15 @@ VertexArray::VertexArray(size_t vertexStride, const std::vector<std::tuple<Type,
     glCreateVertexArrays(1, &this->handler);
 
     // VBO
-    const size_t bindingindex = 0;
-    glVertexArrayVertexBuffer(this->handler, bindingindex, this->vbo.getHandler(), 0, vertexStride);
+    const size_t bindingIndex = 0;
+    glVertexArrayVertexBuffer(this->handler, bindingIndex, this->vbo.getHandler(), 0, vertexStride);
 
     size_t index = 0;
     for (const auto& [ type, count, offset ] : vertexAttributes)
     {
         glEnableVertexArrayAttrib(this->handler, index);
         glVertexArrayAttribFormat(this->handler, index, count, static_cast<GLenum>(type), GL_FALSE, offset);
-        glVertexArrayAttribBinding(this->handler, index, bindingindex);
+        glVertexArrayAttribBinding(this->handler, index, bindingIndex);
         index++;
     }
 
