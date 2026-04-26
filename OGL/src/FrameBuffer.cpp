@@ -6,7 +6,7 @@
 
 using namespace OGL;
 
-FrameBuffer::FrameBuffer(std::initializer_list<std::pair<const Attachment, Texture2D&&>> textures)
+FrameBuffer::FrameBuffer(const std::initializer_list<std::pair<const Attachment, Texture2D&&>>& textures)
 {
     glCreateFramebuffers(1, &this->handler);
 

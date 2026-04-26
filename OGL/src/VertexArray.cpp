@@ -2,42 +2,13 @@
 
 using namespace OGL;
 
-static size_t getVertexStride(const std::vector<std::tuple<Type, size_t>>& attributes)
-{
-    size_t size = 0;
-    for (const auto& [type, count] : attributes)
-    {
-        size += getTypeSize(type) * count;
-    }
-
-    return size;
-}
-
-static std::vector<std::tuple<Type, size_t, size_t>> getFullAttributes(const std::vector<std::tuple<Type, size_t>>& attributes)
-{
-    std::vector<std::tuple<Type, size_t, size_t>> full(attributes.size());
-
-    size_t offset = 0;
-    size_t index = 0;
-    for (const auto& [ type, count ] : attributes)
-    {
-        full[index] = { type, count, offset };
-        offset += getTypeSize(type) * count;
-        index++;
-    }
-
-    return full;
-}
-
-VertexArray::VertexArray(size_t vertexStride, const std::vector<std::tuple<Type, size_t, size_t>>& vertexAttributes, TypeU indexType)
+VertexArray::VertexArray(size_t vertexStride, const std::initializer_list<std::tuple<Type, size_t, size_t>>& vertexAttributes, TypeU indexType)
     : vertexStride(vertexStride), indexType(indexType)
 {
     glCreateVertexArrays(1, &this->handler);
 
     // VBO
     const size_t bindingIndex = 0;
-    glVertexArrayVertexBuffer(this->handler, bindingIndex, this->vbo.getHandler(), 0, vertexStride);
-
     size_t index = 0;
     for (const auto& [ type, count, offset ] : vertexAttributes)
     {
@@ -47,13 +18,34 @@ VertexArray::VertexArray(size_t vertexStride, const std::vector<std::tuple<Type,
         index++;
     }
 
+    glVertexArrayVertexBuffer(this->handler, bindingIndex, this->vbo.getHandler(), 0, vertexStride);
+
     // EBO
     glVertexArrayElementBuffer(this->handler, this->ebo.getHandler());
 }
 
-VertexArray::VertexArray(const std::vector<std::tuple<Type, size_t>>& vertexAttributes, TypeU indexType)
-    : VertexArray(getVertexStride(vertexAttributes), getFullAttributes(vertexAttributes), indexType)
+VertexArray::VertexArray(const std::initializer_list<std::tuple<Type, size_t>>& vertexAttributes, TypeU indexType)
+    : vertexStride(0), indexType(indexType)
 {
+    glCreateVertexArrays(1, &this->handler);
+
+    // VBO
+    const size_t bindingIndex = 0;
+    size_t index = 0;
+    for (const auto& [ type, count ] : vertexAttributes)
+    {
+        glEnableVertexArrayAttrib(this->handler, index);
+        glVertexArrayAttribFormat(this->handler, index, count, static_cast<GLenum>(type), GL_FALSE, this->vertexStride);
+        glVertexArrayAttribBinding(this->handler, index, bindingIndex);
+
+        this->vertexStride += getTypeSize(type) * count;
+        index++;
+    }
+
+    glVertexArrayVertexBuffer(this->handler, bindingIndex, this->vbo.getHandler(), 0, this->vertexStride);
+
+    // EBO
+    glVertexArrayElementBuffer(this->handler, this->ebo.getHandler());
 }
 
 VertexArray::VertexArray(VertexArray&& vao)

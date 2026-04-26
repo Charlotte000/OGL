@@ -36,14 +36,14 @@ public:
      * @param vertexAttributes A collection of ( attribute type, attribute count, attribute offset ).
      * @param indexType The type of the EBO values.
      */
-    VertexArray(size_t vertexStride, const std::vector<std::tuple<Type, size_t, size_t>>& vertexAttributes, TypeU indexType = TypeU::UNSIGNED_INT);
+    VertexArray(size_t vertexStride, const std::initializer_list<std::tuple<Type, size_t, size_t>>& vertexAttributes, TypeU indexType = TypeU::UNSIGNED_INT);
 
     /**
      * @brief Construct a new Vertex Array object (VAO)
      * @param vertexAttributes A collection of ( attribute type, attribute count ).
      * @param indexType The type of the EBO values.
      */
-    VertexArray(const std::vector<std::tuple<Type, size_t>>& vertexAttributes, TypeU indexType = TypeU::UNSIGNED_INT);
+    VertexArray(const std::initializer_list<std::tuple<Type, size_t>>& vertexAttributes, TypeU indexType = TypeU::UNSIGNED_INT);
 
     VertexArray(VertexArray&& vao);
 

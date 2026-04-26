@@ -28,6 +28,7 @@ Texture& Texture::operator=(Texture&& tex)
 
     this->handler = tex.handler;
     tex.handler = -1;
+
     return *this;
 }
 

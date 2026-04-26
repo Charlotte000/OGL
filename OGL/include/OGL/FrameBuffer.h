@@ -22,7 +22,7 @@ public:
     /**
      * @throw std::runtime_error if the framebuffer cannot be created.
      */
-    FrameBuffer(std::initializer_list<std::pair<const Attachment, Texture2D&&>> textures);
+    FrameBuffer(const std::initializer_list<std::pair<const Attachment, Texture2D&&>>& textures);
 
     /**
      * @throw std::runtime_error if the framebuffer cannot be created.
