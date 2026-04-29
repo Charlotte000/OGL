@@ -52,7 +52,7 @@ public:
     Texture3D& operator=(Texture3D&& tex);
 
     /**
-     * @brief Update a region of the texure object's image.
+     * @brief Update a region of the texture object's image.
      * @param pixels Pointer to the new image that will be copied into the texture store.
      * @param offset Offset into the texture object's data store where image replacement will begin.
      * @param size Size of the image to be copied to the texture store.
@@ -62,11 +62,11 @@ public:
     void update(const void* pixels, glm::uvec3 offset, glm::uvec3 size, PixelFormat format = PixelFormat::RGBA, Type type = Type::FLOAT);
 
     /**
-     * @brief Update the region of the texure array object's image.
+     * @brief Update the region of the texture array object's image.
      * @param image The image to be copied to the texture array store.
      * @param offset Offset into the texture array object's data store where image replacement will begin.
      */
-    void update(const Image3D& image, glm::uvec3 offset);
+    void update(const Image3D& image, glm::uvec3 offset = glm::uvec3(0, 0, 0));
 
     /**
      * @brief Read the region of the texture object's store.

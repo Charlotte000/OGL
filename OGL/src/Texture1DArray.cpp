@@ -20,7 +20,7 @@ Texture1DArray::Texture1DArray(
     glm::vec<2, Wrap> wrap
 ) : Texture1DArray(image.size, internalFormat, filter, wrap)
 {
-    this->update(image, glm::uvec2(0));
+    this->update(image);
 }
 
 Texture1DArray::Texture1DArray(Texture1DArray&& tex)

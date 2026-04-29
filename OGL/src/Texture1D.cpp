@@ -19,7 +19,7 @@ Texture1D::Texture1D(
     glm::vec<1, Wrap> wrap
 ) : Texture1D(image.size, internalFormat, filter, wrap)
 {
-    this->update(image, glm::uvec1(0));
+    this->update(image);
 }
 
 Texture1D::Texture1D(Texture1D&& tex)

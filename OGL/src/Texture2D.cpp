@@ -19,7 +19,7 @@ Texture2D::Texture2D(
     glm::vec<2, Wrap> wrap
 ) : Texture2D(image.size, internalFormat, filter, wrap)
 {
-    this->update(image, glm::uvec2(0));
+    this->update(image);
 }
 
 Texture2D::Texture2D(Texture2D&& tex)

@@ -9,6 +9,7 @@ TextureCubeMapArray::TextureCubeMapArray(
     glm::vec<3, Wrap> wrap
 ) : Texture(GL_TEXTURE_CUBE_MAP_ARRAY, filter, wrap)
 {
+    assert(size.x == size.y);
     glTextureStorage3D(this->handler, 1, static_cast<GLenum>(internalFormat), size.x, size.y, size.z * 6);
 }
 
@@ -19,7 +20,7 @@ TextureCubeMapArray::TextureCubeMapArray(
     glm::vec<3, Wrap> wrap
 ) : TextureCubeMapArray(image.size, internalFormat, filter, wrap)
 {
-    this->update(image, glm::uvec3(0));
+    this->update(image);
 }
 
 TextureCubeMapArray::TextureCubeMapArray(TextureCubeMapArray&& tex)

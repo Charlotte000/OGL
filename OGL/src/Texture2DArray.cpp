@@ -19,7 +19,7 @@ Texture2DArray::Texture2DArray(
     glm::vec<3, Wrap> wrap
 ) : Texture2DArray(image.size, internalFormat, filter, wrap)
 {
-    this->update(image, glm::uvec3(0));
+    this->update(image);
 }
 
 Texture2DArray::Texture2DArray(Texture2DArray&& tex)

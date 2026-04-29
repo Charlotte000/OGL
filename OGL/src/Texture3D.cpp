@@ -8,7 +8,6 @@ Texture3D::Texture3D(
     glm::vec<2, Filter> filter,
     glm::vec<3, Wrap> wrap
 ) : Texture(GL_TEXTURE_3D, filter, wrap)
-
 {
     glTextureStorage3D(this->handler, 1, static_cast<GLenum>(internalFormat), size.x, size.y, size.z);
 }
@@ -20,7 +19,7 @@ Texture3D::Texture3D(
     glm::vec<3, Wrap> wrap
 ) : Texture3D(image.size, internalFormat, filter, wrap)
 {
-    this->update(image, glm::uvec3(0));
+    this->update(image);
 }
 
 Texture3D::Texture3D(Texture3D&& tex)

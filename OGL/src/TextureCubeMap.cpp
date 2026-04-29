@@ -1,3 +1,5 @@
+#include <assert.h>
+
 #include "OGL/TextureCubeMap.h"
 
 using namespace OGL;
@@ -9,6 +11,7 @@ TextureCubeMap::TextureCubeMap(
     glm::vec<3, Wrap> wrap
 ) : Texture(GL_TEXTURE_CUBE_MAP, filter, wrap)
 {
+    assert(size.x == size.y);
     glTextureStorage2D(this->handler, 1, static_cast<GLenum>(internalFormat), size.x, size.y);
 }
 
@@ -19,7 +22,7 @@ TextureCubeMap::TextureCubeMap(
     glm::vec<3, Wrap> wrap
 ) : TextureCubeMap(glm::uvec2(image.size.x, image.size.y), internalFormat, filter, wrap)
 {
-    this->update(image, glm::uvec3(0));
+    this->update(image);
 }
 
 TextureCubeMap::TextureCubeMap(TextureCubeMap&& tex)

@@ -19,7 +19,8 @@ Buffer::Buffer(Buffer&& buff)
 Buffer::Buffer(const Buffer& buff)
     : Buffer()
 {
-    glCopyNamedBufferSubData(buff.getHandler(), this->handler, 0, 0, buff.size());
+    this->write(nullptr, buff.size(), buff.usage());
+    buff.copy(0, *this, 0, buff.size());
 }
 
 Buffer::~Buffer()
@@ -52,6 +53,7 @@ Buffer& Buffer::operator=(const Buffer& buff)
     }
 
     glCreateBuffers(1, &this->handler);
+    this->write(nullptr, buff.size(), buff.usage());
     buff.copy(0, *this, 0, buff.size());
 
     return *this;

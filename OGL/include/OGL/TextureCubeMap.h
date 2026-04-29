@@ -12,7 +12,7 @@ namespace OGL
 /**
  * @brief Texture Cubemap is used to store a cube map texture.
  * 
- * A cube map textute contains 6 2D image slices corresponding to the six faces of the cube: X+, X-, Y+, Y-, Z+, Z- directions respectively.
+ * A cube map textute contains 6 2D image slices corresponding to the six faces of the cube: X+, X-, Y+, Y-, Z+, Z- directions respectively. Width and height of each cube face must be the same.
  * 
  * Texture objects are immutable, meaning their size, internal format, filter and wrap modes can not be changed after creation.
  */
@@ -21,10 +21,11 @@ class TextureCubeMap : public Texture
 public:
     /**
     * @brief Construct a new Texture Cubemap object
-    * @param size Size of the texture in pixels (width and height of each cube face).
+    * @param size Size of the texture in pixels (width and height of each cube face). Width and height of each cube face must be the same.
     * @param internalFormat Internal format of the texture.
     * @param filter Filter mode of the texture (magnification and minification).
     * @param wrap Wrap mode of the texture (for S, T and R texture coordinates).
+    * @throw std::invalid_argument if width and height of each cube face are not the same.
     */
     TextureCubeMap(
         glm::uvec2 size,
@@ -35,10 +36,11 @@ public:
 
     /**
      * @brief Construct a new Texture Cubemap object from the specified image.
-     * @param image The image to be copied to the texture store.
+     * @param image The image to be copied to the texture store. The image must contain 6 layers corresponding to the six faces of the cube: X+, X-, Y+, Y-, Z+, Z- directions respectively. Width and height of each layer must be the same.
      * @param internalFormat Internal format of the texture.
      * @param filter Filter mode of the texture (magnification and minification).
      * @param wrap Wrap mode of the texture (for S, T and R texture coordinates).
+     * @throw std::invalid_argument if width and height of each cube face are not the same.
      */
     TextureCubeMap(
         const Image3D& image,
@@ -54,7 +56,7 @@ public:
     TextureCubeMap& operator=(TextureCubeMap&& tex);
 
     /**
-     * @brief Update a region of the texure object's image.
+     * @brief Update a region of the texture object's image.
      * @param pixels Pointer to the new image that will be copied into the texture store.
      * @param offset Offset into the texture object's data store where image replacement will begin.
      * @param size Size of the image to be copied to the texture store.
@@ -64,11 +66,11 @@ public:
     void update(const void* pixels, glm::uvec3 offset, glm::uvec3 size, PixelFormat format = PixelFormat::RGBA, Type type = Type::FLOAT);
 
     /**
-     * @brief Update the region of the texure array object's image.
+     * @brief Update the region of the texture array object's image.
      * @param image The image to be copied to the texture array store.
      * @param offset Offset into the texture array object's data store where image replacement will begin.
      */
-    void update(const Image3D& image, glm::uvec3 offset);
+    void update(const Image3D& image, glm::uvec3 offset = glm::uvec3(0, 0, 0));
 
     /**
      * @brief Read the region of the texture object's store.

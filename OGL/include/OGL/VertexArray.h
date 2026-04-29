@@ -59,6 +59,8 @@ public:
     /**
      * @brief Renders vertex array from array data (VBO).
      * @param mode The type of primitives to render.
+     * @param count The number of vertices to be rendered. If -1, the entire VBO will be rendered.
+     * @param offset The starting index in the VBO.
      * @param instanceCount The number of instances of indices to be rendered. Use gl_InstanceID from a vertex shader.
      */
     void drawArrays(PrimitiveType mode, unsigned int count = -1, unsigned int offset = 0, unsigned int instanceCount = 1);
@@ -66,7 +68,10 @@ public:
     /**
      * @brief Renders vertex array from array data (VBO) using indices (EBO).
      * @param mode The type of primitives to render.
+     * @param count The number of indices to be rendered. If -1, the entire EBO will be rendered.
+     * @param offset The starting index in the EBO.
      * @param instanceCount The number of instances of indices to be rendered. Use gl_InstanceID from a vertex shader.
+     * @param vertexOffset The starting index in the VBO.
      */
     void drawElements(PrimitiveType mode, unsigned int count = -1, unsigned int offset = 0, unsigned int instanceCount = 1, unsigned int vertexOffset = 0);
 
