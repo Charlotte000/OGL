@@ -56,7 +56,6 @@ void Texture2D::update(const void* pixels, glm::uvec2 offset, glm::uvec2 size, P
     if (glm::any(glm::greaterThan(offset + size, texSize)))
         throw std::out_of_range("offset + size is greater than the size of the texture");
 
-    assert(glm::all(glm::lessThanEqual(offset + size, texSize)));
     glTextureSubImage2D(this->handler, 0, offset.x, offset.y, size.x, size.y, static_cast<GLenum>(format), static_cast<GLenum>(type), pixels);
 }
 

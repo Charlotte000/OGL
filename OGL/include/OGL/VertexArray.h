@@ -62,6 +62,7 @@ public:
      * @param count The number of vertices to be rendered. If -1, the entire VBO will be rendered.
      * @param offset The starting index in the VBO.
      * @param instanceCount The number of instances of indices to be rendered. Use gl_InstanceID from a vertex shader.
+     * @throw std::out_of_range if offset + count is greater than the size of the vertex buffer.
      */
     void drawArrays(PrimitiveType mode, unsigned int count = -1, unsigned int offset = 0, unsigned int instanceCount = 1);
 
@@ -72,6 +73,7 @@ public:
      * @param offset The starting index in the EBO.
      * @param instanceCount The number of instances of indices to be rendered. Use gl_InstanceID from a vertex shader.
      * @param vertexOffset The starting index in the VBO.
+     * @throw std::out_of_range if offset + count is greater than the size of the vertex buffer.
      */
     void drawElements(PrimitiveType mode, unsigned int count = -1, unsigned int offset = 0, unsigned int instanceCount = 1, unsigned int vertexOffset = 0);
 

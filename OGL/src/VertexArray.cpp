@@ -1,5 +1,7 @@
 #include "OGL/VertexArray.h"
 
+#include <stdexcept>
+
 using namespace OGL;
 
 VertexArray::VertexArray(size_t vertexStride, const std::initializer_list<std::tuple<Type, size_t, size_t>>& vertexAttributes, TypeU indexType)
@@ -88,7 +90,8 @@ void VertexArray::drawArrays(PrimitiveType mode, unsigned int count, unsigned in
     const size_t maxCount = this->vbo.size() / vertexStride;
     if (count == -1) count = maxCount;
 
-    assert(offset + count <= maxCount);
+    if (offset + count > maxCount)
+        throw std::out_of_range("offset + count exceeds the size of the vertex buffer.");
 
     this->use();
     glDrawArraysInstanced(static_cast<GLenum>(mode), offset, count, instanceCount);
@@ -101,7 +104,8 @@ void VertexArray::drawElements(PrimitiveType mode, unsigned int count, unsigned 
     const size_t maxCount = this->ebo.size() / stride;
     if (count == -1) count = maxCount;
 
-    assert(offset + count <= maxCount);
+    if (offset + count > maxCount)
+        throw std::out_of_range("offset + count exceeds the size of the vertex buffer.");
 
     this->use();
     glDrawElementsInstancedBaseVertex(
