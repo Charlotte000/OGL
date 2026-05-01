@@ -1,4 +1,3 @@
-#include <assert.h>
 #include <stdexcept>
 
 #include "OGL/Buffer.h"
@@ -66,13 +65,17 @@ void Buffer::write(const void* data, size_t size, DataUsage usage)
 
 void Buffer::update(const void* data, size_t offset, size_t size)
 {
-    assert(offset + size <= this->size());
+    if (offset + size > this->size())
+        throw std::out_of_range("offset + size is greater than the size of the buffer");
+
     glNamedBufferSubData(this->handler, offset, size, data);
 }
 
 void Buffer::read(void* data, size_t offset, size_t size) const
 {
-    assert(offset + size <= this->size());
+    if (offset + size > this->size())
+        throw std::out_of_range("offset + size is greater than the size of the buffer");
+
     glGetNamedBufferSubData(this->handler, offset, size, data);
 }
 
@@ -83,7 +86,12 @@ void Buffer::read(void* data, size_t size) const
 
 void Buffer::copy(size_t srcOffset, Buffer& dst, size_t dstOffset, size_t size) const
 {
-    assert(srcOffset + size <= this->size() && dstOffset + size <= dst.size());
+    if (srcOffset + size > this->size())
+        throw std::out_of_range("srcOffset + size is greater than the size of the srcBuffer");
+
+    if (dstOffset + size > dst.size())
+        throw std::out_of_range("dstOffset + size is greater than the size of the dstBuffer");
+
     glCopyNamedBufferSubData(this->handler, dst.getHandler(), srcOffset, dstOffset, size);
 }
 

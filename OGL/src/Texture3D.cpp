@@ -53,7 +53,9 @@ Texture3D& Texture3D::operator=(Texture3D&& tex)
 void Texture3D::update(const void* pixels, glm::uvec3 offset, glm::uvec3 size, PixelFormat format, Type type)
 {
     glm::uvec3 texSize = this->size();
-    assert(glm::all(glm::lessThanEqual(offset + size, texSize)));
+    if (glm::any(glm::greaterThan(offset + size, texSize)))
+        throw std::out_of_range("offset + size is greater than the size of the texture");
+
     glTextureSubImage3D(this->handler, 0, offset.x, offset.y, offset.z, size.x, size.y, size.z, static_cast<GLenum>(format), static_cast<GLenum>(type), pixels);
 }
 
@@ -65,7 +67,8 @@ void Texture3D::update(const Image3D& image, glm::uvec3 offset)
 void Texture3D::read(void* pixels, size_t bufSize, glm::uvec3 offset, glm::uvec3 size, PixelFormat format, Type type) const
 {
     glm::uvec3 texSize = this->size();
-    assert(glm::all(glm::lessThanEqual(offset + size, texSize)));
+    if (glm::any(glm::greaterThan(offset + size, texSize)))
+        throw std::out_of_range("offset + size is greater than the size of the texture");
 
     if (offset == glm::uvec3(0) && size == texSize)
     {

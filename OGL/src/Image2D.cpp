@@ -2,7 +2,6 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
 
-#include <assert.h>
 #include <stdexcept>
 
 #include <stb_image.h>
@@ -35,7 +34,8 @@ Image2D::Image2D(const std::filesystem::path& path)
 Image2D::Image2D(glm::uvec2 size, const std::initializer_list<glm::vec4>& pixels)
     : size(size), pixels(pixels.size() != 0 ? pixels : std::vector<glm::vec4>(size.x * size.y, glm::vec4(0)))
 {
-    assert(this->size.x * this->size.y == this->pixels.size());
+    if (this->size.x * this->size.y != this->pixels.size())
+        throw std::runtime_error("Size of the image does not match the number of pixels provided");
 }
 
 Image2D::Image2D(glm::uvec2 size, const void* data)
@@ -52,14 +52,18 @@ Image2D::operator Image3D() const
 
 glm::vec4& Image2D::operator[](glm::uvec2 coords)
 {
-    assert(glm::all(glm::lessThan(coords, this->size)));
+    if (glm::any(glm::greaterThanEqual(coords, this->size)))
+        throw std::out_of_range("Pixel coordinates are out of range");
+
     const size_t index = coords.y * this->size.x + coords.x;
     return this->pixels[index];
 }
 
 const glm::vec4& Image2D::operator[](glm::uvec2 coords) const
 {
-    assert(glm::all(glm::lessThan(coords, this->size)));
+    if (glm::any(glm::greaterThanEqual(coords, this->size)))
+        throw std::out_of_range("Pixel coordinates are out of range");
+
     const size_t index = coords.y * this->size.x + coords.x;
     return this->pixels[index];
 }
@@ -128,8 +132,9 @@ void Image2D::saveToFile(const std::filesystem::path& path) const
 
 Image2D Image2D::resize(glm::uvec2 size, ResizeFilter filter, ResizeEdge edge) const
 {
+    // TODO check 
     Image2D img(size);
-    stbir_resize(
+    void* res = stbir_resize(
         this->pixels.data(),
         this->size.x,
         this->size.y,
@@ -143,5 +148,9 @@ Image2D Image2D::resize(glm::uvec2 size, ResizeFilter filter, ResizeEdge edge) c
         static_cast<stbir_edge>(edge),
         static_cast<stbir_filter>(filter)
     );
+
+    if (res == nullptr)
+        throw std::runtime_error("Failed to resize the image");
+
     return img;
 }

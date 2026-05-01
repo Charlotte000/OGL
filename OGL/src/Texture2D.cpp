@@ -53,6 +53,9 @@ Texture2D& Texture2D::operator=(Texture2D&& tex)
 void Texture2D::update(const void* pixels, glm::uvec2 offset, glm::uvec2 size, PixelFormat format, Type type)
 {
     glm::uvec2 texSize = this->size();
+    if (glm::any(glm::greaterThan(offset + size, texSize)))
+        throw std::out_of_range("offset + size is greater than the size of the texture");
+
     assert(glm::all(glm::lessThanEqual(offset + size, texSize)));
     glTextureSubImage2D(this->handler, 0, offset.x, offset.y, size.x, size.y, static_cast<GLenum>(format), static_cast<GLenum>(type), pixels);
 }
@@ -65,7 +68,8 @@ void Texture2D::update(const Image2D& image, glm::uvec2 offset)
 void Texture2D::read(void* pixels, size_t bufSize, glm::uvec2 offset, glm::uvec2 size, PixelFormat format, Type type) const
 {
     glm::uvec2 texSize = this->size();
-    assert(glm::all(glm::lessThanEqual(offset + size, texSize)));
+    if (glm::any(glm::greaterThan(offset + size, texSize)))
+        throw std::out_of_range("offset + size is greater than the size of the texture");
 
     if (offset == glm::uvec2(0) && size == texSize)
     {

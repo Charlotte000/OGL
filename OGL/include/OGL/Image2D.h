@@ -52,6 +52,7 @@ public:
      * @brief Load an image from a file.
      * @param path Path to the image file.
      * @throw std::runtime_error if the image cannot be loaded.
+     * @throw std::invalid_argument if the size of the image does not match the number of pixels provided.
      */
     Image2D(const std::filesystem::path& path);
 
@@ -61,7 +62,8 @@ public:
      * If the pixel data is not provided, the pixel data is initialized to zeros.
      * 
      * @param size Size of the image in pixels (width, height).
-     * @param pixels Pixel data in a row-major order.
+     * @param pixels Pixel data in a row-major order. If empty, the pixel data is initialized to zeros.
+     * @throw std::invalid_argument if the size of the image does not match the number of pixels provided.
      */
     Image2D(glm::uvec2 size, const std::initializer_list<glm::vec4>& pixels = {});
 
@@ -69,6 +71,7 @@ public:
      * @brief Create an image with the specified size and pixel data.
      * @param size Size of the image in pixels (width, height).
      * @param data Pixel data where each pixel consists of 4 floating-point values (R, G, B, A) in a row-major order.
+     * @throw std::invalid_argument if the size of the image does not match the number of pixels provided.
      */
     Image2D(glm::uvec2 size, const void* data);
 
@@ -82,6 +85,7 @@ public:
      * @brief Access pixel at the specified coordinates.
      * @param coords Coordinates of the pixel (x, y).
      * @return Reference to the pixel at the specified coordinates.
+     * @throw std::out_of_range if the pixel coordinates are out of range.
      */
     glm::vec4& operator[](glm::uvec2 coords);
 
@@ -89,6 +93,7 @@ public:
      * @brief Access pixel at the specified coordinates.
      * @param coords Coordinates of the pixel (x, y).
      * @return Constant reference to the pixel at the specified coordinates.
+     * @throw std::out_of_range if the pixel coordinates are out of range.
      */
     const glm::vec4& operator[](glm::uvec2 coords) const;
 
@@ -105,6 +110,7 @@ public:
      * @param filter Filter type.
      * @param edge Edge handling mode.
      * @return Resized image.
+     * @throw std::runtime_error if failed to resize the image.
      */
     Image2D resize(glm::uvec2 size, ResizeFilter filter = ResizeFilter::DEFAULT, ResizeEdge edge = ResizeEdge::CLAMP) const;
 };

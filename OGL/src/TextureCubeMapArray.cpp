@@ -9,7 +9,9 @@ TextureCubeMapArray::TextureCubeMapArray(
     glm::vec<3, Wrap> wrap
 ) : Texture(GL_TEXTURE_CUBE_MAP_ARRAY, filter, wrap)
 {
-    assert(size.x == size.y);
+    if (size.x != size.y)
+        throw std::invalid_argument("width and height of each cube face must be the same");
+
     glTextureStorage3D(this->handler, 1, static_cast<GLenum>(internalFormat), size.x, size.y, size.z * 6);
 }
 
@@ -54,7 +56,9 @@ TextureCubeMapArray& TextureCubeMapArray::operator=(TextureCubeMapArray&& tex)
 void TextureCubeMapArray::update(const void* pixels, glm::uvec3 offset, glm::uvec3 size, PixelFormat format, Type type)
 {
     glm::uvec3 texSize = this->size();
-    assert(glm::all(glm::lessThanEqual(offset + size, texSize)));
+    if (glm::any(glm::greaterThan(offset + size, texSize)))
+        throw std::out_of_range("offset + size is greater than the size of the texture");
+
     glTextureSubImage3D(this->handler, 0, offset.x, offset.y, offset.z, size.x, size.y, size.z, static_cast<GLenum>(format), static_cast<GLenum>(type), pixels);
 }
 
@@ -66,7 +70,8 @@ void TextureCubeMapArray::update(const Image3D& image, glm::uvec3 offset)
 void TextureCubeMapArray::read(void* pixels, size_t bufSize, glm::uvec3 offset, glm::uvec3 size, PixelFormat format, Type type) const
 {
     glm::uvec3 texSize = this->size();
-    assert(glm::all(glm::lessThanEqual(offset + size, texSize)));
+    if (glm::any(glm::greaterThan(offset + size, texSize)))
+        throw std::out_of_range("offset + size is greater than the size of the texture");
 
     if (offset == glm::uvec3(0) && size == texSize)
     {

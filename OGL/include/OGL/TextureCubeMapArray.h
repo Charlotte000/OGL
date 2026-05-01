@@ -62,6 +62,7 @@ public:
      * @param size Size of the image to be copied to the texture store.
      * @param format The format of the pixel data.
      * @param type The data type of the pixel data.
+     * @throw std::out_of_range if offset + size is greater than the size of the texture.
      */
     void update(const void* pixels, glm::uvec3 offset, glm::uvec3 size, PixelFormat format = PixelFormat::RGBA, Type type = Type::FLOAT);
 
@@ -69,6 +70,7 @@ public:
      * @brief Update the region of the texture array object's image.
      * @param image The image to be copied to the texture array store.
      * @param offset Offset into the texture array object's data store where image replacement will begin.
+     * @throw std::out_of_range if offset + size is greater than the size of the texture.
      */
     void update(const Image3D& image, glm::uvec3 offset = glm::uvec3(0, 0, 0));
 
@@ -80,6 +82,7 @@ public:
      * @param size Size of the texture's region to be copied.
      * @param format The format of the pixel data.
      * @param type The data type of the pixel data.
+     * @throw std::out_of_range if offset + size is greater than the size of the texture.
      */
     void read(void* pixels, size_t bufSize, glm::uvec3 offset, glm::uvec3 size, PixelFormat format = PixelFormat::RGBA, Type type = Type::FLOAT) const;
 
@@ -88,6 +91,7 @@ public:
      * @param offset Offset of the texture array region to be copied.
      * @param size Size of the texture array region to be copied.
      * @return Image copied from the texture array.
+     * @throw std::out_of_range if offset + size is greater than the size of the texture.
      */
     Image3D read(glm::uvec3 offset, glm::uvec3 size) const;
 

@@ -1,4 +1,4 @@
-#include <assert.h>
+#include <stdexcept>
 
 #include "OGL/Texture.h"
 
@@ -107,7 +107,12 @@ GLenum Texture::target() const
 
 void Texture::copy(glm::uvec3 srcOffset, Texture& dst, glm::uvec3 dstOffset, glm::uvec3 size) const
 {
-    assert(glm::all(glm::lessThanEqual(srcOffset + size, this->size())) && glm::all(glm::lessThanEqual(dstOffset + size, dst.size())));
+    if (glm::any(glm::greaterThan(srcOffset + size, this->size())))
+        throw std::out_of_range("srcOffset + size is greater than the size of the srcTexture");
+
+    if (glm::any(glm::greaterThan(dstOffset + size, dst.size())))
+        throw std::out_of_range("dstOffset + size is greater than the size of the dstTexture");
+
     glCopyImageSubData(
         this->handler, this->target(), 0, srcOffset.x, srcOffset.y, srcOffset.z,
         dst.getHandler(), dst.target(), 0, dstOffset.x, dstOffset.y, dstOffset.z,

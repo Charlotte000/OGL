@@ -1,4 +1,3 @@
-#include <assert.h>
 #include <stdexcept>
 
 #include "OGL/Image1D.h"
@@ -8,7 +7,8 @@ using namespace OGL;
 Image1D::Image1D(glm::uvec1 size, const std::initializer_list<glm::vec4>& pixels)
     : size(size), pixels(pixels.size() != 0 ? pixels : std::vector<glm::vec4>(size.x, glm::vec4(0)))
 {
-    assert(this->size.x == this->pixels.size());
+    if (this->size.x != this->pixels.size())
+        throw std::invalid_argument("Size of the image does not match the number of pixels provided");
 }
 
 Image1D::Image1D(glm::uvec1 size, const void* data)
@@ -32,14 +32,18 @@ Image1D::operator Image3D() const
 
 glm::vec4& Image1D::operator[](glm::uvec1 coords)
 {
-    assert(glm::all(glm::lessThan(coords, this->size)));
+    if (glm::any(glm::greaterThanEqual(coords, this->size)))
+        throw std::out_of_range("Pixel coordinates are out of range");
+
     const size_t index = coords.x;
     return this->pixels[index];
 }
 
 const glm::vec4& Image1D::operator[](glm::uvec1 coords) const
 {
-    assert(glm::all(glm::lessThan(coords, this->size)));
+    if (glm::any(glm::greaterThanEqual(coords, this->size)))
+        throw std::out_of_range("Pixel coordinates are out of range");
+
     const size_t index = coords.x;
     return this->pixels[index];
 }

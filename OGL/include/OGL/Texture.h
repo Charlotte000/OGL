@@ -115,7 +115,8 @@ public:
      * @param dst The destination texture.
      * @param dstOffset The offset of the region in the destination texture.
      * @param size The size of the region to copy.
-     * @throw std::runtime_error if the size of the region to copy exceeds the bounds of the source or destination textures.
+     * @throw std::out_of_range if srcOffset + size is greater than the size of the srcBuffer.
+     * @throw std::out_of_range if dstOffset + size is greater than the size of the dstBuffer.
      */
     void copy(glm::uvec3 srcOffset, Texture& dst, glm::uvec3 dstOffset, glm::uvec3 size) const;
 protected:

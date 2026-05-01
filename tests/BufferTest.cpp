@@ -11,6 +11,13 @@ TEST(BufferTest, Create)
 
     OGL::Buffer buff;
     EXPECT_NO_THROW(OGL::Context::checkError());
+
+    std::vector<float> srcData = generateData(100);
+    buff.write(srcData.data(), srcData.size() * sizeof(float), OGL::DataUsage::STATIC_READ);
+    EXPECT_NO_THROW(OGL::Context::checkError());
+
+    EXPECT_EQ(buff.size(), srcData.size() * sizeof(float));
+    EXPECT_EQ(buff.usage(), OGL::DataUsage::STATIC_READ);
 }
 
 TEST(BufferTest, Data)
@@ -25,7 +32,7 @@ TEST(BufferTest, Data)
     EXPECT_NO_THROW(OGL::Context::checkError());
 
     std::vector<float> dstData(100);
-    buff.read(dstData.data(), 100 * sizeof(float));
+    buff.read(dstData.data(), dstData.size() * sizeof(float));
     EXPECT_NO_THROW(OGL::Context::checkError());
 
     EXPECT_EQ(srcData, dstData);
@@ -46,7 +53,7 @@ TEST(BufferTest, Copy)
     EXPECT_NO_THROW(OGL::Context::checkError());
 
     std::vector<float> dstData(100);
-    dstBuff.read(dstData.data(), 100 * sizeof(float));
+    dstBuff.read(dstData.data(), dstData.size() * sizeof(float));
     EXPECT_NO_THROW(OGL::Context::checkError());
 
     EXPECT_EQ(srcData, dstData);
@@ -74,7 +81,7 @@ TEST(BufferTest, Map)
     EXPECT_NO_THROW(OGL::Context::checkError());
 
     std::vector<float> dstData(100);
-    buff.read(dstData.data(), 100 * sizeof(float));
+    buff.read(dstData.data(), dstData.size() * sizeof(float));
     EXPECT_NO_THROW(OGL::Context::checkError());
 
     EXPECT_EQ(srcData, dstData);

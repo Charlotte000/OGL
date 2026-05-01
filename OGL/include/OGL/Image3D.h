@@ -38,7 +38,8 @@ public:
      * If the pixel data is not provided, the pixel data is initialized to zeros.
      * 
      * @param size Size of the image in pixels (width, height, depth).
-     * @param pixels Pixel data.
+     * @param pixels Pixel data. If empty, the pixel data is initialized to zeros.
+     * @throw std::invalid_argument if the size of the image does not match the number of pixels provided.
      */
     Image3D(glm::uvec3 size, const std::initializer_list<glm::vec4>& pixels = {});
 
@@ -46,6 +47,7 @@ public:
      * @brief Create an image with the specified size and pixel data.
      * @param size Size of the image in pixels (width, height, depth).
      * @param data Pixel data where each pixel consists of 4 floating-point values (R, G, B, A) in row, column, depth order.
+     * @throw std::invalid_argument if the size of the image does not match the number of pixels provided.
      */
     Image3D(glm::uvec3 size, const void* data);
 
@@ -53,6 +55,7 @@ public:
      * @brief Access pixel at the specified coordinates.
      * @param coords Coordinates of the pixel (x, y, z).
      * @return Reference to the pixel at the specified coordinates.
+     * @throw std::out_of_range if the pixel coordinates are out of range.
      */
     glm::vec4& operator[](glm::uvec3 coords);
 
@@ -60,6 +63,7 @@ public:
      * @brief Access pixel at the specified coordinates.
      * @param coords Coordinates of the pixel (x, y, z).
      * @return Constant reference to the pixel at the specified coordinates.
+     * @throw std::out_of_range if the pixel coordinates are out of range.
      */
     const glm::vec4& operator[](glm::uvec3 coords) const;
 };

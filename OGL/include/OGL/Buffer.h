@@ -47,6 +47,7 @@ public:
      * @param data Pointer to the new data that will be copied into the data store.
      * @param offset Offset in bytes into the buffer object's data store where data replacement will begin.
      * @param size Size in bytes of the data to be copied from data to the data store.
+     * @throw std::out_of_range if offset + size is greater than the size of the buffer.
      */
     void update(const void* data, size_t offset, size_t size);
 
@@ -55,6 +56,7 @@ public:
      * @param data Pointer to a memory location where the data will be copied.
      * @param offset Offset in bytes into the buffer object's data store from which data will be read.
      * @param size Size in bytes of the data to be read from the data store.
+     * @throw std::out_of_range if offset + size is greater than the size of the buffer.
      */
     void read(void* data, size_t offset, size_t size) const;
 
@@ -65,6 +67,7 @@ public:
      * 
      * @param data Pointer to a memory location where the data will be copied.
      * @param size Size in bytes of the data to be read from the data store.
+     * @throw std::out_of_range if offset + size is greater than the size of the buffer.
      */
     void read(void* data, size_t size) const;
 
@@ -74,7 +77,8 @@ public:
      * @param dst Destination buffer object to which data will be copied.
      * @param dstOffset Offset in bytes into the destination buffer's data store where data replacement will begin.
      * @param size Size in bytes of the data to be copied.
-     * @throw std::runtime_error if the source or destination buffers do not have enough data store size to perform the copy operation.
+     * @throw std::out_of_range if srcOffset + size is greater than the size of the srcBuffer.
+     * @throw std::out_of_range if dstOffset + size is greater than the size of the dstBuffer.
      */
     void copy(size_t srcOffset, Buffer& dst, size_t dstOffset, size_t size) const;
 

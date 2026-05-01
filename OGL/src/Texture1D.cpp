@@ -36,6 +36,7 @@ Texture1D::Texture1D(const Texture1D& tex)
         this->handler,    GL_TEXTURE_1D, 0, 0, 0, 0,
         size.x, 1, 1
     );
+    tex.copy(glm::uvec3(0), *this, glm::uvec3(0), glm::uvec3(size.x, 1, 1));
 }
 
 Texture1D& Texture1D::operator=(Texture1D&& tex)
@@ -53,7 +54,9 @@ Texture1D& Texture1D::operator=(Texture1D&& tex)
 void Texture1D::update(const void* pixels, glm::uvec1 offset, glm::uvec1 size, PixelFormat format, Type type)
 {
     glm::uvec1 texSize = this->size();
-    assert(glm::all(glm::lessThanEqual(offset + size, texSize)));
+    if (glm::any(glm::greaterThan(offset + size, texSize)))
+        throw std::out_of_range("offset + size is greater than the size of the texture");
+
     glTextureSubImage1D(this->handler, 0, offset.x, size.x, static_cast<GLenum>(format), static_cast<GLenum>(type), pixels);
 }
 
@@ -65,7 +68,8 @@ void Texture1D::update(const Image1D& image, glm::uvec1 offset)
 void Texture1D::read(void* pixels, size_t bufSize, glm::uvec1 offset, glm::uvec1 size, PixelFormat format, Type type) const
 {
     glm::uvec1 texSize = this->size();
-    assert(glm::all(glm::lessThanEqual(offset + size, texSize)));
+    if (glm::any(glm::greaterThan(offset + size, texSize)))
+        throw std::out_of_range("offset + size is greater than the size of the texture");
 
     if (offset == glm::uvec1(0) && size == texSize)
     {
