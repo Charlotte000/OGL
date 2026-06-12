@@ -21,8 +21,8 @@ InstancedExample::InstancedExample(glm::uvec2 size, const std::filesystem::path&
     :
     program(
     {
-        OGL::Shader(shaderPath / "instanced" / "vertex.glsl", OGL::ShaderType::VERTEX),
-        OGL::Shader(shaderPath / "instanced" / "fragment.glsl", OGL::ShaderType::FRAGMENT),
+        OGL::Shader(OGL::ShaderType::VERTEX,   shaderPath / "instanced" / "vertex.glsl"  ),
+        OGL::Shader(OGL::ShaderType::FRAGMENT, shaderPath / "instanced" / "fragment.glsl"),
     }),
     frame({ { OGL::Attachment::COLOR0, OGL::Texture2D(size, OGL::ImageFormat::RGBA32F) } }),
     points({ { OGL::Type::FLOAT, 2 } })

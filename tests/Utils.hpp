@@ -18,22 +18,16 @@ public:
     Context()
     {
         if (glfwInit() == GL_FALSE)
-        {
             throw std::runtime_error("GLFW Init Error");
-        }
 
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         this->window = glfwCreateWindow(1, 1, "Test", nullptr, nullptr);
         if (this->window == nullptr)
-        {
             throw std::runtime_error("GLFW Create Window error");
-        }
 
         glfwMakeContextCurrent(this->window);
         if (GLenum status = glewInit(); status != GLEW_OK)
-        {
             throw std::runtime_error((const char*)glewGetErrorString(status));
-        }
     }
 
     ~Context()

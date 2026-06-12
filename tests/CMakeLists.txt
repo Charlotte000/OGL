@@ -8,9 +8,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(
     ${PROJECT_NAME}
-    Utils.hpp
-    BufferTest.cpp
-    TextureTest.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Utils.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BufferTest.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TextureTest.cpp
 )
 
 # OGL

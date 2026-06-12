@@ -114,18 +114,18 @@ SceneExample::SceneExample(glm::uvec2 size, const std::filesystem::path& shaderP
     :
     program(
     {
-        OGL::Shader(shaderPath / "scene" / "main" / "vertex.glsl", OGL::ShaderType::VERTEX),
-        OGL::Shader(shaderPath / "scene" / "main" / "fragment.glsl", OGL::ShaderType::FRAGMENT),
+        OGL::Shader(OGL::ShaderType::VERTEX,   shaderPath / "scene" / "main" / "vertex.glsl"  ),
+        OGL::Shader(OGL::ShaderType::FRAGMENT, shaderPath / "scene" / "main" / "fragment.glsl"),
     }),
     shadowMapProgram(
     {
-        OGL::Shader(shaderPath / "scene" / "shadow" / "vertex.glsl", OGL::ShaderType::VERTEX),
-        OGL::Shader(shaderPath / "scene" / "shadow" / "fragment.glsl", OGL::ShaderType::FRAGMENT),
+        OGL::Shader(OGL::ShaderType::VERTEX,   shaderPath / "scene" / "shadow" / "vertex.glsl"  ),
+        OGL::Shader(OGL::ShaderType::FRAGMENT, shaderPath / "scene" / "shadow" / "fragment.glsl"),
     }),
     skyBoxProgram(
     {
-        OGL::Shader(shaderPath / "scene" / "skyBox" / "vertex.glsl", OGL::ShaderType::VERTEX),
-        OGL::Shader(shaderPath / "scene" / "skyBox" / "fragment.glsl", OGL::ShaderType::FRAGMENT),
+        OGL::Shader(OGL::ShaderType::VERTEX,   shaderPath / "scene" / "skyBox" / "vertex.glsl"  ),
+        OGL::Shader(OGL::ShaderType::FRAGMENT, shaderPath / "scene" / "skyBox" / "fragment.glsl"),
     }),
     skyBoxMap(parseSkybox(imagesPath / "skybox.png"), OGL::ImageFormat::RGBA32F),
     frame(size),

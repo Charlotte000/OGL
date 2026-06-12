@@ -22,8 +22,8 @@ private:
 
 RayTracerExample::RayTracerExample(glm::uvec2 size, const std::filesystem::path& shaderPath)
     :
-    program({ OGL::Shader(shaderPath / "rayTracer" / "main.glsl", OGL::ShaderType::COMPUTE) }),
-    backgroundProgram({ OGL::Shader(shaderPath / "rayTracer" / "background.glsl", OGL::ShaderType::COMPUTE) }),
+    program({ OGL::Shader(OGL::ShaderType::COMPUTE, shaderPath / "rayTracer" / "main.glsl") }),
+    backgroundProgram({ OGL::Shader(OGL::ShaderType::COMPUTE, shaderPath / "rayTracer" / "background.glsl") }),
     frame(size, OGL::ImageFormat::RGBA32F),
     background(glm::uvec2(1000, 1000), OGL::ImageFormat::RGBA32F)
 {

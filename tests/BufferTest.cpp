@@ -59,7 +59,7 @@ TEST(BufferTest, Copy)
     EXPECT_EQ(srcData, dstData);
 }
 
-TEST(BufferTest, Map)
+TEST(BufferTest, MapWrite)
 {
     Context cnt;
 
@@ -85,4 +85,25 @@ TEST(BufferTest, Map)
     EXPECT_NO_THROW(OGL::Context::checkError());
 
     EXPECT_EQ(srcData, dstData);
+}
+
+TEST(BufferTest, MapRead)
+{
+    Context cnt;
+
+    OGL::Buffer buff;
+    EXPECT_NO_THROW(OGL::Context::checkError());
+
+    std::vector<float> srcData = generateData(100);
+    buff.write(srcData.data(), srcData.size() * sizeof(float));
+    EXPECT_NO_THROW(OGL::Context::checkError());
+
+    const float* mapPtr = reinterpret_cast<const float*>(buff.map(OGL::Access::READ_ONLY));
+    EXPECT_NO_THROW(OGL::Context::checkError());
+
+    for (size_t i = 0; i < srcData.size(); i++)
+        EXPECT_EQ(srcData[i], *(mapPtr + i));
+
+    buff.unmap();
+    EXPECT_NO_THROW(OGL::Context::checkError());
 }

@@ -6,21 +6,22 @@
 
 using namespace OGL;
 
-Shader::Shader(const char src[], ShaderType type)
+Shader::Shader(ShaderType type, const char* src, int srcSize)
 {
     // Create shader
     this->handler = glCreateShader(static_cast<GLenum>(type));
 
     // Attach code
     const GLchar* code = static_cast<const GLchar*>(src);
-    glShaderSource(this->handler, 1, &code, 0);
+    const GLint size = static_cast<GLint>(srcSize);
+    glShaderSource(this->handler, 1, &code, &size);
 
     glCompileShader(this->handler);
 
     this->checkStatus(GL_COMPILE_STATUS);
 }
 
-Shader::Shader(const std::filesystem::path& path, ShaderType type)
+Shader::Shader(ShaderType type, const std::filesystem::path& path)
 {
     // Create shader
     this->handler = glCreateShader(static_cast<GLenum>(type));
@@ -28,9 +29,7 @@ Shader::Shader(const std::filesystem::path& path, ShaderType type)
     // Attach code
     std::ifstream file(path);
     if (!file.is_open())
-    {
         throw std::runtime_error("Shader source not found: " + path.string());
-    }
 
     std::string src((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
     file.close();
@@ -42,7 +41,7 @@ Shader::Shader(const std::filesystem::path& path, ShaderType type)
     this->checkStatus(GL_COMPILE_STATUS);
 }
 
-Shader::Shader(const unsigned char src[], size_t srcSize, ShaderType type)
+Shader::Shader(ShaderType type, const void* src, size_t srcSize)
 {
     // Create shader
     this->handler = glCreateShader(static_cast<GLenum>(type));
