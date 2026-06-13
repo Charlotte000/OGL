@@ -59,17 +59,13 @@ VertexArray::VertexArray(VertexArray&& vao)
 VertexArray::~VertexArray()
 {
     if (this->handler != -1)
-    {
         glDeleteVertexArrays(1, &this->handler);
-    }
 }
 
 VertexArray& VertexArray::operator=(VertexArray&& vao)
 {
     if (this->handler != -1)
-    {
         glDeleteVertexArrays(1, &this->handler);
-    }
 
     this->handler = vao.handler;
     this->indexType = vao.indexType;

@@ -41,9 +41,7 @@ Texture2D::Texture2D(const Texture2D& tex)
 Texture2D& Texture2D::operator=(Texture2D&& tex)
 {
     if (this->handler != -1)
-    {
         glDeleteTextures(1, &this->handler);
-    }
 
     this->handler = tex.handler;
     tex.handler = -1;
@@ -71,15 +69,11 @@ void Texture2D::read(void* pixels, size_t bufSize, glm::uvec2 offset, glm::uvec2
         throw std::out_of_range("offset + size is greater than the size of the texture");
 
     if (offset == glm::uvec2(0) && size == texSize)
-    {
         // Whole read
         glGetTextureImage(this->handler, 0, static_cast<GLenum>(format), static_cast<GLenum>(type), bufSize, pixels);
-    }
     else
-    {
         // Partial read
         glGetTextureSubImage(this->handler, 0, offset.x, offset.y, 0, size.x, size.y, 1, static_cast<GLenum>(format), static_cast<GLenum>(type), bufSize, pixels);
-    }
 }
 
 Image2D Texture2D::read(glm::uvec2 offset, glm::uvec2 size) const

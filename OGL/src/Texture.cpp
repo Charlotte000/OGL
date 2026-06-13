@@ -22,9 +22,7 @@ Texture::~Texture()
 Texture& Texture::operator=(Texture&& tex)
 {
     if (this->handler != -1)
-    {
         glDeleteTextures(1, &this->handler);
-    }
 
     this->handler = tex.handler;
     tex.handler = -1;

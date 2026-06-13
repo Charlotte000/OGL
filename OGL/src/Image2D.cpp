@@ -18,9 +18,7 @@ Image2D::Image2D(const std::filesystem::path& path)
     glm::ivec2 size;
     float* data = stbi_loadf(path.string().c_str(), &size.x, &size.y, nullptr, 4);
     if (data == nullptr)
-    {
         throw std::runtime_error("Failed to load the image: " + path.string());
-    }
 
     // Copy to image
     this->size = size;
@@ -71,17 +69,13 @@ const glm::vec4& Image2D::operator[](glm::uvec2 coords) const
 void Image2D::saveToFile(const std::filesystem::path& path) const
 {
     if (!path.has_extension())
-    {
         throw std::runtime_error("The file path must have an extension to determine the image format: " + path.string());
-    }
 
     // HDR
     if (path.extension() == ".hdr")
     {
         if (!stbi_write_hdr(path.string().c_str(), this->size.x, this->size.y, 4, reinterpret_cast<const float*>(this->pixels.data())))
-        {
             throw std::runtime_error("Failed to save the image: " + path.string());
-        }
 
         return;
     }
@@ -89,17 +83,13 @@ void Image2D::saveToFile(const std::filesystem::path& path) const
     // Convert to unsigned char
     std::vector<glm::vec<4, unsigned char>> data(this->pixels.size());
     for (size_t i = 0; i < this->pixels.size(); i++)
-    {
         data[i] = glm::vec<4, unsigned char>(this->pixels[i] * 255.f);
-    }
 
     // JPEG
     if (path.extension() == ".jpg")
     {
         if (!stbi_write_jpg(path.string().c_str(), this->size.x, this->size.y, 4, data.data(), 100))
-        {
             throw std::runtime_error("Failed to save the image: " + path.string());
-        }
 
         return;
     }
@@ -108,9 +98,7 @@ void Image2D::saveToFile(const std::filesystem::path& path) const
     if (path.extension() == ".bmp")
     {
         if (!stbi_write_bmp(path.string().c_str(), this->size.x, this->size.y, 4, data.data()))
-        {
             throw std::runtime_error("Failed to save the image: " + path.string());
-        }
 
         return;
     }
@@ -119,9 +107,7 @@ void Image2D::saveToFile(const std::filesystem::path& path) const
     if (path.extension() == ".png")
     {
         if (!stbi_write_png(path.string().c_str(), this->size.x, this->size.y, 4, data.data(), 0))
-        {
             throw std::runtime_error("Failed to save the image: " + path.string());
-        }
 
         return;
     }
@@ -130,23 +116,14 @@ void Image2D::saveToFile(const std::filesystem::path& path) const
     throw std::runtime_error("Unsupported image format: " + path.extension().string());
 }
 
-Image2D Image2D::resize(glm::uvec2 size, ResizeFilter filter, ResizeEdge edge) const
+Image2D Image2D::resize(glm::uvec2 size) const
 {
-    // TODO check 
     Image2D img(size);
     void* res = stbir_resize(
-        this->pixels.data(),
-        this->size.x,
-        this->size.y,
-        0,
-        img.pixels.data(),
-        size.x,
-        size.y,
-        0,
-        stbir_pixel_layout::STBIR_RGBA,
-        stbir_datatype::STBIR_TYPE_FLOAT,
-        static_cast<stbir_edge>(edge),
-        static_cast<stbir_filter>(filter)
+        this->pixels.data(), this->size.x, this->size.y, 0,
+        img.pixels.data(),   size.x,       size.y,       0,
+        stbir_pixel_layout::STBIR_RGBA, stbir_datatype::STBIR_TYPE_FLOAT,
+        stbir_edge::STBIR_EDGE_CLAMP, stbir_filter::STBIR_FILTER_DEFAULT
     );
 
     if (res == nullptr)

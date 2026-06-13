@@ -23,33 +23,23 @@ class Shader
 {
 public:
     /**
-     * @brief Load a GLSL shader from provided string.
-     * @param type Shader stage.
+     * @brief Create a shader from source code.
+     * @param type Type of the shader.
      * @param src Source code of the shader.
-     * @param srcSize The length of the source code. If less than 0, the source code is assumed to be null-terminated.
+     * @param srcSize Size of the source code in bytes. If the source code is a null-terminated GLSL code, this parameter can be set to 0.
+     * @param format Format of the shader source code.
      * @throw std::runtime_error if the shader cannot be created.
      */
-    Shader(ShaderType type, const char* src, int srcSize = -1);
+    Shader(ShaderType type, const void* src, size_t srcSize, ShaderFormat format = ShaderFormat::GLSL);
 
     /**
-     * @brief Load a GLSL shader from a file.
-     * @param type Shader stage.
-     * @param path Path to the shader code.
+     * @brief Create a shader from a file.
+     * @param type Type of the shader.
+     * @param path Path to the shader file.
+     * @param format Format of the shader source code.
      * @throw std::runtime_error if the shader cannot be created.
      */
-    Shader(ShaderType type, const std::filesystem::path& path);
-
-    /**
-     * @brief Load a SPIR-V shader from provided binary.
-     * 
-     * Standard, Portable Intermediate Representation - V (SPIR-V) is an intermediate language for defining shaders.
-     * 
-     * @param type Shader stage.
-     * @param src Source binary.
-     * @param srcSize Size of the source binary.
-     * @throw std::runtime_error if the shader cannot be created.
-     */
-    Shader(ShaderType type, const void* src, size_t srcSize);
+    Shader(ShaderType type, const std::filesystem::path& path, ShaderFormat format = ShaderFormat::GLSL);
 
     Shader(Shader&& shader);
 

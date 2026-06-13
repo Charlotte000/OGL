@@ -11,9 +11,7 @@ Program::Program(const std::initializer_list<Shader>& shaders)
 
     // Attach shaders
     for (const Shader& shader : shaders)
-    {
         glAttachShader(this->handler, shader.getHandler());
-    }
 
     glLinkProgram(this->handler);
     this->checkStatus(GL_LINK_STATUS);
@@ -40,9 +38,7 @@ Program::~Program()
 Program& Program::operator=(Program&& program)
 {
     if (this->handler != -1)
-    {
         glDeleteProgram(this->handler);
-    }
 
     this->handler = program.handler;
     program.handler = -1;

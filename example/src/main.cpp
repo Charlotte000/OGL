@@ -19,26 +19,20 @@
 static inline void initGLFW()
 {
     if (glfwInit() == GL_FALSE)
-    {
         throw std::runtime_error("GLFW Init Error");
-    }
 }
 
 static inline void initGLEW()
 {
     if (GLenum status = glewInit(); status != GLEW_OK)
-    {
         throw std::runtime_error((const char*)glewGetErrorString(status));
-    }
 }
 
 static inline GLFWwindow* createWindow()
 {
     GLFWwindow* window = glfwCreateWindow(600, 600, "OLG Example", nullptr, nullptr);
     if (window == nullptr)
-    {
         throw std::runtime_error("GLFW Create Window error");
-    }
 
     glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mode)
     {
@@ -81,13 +75,9 @@ static inline std::tuple<ImVec2, ImVec2> drawFillImage(const OGL::Texture2D& tex
     ImGui::SetCursorPos(imagePos);
     const ImVec2 imageScreenPos = ImGui::GetCursorScreenPos();
     if (flipY)
-    {
         ImGui::Image((ImTextureID)(intptr_t)texture.getHandler(), imageSize, ImVec2(0, 1), ImVec2(1, 0));
-    }
     else
-    {
         ImGui::Image((ImTextureID)(intptr_t)texture.getHandler(), imageSize);
-    }
 
     return { imageScreenPos, imageSize };
 }

@@ -109,9 +109,7 @@ void* Buffer::map(Access access)
 {
     void *ptr = glMapNamedBuffer(this->handler, static_cast<GLenum>(access));
     if (ptr == nullptr)
-    {
         throw std::runtime_error("Failed to map buffer");
-    }
 
     return ptr;
 }
@@ -120,9 +118,7 @@ const void* Buffer::map() const
 {
     void *ptr = glMapNamedBuffer(this->handler, static_cast<GLenum>(Access::READ_ONLY));
     if (ptr == nullptr)
-    {
         throw std::runtime_error("Failed to map buffer");
-    }
 
     return ptr;
 }
@@ -131,9 +127,7 @@ void Buffer::unmap() const
 {
     bool result = glUnmapNamedBuffer(this->handler);
     if (!result)
-    {
         throw std::runtime_error("Failed to unmap buffer");
-    }
 }
 
 GLuint Buffer::getHandler() const

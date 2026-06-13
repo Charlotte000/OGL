@@ -229,6 +229,12 @@ enum class ShaderType : GLenum
     GEOMETRY = GL_GEOMETRY_SHADER,
 };
 
+enum class ShaderFormat : unsigned int
+{
+    GLSL,
+    SPIRV
+};
+
 /**
  * @brief Comparison functions for depth and stencil testing.
  */

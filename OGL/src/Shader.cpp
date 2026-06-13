@@ -1,4 +1,5 @@
 #include <fstream>
+#include <stdexcept>
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -6,52 +7,63 @@
 
 using namespace OGL;
 
-Shader::Shader(ShaderType type, const char* src, int srcSize)
+static inline void attachCode(GLuint shaderHandler, const void* src, size_t srcSize, ShaderFormat format)
+{
+    switch (format)
+    {
+        case ShaderFormat::GLSL:
+        {
+            const GLchar* code = reinterpret_cast<const GLchar*>(src);
+            const GLint size = srcSize == 0 ? -1 : srcSize;
+            glShaderSource(shaderHandler, 1, &code, &size);
+            glCompileShader(shaderHandler);
+            break;
+        }
+        case ShaderFormat::SPIRV:
+            glShaderBinary(1, &shaderHandler, GL_SHADER_BINARY_FORMAT_SPIR_V, src, srcSize);
+            glSpecializeShader(shaderHandler, "main", 0, nullptr, nullptr);
+            break;
+        default:
+            throw std::runtime_error("Unsupported shader format");
+    }
+}
+
+Shader::Shader(ShaderType type, const void* src, size_t srcSize, ShaderFormat format)
 {
     // Create shader
     this->handler = glCreateShader(static_cast<GLenum>(type));
 
     // Attach code
-    const GLchar* code = static_cast<const GLchar*>(src);
-    const GLint size = static_cast<GLint>(srcSize);
-    glShaderSource(this->handler, 1, &code, &size);
-
-    glCompileShader(this->handler);
+    attachCode(this->handler, src, srcSize, format);
 
     this->checkStatus(GL_COMPILE_STATUS);
 }
 
-Shader::Shader(ShaderType type, const std::filesystem::path& path)
+Shader::Shader(ShaderType type, const std::filesystem::path& path, ShaderFormat format)
 {
     // Create shader
     this->handler = glCreateShader(static_cast<GLenum>(type));
 
-    // Attach code
-    std::ifstream file(path);
+    // Open the file
+    std::ifstream file(path, std::ios::binary | std::ios::ate);
     if (!file.is_open())
         throw std::runtime_error("Shader source not found: " + path.string());
 
-    std::string src((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    // Get the file size
+    std::streamsize srcSize = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    // Read the file
+    std::vector<uint8_t> buffer(srcSize);
+    file.read(reinterpret_cast<char*>(buffer.data()), srcSize);
     file.close();
-    const GLchar* code = static_cast<const GLchar*>(src.c_str());
-    glShaderSource(this->handler, 1, &code, 0);
-
-    glCompileShader(this->handler);
-
-    this->checkStatus(GL_COMPILE_STATUS);
-}
-
-Shader::Shader(ShaderType type, const void* src, size_t srcSize)
-{
-    // Create shader
-    this->handler = glCreateShader(static_cast<GLenum>(type));
 
     // Attach code
-    glShaderBinary(1, &this->handler, GL_SHADER_BINARY_FORMAT_SPIR_V, src, srcSize);
-    glSpecializeShader(this->handler, "main", 0, nullptr, nullptr);
+    attachCode(this->handler, reinterpret_cast<const void*>(buffer.data()), srcSize, format);
 
     this->checkStatus(GL_COMPILE_STATUS);
 }
+
 
 Shader::Shader(Shader&& shader)
     : handler(shader.handler)
@@ -71,9 +83,7 @@ Shader::~Shader()
 Shader& Shader::operator=(Shader&& shader)
 {
     if (this->handler != -1)
-    {
         glDeleteShader(this->handler);
-    }
 
     this->handler = shader.handler;
     shader.handler = -1;
